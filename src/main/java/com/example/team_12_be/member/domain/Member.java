@@ -1,11 +1,15 @@
 package com.example.team_12_be.member.domain;
 
 import com.example.team_12_be.base.TimeStamp;
+import com.example.team_12_be.member.domain.vo.AboutMe;
+import com.example.team_12_be.member.domain.vo.MemberEmail;
+import com.example.team_12_be.member.domain.vo.NickName;
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.LinkedHashSet;
@@ -13,24 +17,27 @@ import java.util.Set;
 
 @Entity
 @NoArgsConstructor
+@Getter
 public class Member extends TimeStamp {
 
     @Id
     private Long id;
 
-    private String email;
+    @Embedded
+    private MemberEmail email;
 
-    @Column(unique = true, length = 8)
-    private String nickName;
+    @Embedded
+    private NickName nickName;
 
-    private String introductions;
+    @Embedded
+    private AboutMe aboutMe;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<MemberTechStack> memberTechStacks = new LinkedHashSet<>();
 
-    public Member(String email, String nickName, String introductions) {
+    public Member(MemberEmail email, NickName nickName, AboutMe aboutMe) {
         this.email = email;
         this.nickName = nickName;
-        this.introductions = introductions;
+        this.aboutMe = aboutMe;
     }
 }
