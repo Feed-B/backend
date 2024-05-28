@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -20,11 +21,14 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @Getter
+@SQLDelete(sql = "UPDATE MEMBER SET IS_DELETED = true WHERE IS_DELETED = FALSE AND id= ?")
 public class Member extends TimeStamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private Boolean isDeleted;
 
     @Embedded
     private MemberEmail email;
@@ -42,5 +46,6 @@ public class Member extends TimeStamp {
         this.email = email;
         this.nickName = nickName;
         this.aboutMe = aboutMe;
+        this.isDeleted = Boolean.FALSE;
     }
 }
