@@ -1,0 +1,31 @@
+# workflow 이름
+name: CI
+
+# workflow 실행 트리거 설정
+on:
+  pull_request:
+    branches: [ main ] # main branch로 pull request 될때만 실행
+  push:
+    branches: [ main ] # main branch에 커밋이 푸시될 때 실행(pr merge시 main 으로 push 되니 동일)
+    
+# job - 워크플로우의 업무? 일? 이라고 생각하면 편함 , 각각의 job(업무)는 step(단계별)로 나눌 수 있다. 
+jobs:
+  build:
+    name: CI
+    runs-on : ubuntu-latest # 해당 설정은 workflows의 가상머신 환경 설정 
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 21
+        uses: actions/setup-java@v2
+        with:
+          java-version: '21'
+          distribution: 'zulu'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+        shell: bash
+
+      - name: Build with Gradle
+        run: ./gradlew build
+        shell: bash
