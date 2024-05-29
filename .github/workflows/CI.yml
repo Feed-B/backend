@@ -5,8 +5,9 @@ name: CI
 on:
   pull_request:
     branches: [ main ] # main branch로 pull request 될때만 실행
-  push:
-    branches: [ main ] # main branch에 커밋이 푸시될 때 실행(pr merge시 main 으로 push 되니 동일)
+ #CI는 pr 요청시에만 적용하고 merge(push) 시에는 CD만 적용되게 구현(어짜피 CD에 build 로직 있기 때문)
+ # push:
+ #   branches: [ main ] # main branch에 커밋이 푸시될 때 실행(pr merge시 main 으로 push 되니 동일)
     
 # job - 워크플로우의 업무? 일? 이라고 생각하면 편함 , 각각의 job(업무)는 step(단계별)로 나눌 수 있다. 
 jobs:
