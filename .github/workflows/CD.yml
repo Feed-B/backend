@@ -42,7 +42,7 @@ jobs:
             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             aws-region: ${{ secrets.AWS_REGION }}    
 
-    # script file 복사
+    # script file 복사(지금은 ./deploy폴더에 복사하는 이유를 뚜렷이 모르겠다. 추후에 생 해도 문제 없으면 주석)
       - name: Copy script
         run : cp ./scripts/*.sh ./deploy
         
