@@ -59,4 +59,3 @@ jobs:
           --deployment-group-name cicd-FeedB \
           --file-exists-behavior OVERWRITE \
           --s3-location bucket=feedb-bucket,bundleType=zip,key=cicdtest/$GITHUB_SHA.zip \
-            
