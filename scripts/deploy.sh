@@ -1,17 +1,17 @@
-BUILD_JAR=$(ls /home/[EC2 경로]/build/libs/*.jar)
+BUILD_JAR=$(ls /home/ec2-user/FeedB-project/build/libs/*.jar)
 JAR_NAME=$(basename $BUILD_JAR)
-echo "> build 파일명: $JAR_NAME" >> /home/[EC2 경로]/deploy.log #deploy.log에 기록 남기기
+echo "> build 파일명: $JAR_NAME" >> /home/ec2-user/deploy.log #deploy.log에 기록 남기기
 
-echo "> build 파일 복사" >> /home[EC2경로]/deploy.log
+echo "> build 파일 복사" >> /home/ec2-user/deploy.log
 DEPLOY_PATH=/home/[EC2 경로]/
 cp $BUILD_JAR $DEPLOY_PATH
 
-echo "> 현재 실행중인 애플리케이션 pid 확인" >> /home/[EC2 경로]/deploy.log
+echo "> 현재 실행중인 애플리케이션 pid 확인" >> /home/ec2-user/deploy.log
 CURRENT_PID=$(pgrep -f $JAR_NAME)
 
 if [ -z $CURRENT_PID  ]
 then 
-  echo "> 현재 구동중인 애플리케이션이 없으므로 종료하지 않습니다." >> /home/[EC2 경로]/deploy.log
+  echo "> 현재 구동중인 애플리케이션이 없으므로 종료하지 않습니다." >> /home/ec2-user/deploy.log
 else
   echo "> kill -15 $CURRENT_PID"
   kill -15 $CURRENT_PID
@@ -19,6 +19,6 @@ else
 fi
 
 DEPLOY_JAR=$DEPLOY_PATH$JAR_NAME
-echo "> DEPLOY_JAT 배포" >> /home/[EC2 경로]/deploy.log
+echo "> DEPLOY_JAT 배포" >> /home/ec2-user/deploy.log
 
-nohup java -jar $DEPLOY_JAR >> /home/[EC2 경로]/deploy.log 2>/home/[EC2 경로]/deploy_err.log &
+nohup java -jar $DEPLOY_JAR >> /home/ec2-user/deploy.log 2>/home/ec2-user/deploy_err.log &
