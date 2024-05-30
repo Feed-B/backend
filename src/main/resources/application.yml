@@ -1,6 +1,6 @@
 server:
   port: 8080
-  address: 0.0.0.0
+  address: 0.0.0.0  # 모든 IPv4 인터페이스에서 리스닝
 
 spring:
   datasource:
