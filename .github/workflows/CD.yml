@@ -1,9 +1,9 @@
 name: CD
 
 #CD 워크플로우 실행 트리거 설정
-on:
-  push:
-   branches: [ main ] 
+#on:
+ #push:
+  # branches: [ main ] 
 
 env:
   S3_BUCKET_NAME: feedb-bucket
