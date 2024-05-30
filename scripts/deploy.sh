@@ -3,7 +3,7 @@ JAR_NAME=$(basename $BUILD_JAR)
 echo "> build 파일명: $JAR_NAME" >> /home/ec2-user/deploy.log #deploy.log에 기록 남기기
 
 echo "> build 파일 복사" >> /home/ec2-user/deploy.log
-DEPLOY_PATH=/home/[EC2 경로]/
+DEPLOY_PATH=/home/ec2-user/
 cp $BUILD_JAR $DEPLOY_PATH
 
 echo "> 현재 실행중인 애플리케이션 pid 확인" >> /home/ec2-user/deploy.log
