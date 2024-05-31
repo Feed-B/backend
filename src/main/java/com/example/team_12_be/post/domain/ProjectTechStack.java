@@ -22,6 +22,6 @@ public class ProjectTechStack {
 
     @ManyToOne(fetch = FetchType.LAZY) // LAZY 로 하지 않아도 무방할듯
     @JoinColumn(name = "post_id")
-    private Post post;
+    private Project project;
 
 }

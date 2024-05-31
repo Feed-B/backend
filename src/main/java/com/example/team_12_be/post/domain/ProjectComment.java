@@ -1,6 +1,7 @@
 package com.example.team_12_be.post.domain;
 
 import com.example.team_12_be.base.TimeStamp;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -22,13 +23,14 @@ public class ProjectComment extends TimeStamp {
 
     private Long parentId;
 
+    @Column(nullable = false)
     private String comment;
 
     private byte starRank;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
-    private Post post;
+    private Project project;
 
     public ProjectComment(Long id) {
         this.id = id;
