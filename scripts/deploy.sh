@@ -1,4 +1,4 @@
-BUILD_JAR=$(ls /home/ec2-user/FeedB-project/build/libs/*.jar)
+BUILD_JAR=$(ls /home/ec2-user/FeedB-project/build/libs/*.jar | grep -i 'SNAPSHOT.jar$')
 JAR_NAME=$(basename $BUILD_JAR)
 echo "> build 파일명: $JAR_NAME" >> /home/ec2-user/deploy.log #deploy.log에 기록 남기기
 
