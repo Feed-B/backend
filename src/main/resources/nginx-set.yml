@@ -1,0 +1,17 @@
+#nginx 포트 설정
+--- #서로 다른 프로파일에 대한 설정을 정의할 수 있게 해준다.
+spring:
+  config:
+    activate:
+      on-profile: set1
+server:
+  port: 8081
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: set2
+server:
+  port: 8082
