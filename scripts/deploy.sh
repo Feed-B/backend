@@ -72,7 +72,7 @@ do
     exit 1
   fi
 
-  echo "> Health check 연결 실패. 재시도..." >> /home/ec2-user/deploy.log
+  echo "> Health check 연결 실패. 재시도.." >> /home/ec2-user/deploy.log
   sleep 10
 done
 
