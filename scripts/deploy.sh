@@ -30,7 +30,7 @@ fi
 echo "> application.jar 교체" >> /home/ec2-user/deploy.log
 IDLE_APPLICATION=$IDLE_PROFILE-FeedB.jar
 IDLE_APPLICATION_PATH=$DEPLOY_PATH$IDLE_APPLICATION
-Ln -Tfs $DEPLOY_PATH$JAR_NAME $IDLE_APPLICATION_PATH
+ln -Tfs $DEPLOY_PATH$JAR_NAME $IDLE_APPLICATION_PATH
 
 echo "> $IDLE_PROFILE 에서 구동중인 애플리케이션 Pid 확인" >> /home/ec2-user/deploy.log
 IDLE_PID=$(pgrep -f $IDLE_APPLICATION)
@@ -78,4 +78,4 @@ done
 
 echo "> 스위칭" >> /home/ec2-user/deploy.log
 sleep 10
-/etc/server/FeedB-project/scripts/switch.sh
+$BASE_PATH/scripts/switch.sh
