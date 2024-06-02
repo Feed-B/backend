@@ -12,11 +12,11 @@ CURRENT_PROFILE=$(curl -s http://localhost/nginx/profile)
 echo "> $CURRENT_PROFILE" >> /home/ec2-user/deploy.log
 
 # 쉬고 있는 set 찾기: set1이 사용중이면 set2가 쉬고 있고 , 반대면 set1이 쉬고 있음
-if [ $CURRENT_PROFILE == set1]
+if [ $CURRENT_PROFILE == set1 ]
 then
   IDLE_PROFILE=set2
   IDLE_PORT=8082
-elif [ $CURRENT_PROFILE == set2]
+elif [ $CURRENT_PROFILE == set2 ]
 then
   IDLE_PROFILE=set1
   IDLE_PORT=8081
@@ -56,7 +56,7 @@ do
   response=$(curl -s http://localhost:$IDLE_PORT/actuator/health)
   up_count=$(echo $response | grep 'UP' | wc -l)
 
-  if [ $up_count -ge 1] #up_count가 1이상인지
+  if [ $up_count -ge 1 ] #up_count가 1이상인지
   then
     echo "> Health check 성공" >> /home/ec2-user/deploy.log
     break
