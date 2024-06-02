@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class DefaultProjectQueryRepository implements ProjectQueryRepository {
 
-    private final ProjectQueryRepository projectQueryRepository;
+    private final ProjectQueryJpaRepository projectQueryJpaRepository;
 
     private final JPAQueryFactory jpaQueryFactory;
 
