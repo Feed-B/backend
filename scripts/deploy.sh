@@ -79,5 +79,5 @@ done
 
 echo "> 스위칭" >> /home/ec2-user/deploy.log
 sleep 10
-sudo chmod +x ~/etc/server/PlantBackend/scripts/switch.sh
+sudo chmod +x $BASE_PATH/scripts/switch.sh
 $BASE_PATH/scripts/switch.sh
