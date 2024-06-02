@@ -76,6 +76,7 @@ do
   sleep 10
 done
 
+
 echo "> 스위칭" >> /home/ec2-user/deploy.log
 sleep 10
 $BASE_PATH/scripts/switch.sh
