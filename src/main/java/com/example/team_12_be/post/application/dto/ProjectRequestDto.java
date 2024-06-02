@@ -1,10 +1,7 @@
 package com.example.team_12_be.post.application.dto;
 
 import com.example.team_12_be.member.domain.Member;
-import com.example.team_12_be.post.domain.PrjectImage;
 import com.example.team_12_be.post.domain.Project;
-import com.example.team_12_be.post.domain.ProjectComment;
-import com.example.team_12_be.post.domain.ProjectLike;
 import com.example.team_12_be.post.domain.ProjectLink;
 import com.example.team_12_be.post.domain.ProjectTeammate;
 import com.example.team_12_be.post.domain.ProjectTechStack;

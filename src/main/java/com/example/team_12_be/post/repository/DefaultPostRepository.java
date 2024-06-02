@@ -5,6 +5,8 @@ import com.example.team_12_be.post.domain.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
 public class DefaultPostRepository implements ProjectRepository {
@@ -19,5 +21,10 @@ public class DefaultPostRepository implements ProjectRepository {
     @Override
     public void deleteById(Long projectId) {
         proejctJpaRepository.deleteById(projectId);
+    }
+
+    @Override
+    public Optional<Project> findById(Long projectId) {
+        return proejctJpaRepository.findById(projectId);
     }
 }
