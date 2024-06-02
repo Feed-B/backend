@@ -1,3 +1,4 @@
+echo "> ============ deploy.sh 실행 =============" >> /home/ec2-user/deploy.log
 BASE_PATH=/home/ec2-user/FeedB-project
 BUILD_PATH=$(ls $BASE_PATH/build/libs/*.jar | grep -i 'SNAPSHOT.jar$')
 JAR_NAME=$(basename $BUILD_PATH)
@@ -80,4 +81,5 @@ done
 echo "> 스위칭" >> /home/ec2-user/deploy.log
 sleep 10
 sudo chmod +x $BASE_PATH/scripts/switch.sh
+echo "> ============ deploy.sh 종료 =============" >> /home/ec2-user/deploy.log
 $BASE_PATH/scripts/switch.sh

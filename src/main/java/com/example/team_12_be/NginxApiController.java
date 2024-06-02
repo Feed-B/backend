@@ -17,7 +17,7 @@ public class NginxApiController {
     //무중단 배포 메인 페이지 테스트용(임시)
     @RequestMapping("/")
     public String hello() {
-        return "hello4";
+        return "완료";
     }
 
     @GetMapping("/nginx/profile")

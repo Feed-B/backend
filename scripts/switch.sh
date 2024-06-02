@@ -19,7 +19,7 @@ echo "> 전환할 Port: $IDLE_PORT" >> /home/ec2-user/deploy.log
 echo "> Port 전환" >> /home/ec2-user/deploy.log
 echo "set \$service_url http://127.0.0.1:${IDLE_PORT};" |sudo tee /etc/nginx/conf.d/service-url.inc
 
-PROXY_PORT=$(curl -s http://localhost/api/profile)
+PROXY_PORT=$(curl -s http://localhost/nginx/profile)
 echo "> Nginx Current Proxy Port: $PROXY_PORT" >> /home/ec2-user/deploy.log
 
 echo "> Nginx Reload" >> /home/ec2-user/deploy.log
