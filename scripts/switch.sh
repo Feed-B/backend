@@ -1,6 +1,6 @@
 echo "> ============ switch.sh 실행 (nignx 동적 프록시 설정) ==============" >> /home/ec2-user/deploy.log
 echo "> 현재 구동중인 Port 확인" >> /home/ec2-user/deploy.log
-CURRENT_PROFILE=$(curl -s http://localhost/api/profile)
+CURRENT_PROFILE=$(curl -s http://localhost/nginx/profile)
 
 # 쉬고 있는 set 찾기: set1이 사용중이면 set2가 쉬고 있고, 반대면 set1이 쉬고 있음
 if [ $CURRENT_PROFILE == set1 ]
