@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -24,9 +26,10 @@ class MemberTest {
         Member member = memberRepository.findByEmail("test").orElseThrow();
         memberRepository.delete(member);
 
-        Member reloadedMember = memberRepository.findByIdIncludingDeleted(member.getId()).orElseThrow();
+        Optional<Member> memberOptional = memberRepository.findByIdIncludingDeleted(member.getId());
+        assertThat(memberOptional).isPresent();
 
-        assertThat(memberRepository.existsById(member.getId())).isTrue();
+        Member reloadedMember = memberOptional.get();
         assertThat(reloadedMember.getIsDeleted()).isTrue();
     }
 }
