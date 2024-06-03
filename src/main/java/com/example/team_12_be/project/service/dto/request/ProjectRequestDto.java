@@ -1,4 +1,4 @@
-package com.example.team_12_be.project.application.dto;
+package com.example.team_12_be.project.service.dto.request;
 
 import com.example.team_12_be.member.domain.Member;
 import com.example.team_12_be.project.domain.Project;

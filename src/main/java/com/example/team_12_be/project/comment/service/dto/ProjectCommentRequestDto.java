@@ -1,10 +1,10 @@
-package com.example.team_12_be.project.application.dto;
+package com.example.team_12_be.project.comment.service.dto;
 
 import com.example.team_12_be.global.validate.HalfOrWholeNumber;
 import com.example.team_12_be.member.domain.Member;
 import com.example.team_12_be.project.domain.Project;
-import com.example.team_12_be.project.domain.comment.ProjectComment;
-import com.example.team_12_be.project.domain.comment.vo.StarRank;
+import com.example.team_12_be.project.comment.domain.ProjectComment;
+import com.example.team_12_be.project.comment.domain.vo.StarRank;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

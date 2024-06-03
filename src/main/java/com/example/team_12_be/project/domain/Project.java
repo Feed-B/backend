@@ -2,7 +2,7 @@ package com.example.team_12_be.project.domain;
 
 import com.example.team_12_be.base.TimeStamp;
 import com.example.team_12_be.member.domain.Member;
-import com.example.team_12_be.project.domain.comment.ProjectComment;
+import com.example.team_12_be.project.comment.domain.ProjectComment;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

@@ -1,13 +1,15 @@
-package com.example.team_12_be.project.application;
+package com.example.team_12_be.project.comment.service;
 
 import com.example.team_12_be.member.application.MemberService;
 import com.example.team_12_be.member.domain.Member;
-import com.example.team_12_be.project.application.dto.ProjectCommentRequestDto;
+import com.example.team_12_be.project.service.ProjectQueryService;
+import com.example.team_12_be.project.comment.service.dto.ProjectCommentRequestDto;
 import com.example.team_12_be.project.domain.Project;
-import com.example.team_12_be.project.domain.comment.ProjectComment;
-import com.example.team_12_be.project.domain.comment.ProjectCommentRepository;
+import com.example.team_12_be.project.comment.domain.ProjectComment;
+import com.example.team_12_be.project.comment.domain.ProjectCommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +21,7 @@ public class ProjectCommentService {
 
     private final MemberService memberService;
 
+    @Transactional
     public Long addComment(Long projectId, Long userId, ProjectCommentRequestDto projectCommentRequestDto) {
         Project commnetedProject = projectQueryService.findById(projectId);
         Member commentAuthor = memberService.findById(userId);
