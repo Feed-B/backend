@@ -26,4 +26,6 @@ public class ProjectTeammate {
     @JoinColumn(name = "post_id")
     private Project project;
 
+    private String teammateName;
+
 }

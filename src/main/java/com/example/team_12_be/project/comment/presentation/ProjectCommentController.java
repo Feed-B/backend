@@ -1,8 +1,8 @@
-package com.example.team_12_be.project.presentation;
+package com.example.team_12_be.project.comment.presentation;
 
 import com.example.team_12_be.member.domain.Member;
-import com.example.team_12_be.project.application.ProjectCommentService;
-import com.example.team_12_be.project.application.dto.ProjectCommentRequestDto;
+import com.example.team_12_be.project.comment.service.ProjectCommentService;
+import com.example.team_12_be.project.comment.service.dto.ProjectCommentRequestDto;
 import com.example.team_12_be.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

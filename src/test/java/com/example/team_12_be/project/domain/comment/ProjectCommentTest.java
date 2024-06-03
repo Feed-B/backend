@@ -1,9 +1,10 @@
 package com.example.team_12_be.project.domain.comment;
 
 import com.example.team_12_be.member.domain.Member;
+import com.example.team_12_be.project.comment.domain.ProjectComment;
 import com.example.team_12_be.project.domain.Project;
-import com.example.team_12_be.project.domain.comment.vo.StarRank;
-import com.example.team_12_be.project.repository.ProjectCommentJpaRepository;
+import com.example.team_12_be.project.comment.domain.vo.StarRank;
+import com.example.team_12_be.project.comment.repository.comment.ProjectCommentJpaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

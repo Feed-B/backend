@@ -1,8 +1,10 @@
-package com.example.team_12_be.project.repository;
+package com.example.team_12_be.project.comment.repository.comment;
 
-import com.example.team_12_be.project.domain.comment.ProjectComment;
-import com.example.team_12_be.project.domain.comment.ProjectCommentRepository;
+import com.example.team_12_be.project.comment.domain.ProjectComment;
+import com.example.team_12_be.project.comment.domain.ProjectCommentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -21,5 +23,10 @@ public class DefaultProjectCommentRepository implements ProjectCommentRepository
     @Override
     public Optional<ProjectComment> findById(Long id){
         return projectCommentJpaRepository.findById(id);
+    }
+
+    @Override
+    public Slice<ProjectComment> findAllByProjectId(Long projectId, Pageable pageable) {
+        return projectCommentJpaRepository.findAllByProjectId(projectId, pageable);
     }
 }
