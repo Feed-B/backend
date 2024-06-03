@@ -9,6 +9,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -26,7 +29,7 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 public class SpringSecurityConfig {
 
     private final JwtProvider jwtProvider;
-
+    private final OAuth2MemberService oAuth2MemberService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -48,7 +51,6 @@ public class SpringSecurityConfig {
                         .requestMatchers("/**").permitAll()
                         //.anyRequest().permitAll()
                 ))
-                /*
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/loginForm") // 로그인이 필요한데 로그인을 하지 않았다면 이동할 uri 설정
                         .defaultSuccessUrl("/") // OAuth 구글 로그인이 성공하면 이동할 uri 설정
@@ -57,7 +59,6 @@ public class SpringSecurityConfig {
                         )
                 )
 
-                 */
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider) , UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
