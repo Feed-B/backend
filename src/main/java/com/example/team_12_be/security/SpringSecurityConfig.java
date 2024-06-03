@@ -30,6 +30,7 @@ public class SpringSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+        String baseUrl = "http://localhost:8080";  // 실제 base URL을 설정해야 합니다.
 
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
@@ -41,11 +42,22 @@ public class SpringSecurityConfig {
                 .authorizeHttpRequests((request -> request
                         .requestMatchers(new AntPathRequestMatcher("/test/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/swagger**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**")).permitAll()
                         .requestMatchers(antMatcher("/h2-console")).permitAll()
                         //TODO : permitAll 제거할 것
                         .requestMatchers("/**").permitAll()
-                        .anyRequest().permitAll()))
+                        //.anyRequest().permitAll()
+                ))
+                /*
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/loginForm") // 로그인이 필요한데 로그인을 하지 않았다면 이동할 uri 설정
+                        .defaultSuccessUrl("/") // OAuth 구글 로그인이 성공하면 이동할 uri 설정
+                        .userInfoEndpoint(userInfo -> userInfo
+                               .userService(oAuth2MemberService) // 로그인 후 받아온 유저 정보 처리
+                        )
+                )
+
+                 */
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider) , UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
