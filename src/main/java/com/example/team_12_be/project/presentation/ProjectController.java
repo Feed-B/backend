@@ -1,8 +1,8 @@
 package com.example.team_12_be.project.presentation;
 
 import com.example.team_12_be.member.domain.Member;
-import com.example.team_12_be.project.application.ProjectService;
-import com.example.team_12_be.project.application.dto.ProjectRequestDto;
+import com.example.team_12_be.project.service.ProjectService;
+import com.example.team_12_be.project.service.dto.request.ProjectRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;

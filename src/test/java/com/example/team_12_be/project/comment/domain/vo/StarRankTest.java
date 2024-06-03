@@ -1,4 +1,4 @@
-package com.example.team_12_be.project.domain.comment.vo;
+package com.example.team_12_be.project.comment.domain.vo;
 
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;

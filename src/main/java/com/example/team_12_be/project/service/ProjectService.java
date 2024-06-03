@@ -1,7 +1,7 @@
-package com.example.team_12_be.project.application;
+package com.example.team_12_be.project.service;
 
 import com.example.team_12_be.member.domain.Member;
-import com.example.team_12_be.project.application.dto.ProjectRequestDto;
+import com.example.team_12_be.project.service.dto.request.ProjectRequestDto;
 import com.example.team_12_be.project.domain.Project;
 import com.example.team_12_be.project.domain.ProjectRepository;
 import lombok.RequiredArgsConstructor;

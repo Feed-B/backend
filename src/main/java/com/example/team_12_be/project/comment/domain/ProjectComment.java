@@ -1,9 +1,9 @@
-package com.example.team_12_be.project.domain.comment;
+package com.example.team_12_be.project.comment.domain;
 
 import com.example.team_12_be.base.TimeStamp;
 import com.example.team_12_be.member.domain.Member;
 import com.example.team_12_be.project.domain.Project;
-import com.example.team_12_be.project.domain.comment.vo.StarRank;
+import com.example.team_12_be.project.comment.domain.vo.StarRank;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;

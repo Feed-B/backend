@@ -10,7 +10,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findByEmail(String email);
 
-    @Query("SELECT m FROM Member m WHERE m.id = :id")
+    @Query(value = "SELECT * FROM Member m WHERE m.is_deleted = true and m.id = :id", nativeQuery = true)
     Optional<Member> findByIdIncludingDeleted(@Param("id") Long id);
 
 }
