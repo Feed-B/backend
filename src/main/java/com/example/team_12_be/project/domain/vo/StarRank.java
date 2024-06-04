@@ -1,4 +1,4 @@
-package com.example.team_12_be.project.comment.domain.vo;
+package com.example.team_12_be.project.domain.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

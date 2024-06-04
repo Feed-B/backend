@@ -16,6 +16,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -42,22 +43,25 @@ public class Project extends TimeStamp {
     private String serviceUrl;
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ProjectTechStack> projectTechStacks;
+    private List<ProjectTechStack> projectTechStacks = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<PrjectImage> projectImages;
+    private List<PrjectImage> projectImages = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ProjectComment> projectComments;
+    private List<ProjectComment> projectComments = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ProjectLike> projectLikes;
+    private List<ProjectLike> projectLikes = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ProjectTeammate> projectTeammates;
+    private List<ProjectTeammate> projectTeammates = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ProjectLink> projectLinks;
+    private List<ProjectLink> projectLinks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ProjectRating> projectRatings = new ArrayList<>();
 
     public Project(String title, String introductions, Member author, String serviceUrl, List<ProjectTechStack> projectTechStacks, List<ProjectTeammate> projectTeammates, List<ProjectLink> projectLinks) {
         this.title = title;
@@ -74,4 +78,13 @@ public class Project extends TimeStamp {
 //        this.projectImages = projectImages;
     }
 
+    public void addProjectRatings(ProjectRating projectRating){
+        projectRatings.add(projectRating);
+        projectRating.assignToProject(this);
+    }
+
+    public void removeProjectRatings(ProjectRating projectRating){
+        projectRatings.remove(projectRating);
+        projectRating.assignToProject(null);
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.team_12_be.project.comment.domain.vo;
 
+import com.example.team_12_be.project.domain.vo.StarRank;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
