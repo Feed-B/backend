@@ -8,6 +8,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -21,6 +23,8 @@ import java.util.List;
 @Getter
 @SQLDelete(sql = "UPDATE MEMBER SET IS_DELETED = true WHERE id = ?")
 @SQLRestriction("IS_DELETED = false")
+@Builder
+@AllArgsConstructor
 public class Member extends TimeStamp {
 
     @Id

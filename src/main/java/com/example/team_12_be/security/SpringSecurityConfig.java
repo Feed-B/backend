@@ -47,8 +47,9 @@ public class SpringSecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**")).permitAll()
                         .requestMatchers(antMatcher("/h2-console")).permitAll()
+                        .requestMatchers("/loginForm" ,"loginForm.html").permitAll()
                         //TODO : permitAll 제거할 것
-                        .requestMatchers("/**").permitAll()
+                        //.requestMatchers("/**").permitAll()
                         //.anyRequest().permitAll()
                 ))
                 .oauth2Login(oauth2 -> oauth2
