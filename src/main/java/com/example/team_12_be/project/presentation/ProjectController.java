@@ -1,8 +1,9 @@
 package com.example.team_12_be.project.presentation;
 
-import com.example.team_12_be.member.domain.Member;
 import com.example.team_12_be.project.service.ProjectService;
+import com.example.team_12_be.project.service.dto.request.ProjectRatingRequestDto;
 import com.example.team_12_be.project.service.dto.request.ProjectRequestDto;
+import com.example.team_12_be.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,12 +21,20 @@ public class ProjectController {
     // TODO : Authentication 완료되면 작성 유저의 정보도 받아야 한다.
 
     @PostMapping("/projects")
-    public void saveProject(@RequestBody ProjectRequestDto projectRequestDto, @AuthenticationPrincipal Member member) {
-        projectService.saveProject(projectRequestDto, member);
+    public void saveProject(@RequestBody ProjectRequestDto projectRequestDto, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        projectService.saveProject(projectRequestDto, customUserDetails.getMember());
     }
 
     @DeleteMapping("/projects/{projectId}")
     public void deleteProject(@PathVariable Long projectId) {
         projectService.deleteProject(projectId);
+    }
+
+    @PostMapping("/projects/{projectId}/rank")
+    public void addRating(@PathVariable Long projectId,
+                          @AuthenticationPrincipal CustomUserDetails customUserDetails,
+                          @RequestBody ProjectRatingRequestDto projectRatingRequestDto) {
+
+        projectService.addRating(projectId, customUserDetails.getMember().getId(), projectRatingRequestDto);
     }
 }
