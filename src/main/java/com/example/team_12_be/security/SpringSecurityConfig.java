@@ -54,7 +54,7 @@ public class SpringSecurityConfig {
                 ))
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/loginForm") // 로그인이 필요한데 로그인을 하지 않았다면 이동할 uri 설정
-                        .defaultSuccessUrl("/") // OAuth 구글 로그인이 성공하면 이동할 uri 설정
+                        .defaultSuccessUrl("/") // OAuth 구글 로그인이 성공하면 이동할 uri 설정 // 실패시 url 메소드 failureURL?
                         .userInfoEndpoint(userInfo -> userInfo
                                .userService(oAuth2MemberService) // 로그인 후 받아온 유저 정보 처리
                         )
