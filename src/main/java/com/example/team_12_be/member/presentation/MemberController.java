@@ -6,10 +6,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 public class MemberController {
-
+        //TODO 백 단 자체 oauth2 테스트 위한 메소드(추후 삭제)
         @GetMapping("/loginForm")
         public String loginForm() {
             return "redirect:/loginForm.html";
         }
-    }
+
+
+}
 
