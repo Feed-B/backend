@@ -1,20 +1,17 @@
 package com.example.team_12_be.member.domain;
 
 import com.example.team_12_be.base.TimeStamp;
-import jakarta.persistence.CascadeType;
+import com.example.team_12_be.member.domain.vo.TechStackValue;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -38,22 +35,13 @@ public class Member extends TimeStamp {
 
     private String aboutMe;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MemberTechStack> memberTechStacks = new ArrayList<>();
+    @Enumerated
+    private TechStackValue memberTechStack;
 
-    public Member(String email, String nickName, String aboutMe) {
+    public Member(String email, String nickName, String aboutMe, TechStackValue memberTechStack) {
         this.email = email;
         this.nickName = nickName;
         this.aboutMe = aboutMe;
-    }
-
-    public void addTechStack(MemberTechStack techStack) {
-        memberTechStacks.add(techStack);
-        techStack.setMember(this);
-    }
-
-    public void removeTechStack(MemberTechStack techStack) {
-        memberTechStacks.remove(techStack);
-        techStack.setMember(null);
+        this.memberTechStack = memberTechStack;
     }
 }
