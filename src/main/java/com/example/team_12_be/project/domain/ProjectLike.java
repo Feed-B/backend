@@ -32,5 +32,7 @@ public class ProjectLike extends TimeStamp {
     private Member member;
 
     // TODO : 인덱스? 아니면 추가 테이블?
-
+    public void assign(Project project) {
+        this.project = project;
+    }
 }
