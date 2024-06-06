@@ -45,14 +45,11 @@ public class ProjectQueryService {
 
     public StarRankResponseDto getProjectAverageStarRankWithLikedInfo(Long projectId) {
         StarRank projectAverageStarRank = this.getProjectAverageStarRank(projectId);
-        List<LikedMembersTechStackResponseDto> likedMembersTechStack = this.getLikedMembersTechStack(projectId);
-
-        return StarRankResponseDto.of(projectAverageStarRank, likedMembersTechStack);
+        return StarRankResponseDto.of(projectAverageStarRank);
     }
 
     public StarRank getProjectAverageStarRank(Long projectId){
         Project project = this.findById(projectId);
-
         return project.calculateAverageStarRank();
     }
 
