@@ -30,7 +30,7 @@ public class Member extends TimeStamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Builder.Default
     @Column(nullable = false)
     private Boolean isDeleted = false;
 
