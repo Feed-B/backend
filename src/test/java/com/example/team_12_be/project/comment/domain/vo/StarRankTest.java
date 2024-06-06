@@ -18,7 +18,7 @@ class StarRankTest {
         float completionRank = 4.5f;
 
         // when
-        StarRank starRank = new StarRank(ideaRank, designRank, functionRank, completionRank);
+        StarRank starRank = StarRank.of(ideaRank, designRank, functionRank, completionRank);
 
         // then
         SoftAssertions.assertSoftly(softly -> {
@@ -39,7 +39,7 @@ class StarRankTest {
         float completionRank = 4.5f;
 
         // when / then
-        assertThatThrownBy(() -> new StarRank(ideaRank, designRank, functionRank, completionRank))
+        assertThatThrownBy(() -> StarRank.of(ideaRank, designRank, functionRank, completionRank))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("1~5 사이의 값이어야 한다.");
     }
@@ -53,7 +53,7 @@ class StarRankTest {
         float completionRank = 4.5f;
 
         // when / then
-        assertThatThrownBy(() -> new StarRank(ideaRank, designRank, functionRank, completionRank))
+        assertThatThrownBy(() -> StarRank.of(ideaRank, designRank, functionRank, completionRank))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("0.5점 단위로 존재해야 한다.");
     }
@@ -71,7 +71,7 @@ class StarRankTest {
         float expectedAverage = Math.round(rawAverage * roundPolicy) / roundPolicy;
 
         // when
-        StarRank starRank = new StarRank(ideaRank, designRank, functionRank, completionRank);
+        StarRank starRank = StarRank.of(ideaRank, designRank, functionRank, completionRank);
 
         // then
         assertThat(starRank.getAverageRank()).isEqualTo(expectedAverage);

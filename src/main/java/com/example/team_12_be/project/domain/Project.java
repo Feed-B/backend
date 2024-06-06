@@ -3,6 +3,7 @@ package com.example.team_12_be.project.domain;
 import com.example.team_12_be.base.TimeStamp;
 import com.example.team_12_be.member.domain.Member;
 import com.example.team_12_be.project.comment.domain.ProjectComment;
+import com.example.team_12_be.project.domain.vo.StarRank;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -78,6 +79,16 @@ public class Project extends TimeStamp {
 //        this.projectImages = projectImages;
     }
 
+    public void addProjectLikes(ProjectLike projectLike){
+        projectLikes.add(projectLike);
+        projectLike.assign(this);
+    }
+
+    public void removeProjectLikes(ProjectLike projectLike){
+        projectLikes.add(projectLike);
+        projectLike.assign(null);
+    }
+
     public void addProjectRatings(ProjectRating projectRating){
         projectRatings.add(projectRating);
         projectRating.assignToProject(this);
@@ -86,5 +97,29 @@ public class Project extends TimeStamp {
     public void removeProjectRatings(ProjectRating projectRating){
         projectRatings.remove(projectRating);
         projectRating.assignToProject(null);
+    }
+
+    public StarRank calculateAverageStarRank() {
+        int size = projectRatings.size();
+        if (size == 0) {
+            throw new IllegalArgumentException("No ratings available.");
+        }
+
+        float totalIdeaRank = 0f, totalDesignRank = 0f, totalFunctionRank = 0f, totalCompletionRank = 0f;
+
+        for (ProjectRating projectRating : projectRatings) {
+            StarRank starRank = projectRating.getStarRank();
+            totalIdeaRank += starRank.getIdeaRank();
+            totalDesignRank += starRank.getDesignRank();
+            totalFunctionRank += starRank.getFunctionRank();
+            totalCompletionRank += starRank.getCompletionRank();
+        }
+
+        float avgIdeaRank = totalIdeaRank / size;
+        float avgDesignRank = totalDesignRank / size;
+        float avgFunctionRank = totalFunctionRank / size;
+        float avgCompletionRank = totalCompletionRank / size;
+
+        return StarRank.ofAverage(avgIdeaRank, avgDesignRank, avgFunctionRank, avgCompletionRank);
     }
 }

@@ -7,19 +7,19 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 public record ProjectRatingRequestDto (
-        @NotNull @Min(0) @Max(5) @HalfOrWholeNumber
+        @NotNull @Min(1) @Max(5) @HalfOrWholeNumber
         float ideaRank,
 
-        @NotNull @Min(0) @Max(5) @HalfOrWholeNumber
+        @NotNull @Min(1) @Max(5) @HalfOrWholeNumber
         float designRank,
 
-        @NotNull @Min(0) @Max(5) @HalfOrWholeNumber
+        @NotNull @Min(1) @Max(5) @HalfOrWholeNumber
         float functionRank,
 
-        @NotNull @Min(0) @Max(5) @HalfOrWholeNumber
+        @NotNull @Min(1) @Max(5) @HalfOrWholeNumber
         float completionRank
 ) {
         public StarRank toStarRank(){
-                return new StarRank(ideaRank, designRank, functionRank, completionRank);
+                return StarRank.of(ideaRank, designRank, functionRank, completionRank);
         }
 }
