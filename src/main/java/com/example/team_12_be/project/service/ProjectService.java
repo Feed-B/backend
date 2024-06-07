@@ -2,14 +2,14 @@ package com.example.team_12_be.project.service;
 
 import com.example.team_12_be.member.application.MemberService;
 import com.example.team_12_be.member.domain.Member;
-import com.example.team_12_be.project.domain.Project;
-import com.example.team_12_be.project.domain.ProjectLike;
-import com.example.team_12_be.project.domain.ProjectRating;
-import com.example.team_12_be.project.domain.ProjectRepository;
+import com.example.team_12_be.project.domain.*;
+import com.example.team_12_be.project.service.dto.request.ProjectLinkRequestDto;
 import com.example.team_12_be.project.service.dto.request.ProjectRatingRequestDto;
 import com.example.team_12_be.project.service.dto.request.ProjectRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +21,16 @@ public class ProjectService {
 
     public void saveProject(ProjectRequestDto projectRequestDto, Member author) {
         Project project = projectRequestDto.toEntity(author);
+
+        List<ProjectTechStack> techStacks = projectRequestDto.projectTechStacks().stream().map(ProjectTechStack::new).toList();
+        techStacks.forEach(each -> each.assign(project));
+
+        List<ProjectTeammate> teammates = projectRequestDto.projectTeammates().stream().map(ProjectTeammate::new).toList();
+        teammates.forEach(each -> each.assign(project));
+
+        List<ProjectLink> links = projectRequestDto.projectLinks().stream().map(ProjectLinkRequestDto::toEntity).toList();
+        links.forEach(each -> each.assign(project));
+
         projectRepository.saveProject(project);
     }
 
@@ -39,7 +49,7 @@ public class ProjectService {
 
         ProjectRating projectRating = new ProjectRating(member, project, projectRatingRequestDto.toStarRank());
         projectRepository.saveProjectRating(projectRating);
-        project.addProjectRatings(projectRating);
+        project.addProjectRating(projectRating);
     }
 
     public void likeProject(Long memberId, Long projectId){

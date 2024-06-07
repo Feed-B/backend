@@ -25,4 +25,12 @@ public class ProjectLink {
 
     private String url;
 
+    public ProjectLink(String siteType, String url) {
+        this.siteType = siteType;
+        this.url = url;
+    }
+
+    public void assign(Project project){
+        this.project = project;
+    }
 }

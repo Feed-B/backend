@@ -5,8 +5,6 @@ import com.example.team_12_be.project.domain.vo.StarRank;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
@@ -20,21 +18,11 @@ class ProjectTest {
     public void setUp() {
         author = mock(Member.class);
 
-        ProjectTechStack techStack1 = mock(ProjectTechStack.class);
-        ProjectTechStack techStack2 = mock(ProjectTechStack.class);
-        ProjectTeammate teammate1 = mock(ProjectTeammate.class);
-        ProjectTeammate teammate2 = mock(ProjectTeammate.class);
-        ProjectLink link1 = mock(ProjectLink.class);
-        ProjectLink link2 = mock(ProjectLink.class);
-
         project = new Project(
                 "Test Project",
                 "Test introduction",
                 author,
-                "http://service.url",
-                Arrays.asList(techStack1, techStack2),
-                Arrays.asList(teammate1, teammate2),
-                Arrays.asList(link1, link2)
+                "http://service.url"
         );
     }
 
@@ -52,9 +40,9 @@ class ProjectTest {
         ProjectRating rating2 = new ProjectRating(author, project, StarRank.of(5, 3, 4, 3));
         ProjectRating rating3 = new ProjectRating(author, project, StarRank.of(4, 4, 3, 5));
 
-        project.addProjectRatings(rating1);
-        project.addProjectRatings(rating2);
-        project.addProjectRatings(rating3);
+        project.addProjectRating(rating1);
+        project.addProjectRating(rating2);
+        project.addProjectRating(rating3);
 
         StarRank averageRank = project.calculateAverageStarRank();
 
@@ -69,10 +57,10 @@ class ProjectTest {
     void testAddAndRemoveProjectRatings() {
         ProjectRating rating1 = new ProjectRating(author, project, StarRank.of(3, 4, 5, 2));
 
-        project.addProjectRatings(rating1);
+        project.addProjectRating(rating1);
         assertEquals(1, project.getProjectRatings().size());
 
-        project.removeProjectRatings(rating1);
+        project.removeProjectRating(rating1);
         assertEquals(0, project.getProjectRatings().size());
     }
 }
