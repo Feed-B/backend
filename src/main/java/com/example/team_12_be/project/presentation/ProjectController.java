@@ -37,4 +37,20 @@ public class ProjectController {
 
         projectService.addRating(projectId, customUserDetails.getMember().getId(), projectRatingRequestDto);
     }
+
+    @PostMapping("/projects/{projectId}/like")
+    public void likeProject(@PathVariable Long projectId,
+                            @AuthenticationPrincipal CustomUserDetails customUserDetails){
+
+        Long memberId = customUserDetails.getMember().getId();
+        projectService.likeProject(memberId, projectId);
+    }
+
+    @DeleteMapping("/projects/{projectId}/unlike")
+    public void unlikeProject(@PathVariable Long projectId,
+                            @AuthenticationPrincipal CustomUserDetails customUserDetails){
+
+        Long memberId = customUserDetails.getMember().getId();
+        projectService.unlikeProject(memberId, projectId);
+    }
 }

@@ -16,4 +16,10 @@ public interface ProjectRepository {
     boolean existsRatingByMemberAndProject(Long memberId, Long projectId);
 
     ProjectRating saveProjectRating(ProjectRating projectRating);
+
+    boolean likeExistsByMemberIdAndProjectId(Long memberId, Long projectId);
+
+    ProjectLike saveLike(ProjectLike projectLike);
+
+    void deleteLikeByMemberIdAndProjectId(Long memberId, Long projectId);
 }

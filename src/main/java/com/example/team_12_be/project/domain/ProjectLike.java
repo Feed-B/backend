@@ -31,6 +31,11 @@ public class ProjectLike extends TimeStamp {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    public ProjectLike(Member member, Project project) {
+        this.member = member;
+        this.project = project;
+    }
+
     // TODO : 인덱스? 아니면 추가 테이블?
     public void assign(Project project) {
         this.project = project;

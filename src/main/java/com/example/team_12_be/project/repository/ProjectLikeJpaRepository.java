@@ -12,4 +12,7 @@ public interface ProjectLikeJpaRepository extends JpaRepository<ProjectLike, Lon
     @Query("SELECT pl FROM ProjectLike pl JOIN FETCH pl.member WHERE pl.project.id = :projectId")
     List<ProjectLike> findByProjectIdWithMember(@Param("projectId") Long projectId);
 
+    boolean existsByMemberIdAndProjectId(Long memberId, Long projectId);
+
+    void deleteLikeByMemberIdAndProjectId(Long memberId, Long projectId);
 }

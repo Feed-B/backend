@@ -1,6 +1,7 @@
 package com.example.team_12_be.project.repository;
 
 import com.example.team_12_be.project.domain.Project;
+import com.example.team_12_be.project.domain.ProjectLike;
 import com.example.team_12_be.project.domain.ProjectRating;
 import com.example.team_12_be.project.domain.ProjectRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,8 @@ public class DefaultProjectRepository implements ProjectRepository {
     private final ProejctJpaRepository proejctJpaRepository;
 
     private final ProjectRatingJpaRepository projectRatingJpaRepository;
+
+    private final ProjectLikeJpaRepository projectLikeJpaRepository;
 
     /**
      * 자주 사용될 것이므로 QueryRepository 에 넘기지 않는다.
@@ -45,5 +48,20 @@ public class DefaultProjectRepository implements ProjectRepository {
     @Override
     public ProjectRating saveProjectRating(ProjectRating projectRating) {
         return projectRatingJpaRepository.save(projectRating);
+    }
+
+    @Override
+    public boolean likeExistsByMemberIdAndProjectId(Long memberId, Long projectId){
+        return projectLikeJpaRepository.existsByMemberIdAndProjectId(memberId, projectId);
+    }
+
+    @Override
+    public ProjectLike saveLike(ProjectLike projectLike){
+        return projectLikeJpaRepository.save(projectLike);
+    }
+
+    @Override
+    public void deleteLikeByMemberIdAndProjectId(Long memberId, Long projectId) {
+        projectLikeJpaRepository.deleteLikeByMemberIdAndProjectId(memberId, projectId);
     }
 }
