@@ -2,12 +2,7 @@ package com.example.team_12_be.member.domain;
 
 import com.example.team_12_be.base.TimeStamp;
 import com.example.team_12_be.member.domain.vo.TechStackValue;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -35,7 +30,7 @@ public class Member extends TimeStamp {
 
     private String aboutMe;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private TechStackValue memberTechStack;
 
     public Member(String email, String nickName, String aboutMe, TechStackValue memberTechStack) {
