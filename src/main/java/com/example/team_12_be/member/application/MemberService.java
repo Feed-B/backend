@@ -2,8 +2,6 @@ package com.example.team_12_be.member.application;
 
 import com.example.team_12_be.member.domain.Member;
 import com.example.team_12_be.member.domain.MemberRepository;
-import com.example.team_12_be.member.domain.MemberTechStack;
-import com.example.team_12_be.member.domain.MemberTechStackRepository;
 import com.example.team_12_be.member.domain.vo.MemberRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +15,6 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final MemberTechStackRepository memberTechStackRepository;
 
     public Member registerMemberWithTechStack(MemberRequest memberRequest) {
 
@@ -26,13 +23,9 @@ public class MemberService {
                 .nickName(memberRequest.getNickName())
                 .aboutMe(memberRequest.getAboutMe())
                 .isDeleted(false)
+                .memberTechStack(memberRequest.getTechStack())
                 .build();
         memberRepository.save(member);
-        System.out.println("TechStack = " + memberRequest.getTechStack());
-        MemberTechStack memberTechStack = new MemberTechStack(memberRequest.getTechStack());
-        member.addTechStack(memberTechStack);
-        memberTechStackRepository.save(memberTechStack);
-
         return member;
     }
     public Member findById(Long id) {

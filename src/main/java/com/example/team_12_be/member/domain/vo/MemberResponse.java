@@ -1,6 +1,5 @@
 package com.example.team_12_be.member.domain.vo;
 
-import com.example.team_12_be.member.domain.MemberTechStack;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

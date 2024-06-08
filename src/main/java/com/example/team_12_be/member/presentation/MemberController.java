@@ -2,8 +2,6 @@ package com.example.team_12_be.member.presentation;
 
 import com.example.team_12_be.member.application.MemberService;
 import com.example.team_12_be.member.domain.Member;
-import com.example.team_12_be.member.domain.MemberRepository;
-import com.example.team_12_be.member.domain.MemberTechStack;
 import com.example.team_12_be.member.domain.vo.MemberRequest;
 import com.example.team_12_be.member.domain.vo.MemberResponse;
 import com.example.team_12_be.member.exception.MemberAlreadyExistsException;
@@ -13,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
