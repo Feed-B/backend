@@ -2,42 +2,50 @@ package com.example.team_12_be.project.domain;
 
 import com.example.team_12_be.base.TimeStamp;
 import com.example.team_12_be.member.domain.Member;
-import jakarta.persistence.Column;
+import com.example.team_12_be.project.domain.vo.StarRank;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
 @Getter
-public class ProjectLike extends TimeStamp {
+@Table(indexes = {
+        @Index(name = "idx_project_member", columnList = "member_id, project_id", unique = true)
+})
+public class ProjectRating extends TimeStamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    private Project project;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    public ProjectLike(Member member, Project project) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id", nullable = false)
+    private Project project;
+
+    @Embedded
+    private StarRank starRank;
+
+    public ProjectRating(Member member, Project project, StarRank starRank) {
         this.member = member;
         this.project = project;
+        this.starRank = starRank;
     }
 
-    // TODO : 인덱스? 아니면 추가 테이블?
-    public void assign(Project project) {
+    public void assignToProject(Project project) {
         this.project = project;
     }
 }

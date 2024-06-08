@@ -28,4 +28,11 @@ public class ProjectTeammate {
 
     private String teammateName;
 
+    public ProjectTeammate(String teammateName) {
+        this.teammateName = teammateName;
+    }
+
+    public void assign(Project project){
+        this.project = project;
+    }
 }

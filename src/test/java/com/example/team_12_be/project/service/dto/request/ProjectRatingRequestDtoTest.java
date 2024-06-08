@@ -1,6 +1,5 @@
-package com.example.team_12_be.project.service.dto;
+package com.example.team_12_be.project.service.dto.request;
 
-import com.example.team_12_be.project.comment.service.dto.ProjectCommentRequestDto;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -13,7 +12,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ProjectCommentRequestDtoTest {
+class ProjectRatingRequestDtoTest {
 
     private static Validator validator;
 
@@ -27,11 +26,11 @@ class ProjectCommentRequestDtoTest {
     @DisplayName("별점에 대한 입력값은 0~5 사이어야 하고, 0.5 단위로 끊겨야 한다.")
     void starRankValidationTest() {
         // arrange
-        ProjectCommentRequestDto dto = new ProjectCommentRequestDto(null, "comment", 1L, 5f,
-                0f, 4.5f);
+        ProjectRatingRequestDto dto = new ProjectRatingRequestDto(1L, 5f,
+                1f, 4.5f);
 
         // act
-        Set<ConstraintViolation<ProjectCommentRequestDto>> violations = validator.validate(dto);
+        Set<ConstraintViolation<ProjectRatingRequestDto>> violations = validator.validate(dto);
 
         // assert
         assertTrue(violations.isEmpty());

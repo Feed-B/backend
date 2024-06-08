@@ -1,5 +1,6 @@
 package com.example.team_12_be.member.domain;
 
+import com.example.team_12_be.member.domain.vo.TechStackValue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ class MemberTest {
 
     @BeforeEach
     void setUp() {
-        Member member = new Member("test", "test", "test");
+        Member member = new Member("test", "test", "test", TechStackValue.ANDROID);
 
         memberRepository.saveAndFlush(member);
     }
