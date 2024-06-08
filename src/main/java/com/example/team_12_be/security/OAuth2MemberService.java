@@ -2,6 +2,7 @@ package com.example.team_12_be.security;
 
 import com.example.team_12_be.member.domain.Member;
 import com.example.team_12_be.member.domain.MemberRepository;
+import com.example.team_12_be.security.exception.OAuth2UserNotFoundException;
 import com.example.team_12_be.security.oauth_info.KakaoMemberInfo;
 import com.example.team_12_be.security.oauth_info.NaverMemberInfo;
 import com.example.team_12_be.security.oauth_info.OAuth2MemberInfo;
@@ -23,13 +24,14 @@ public class OAuth2MemberService implements OAuth2UserService<OAuth2UserRequest 
     private final MemberRepository memberRepository;
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+
         DefaultOAuth2UserService delegeate = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = delegeate.loadUser(userRequest);
         OAuth2MemberInfo memberInfo = null;
-        System.out.println(oAuth2User.getAttributes());
+        System.out.println("oauth2User.getAttributes() : " + oAuth2User.getAttributes());
 
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
-        System.out.println("registrationId = " + registrationId);
+        System.out.println("registrationId : " + registrationId);
         if(registrationId.equals("kakao")) {
             memberInfo = new KakaoMemberInfo(oAuth2User.getAttributes());
         }
@@ -49,15 +51,8 @@ public class OAuth2MemberService implements OAuth2UserService<OAuth2UserRequest 
         Optional<Member> findMember = memberRepository.findByEmail(email);
         Member member = null;
         if(findMember.isEmpty()) { //계정 없을 때
-            member = Member.builder()
-                    .nickName(memberInfo.getName())
-                    .email(email)
-                    .aboutMe("추후 변경") //TODO Member 필드 aboutMe 사용 용도 확인 후 수정
-                    .build();
-            memberRepository.save(member);
-            //TODO redirect 회원가입(피드티) 보내고 하단 로직으로 돌아가는 방식
+            throw new OAuth2UserNotFoundException(email);
         }
-
         else {//계정 있을 때
             member = findMember.get();
         }

@@ -19,6 +19,7 @@ public class CustomUserDetails implements OAuth2User , UserDetails {
     private final Member member;
     private Map<String , Object> attributes;
     private String jwtName;
+
     //oauth2용
     public CustomUserDetails(Member member , Map<String , Object> attributes ,String jwtName) {
         this.member = member;

@@ -38,7 +38,7 @@ public class JwtProvider {
         key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String createToken(String oauthId) { //email
+    public String createToken(String oauthId) {
 
         Claims claims = Jwts.claims().setSubject(oauthId);
         Date now = new Date();

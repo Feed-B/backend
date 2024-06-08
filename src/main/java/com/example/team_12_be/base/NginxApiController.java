@@ -1,4 +1,4 @@
-package com.example.team_12_be;
+package com.example.team_12_be.base;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
@@ -13,12 +13,6 @@ import java.util.Arrays;
 public class NginxApiController {
 
     private final Environment env;
-
-    //무중단 배포 메인 페이지 테스트용(임시)
-    @RequestMapping("/")
-    public String hello() {
-        return "완료";
-    }
 
     @GetMapping("/nginx/profile")
     public String getProfile() {

@@ -13,4 +13,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query(value = "SELECT * FROM Member m WHERE m.is_deleted = true and m.id = :id", nativeQuery = true)
     Optional<Member> findByIdIncludingDeleted(@Param("id") Long id);
 
+
 }

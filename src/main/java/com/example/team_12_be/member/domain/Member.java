@@ -1,17 +1,8 @@
 package com.example.team_12_be.member.domain;
 
 import com.example.team_12_be.base.TimeStamp;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -25,12 +16,13 @@ import java.util.List;
 @SQLRestriction("IS_DELETED = false")
 @Builder
 @AllArgsConstructor
+@ToString
 public class Member extends TimeStamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Builder.Default
+
     @Column(nullable = false)
     private Boolean isDeleted = false;
 
@@ -42,9 +34,8 @@ public class Member extends TimeStamp {
 
     private String aboutMe;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MemberTechStack> memberTechStacks = new ArrayList<>();
-
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private MemberTechStack memberTechStack;
     public Member(String email, String nickName, String aboutMe) {
         this.email = email;
         this.nickName = nickName;
@@ -52,12 +43,12 @@ public class Member extends TimeStamp {
     }
 
     public void addTechStack(MemberTechStack techStack) {
-        memberTechStacks.add(techStack);
+        memberTechStack = techStack;
         techStack.setMember(this);
     }
 
-    public void removeTechStack(MemberTechStack techStack) {
-        memberTechStacks.remove(techStack);
-        techStack.setMember(null);
+    public void updateTechStack(MemberTechStack techStack) {
+        memberTechStack = techStack;
+        techStack.setMember(this);
     }
 }

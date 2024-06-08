@@ -1,5 +1,7 @@
 package com.example.team_12_be.security;
 
+import com.example.team_12_be.security.exception.OAuth2AuthenticationFailureHandler;
+import com.example.team_12_be.security.exception.OAuth2AuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,9 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -33,6 +32,7 @@ public class SpringSecurityConfig {
     private final JwtProvider jwtProvider;
     private final OAuth2MemberService oAuth2MemberService;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+    private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         String baseUrl = "http://localhost:8080";  // 실제 base URL을 설정해야 합니다.
@@ -49,22 +49,23 @@ public class SpringSecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/h2-console/*")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**")).permitAll()
                         .requestMatchers(antMatcher("/h2-console")).permitAll()
-                        .requestMatchers("/loginForm" ,"loginForm.html").permitAll()
+                        .requestMatchers("loginForm.html" ,"/signUp").permitAll()
                         //TODO : permitAll 제거할 것
                         .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated()
                 ))
                 .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/loginForm") // 로그인이 필요한데 로그인을 하지 않았다면 이동할 uri 설정
+//                        .loginPage("/loginForm") // 로그인이 필요한데 로그인을 하지 않았다면 이동할 uri 설정
 //                        .defaultSuccessUrl("/h") // OAuth 구글 로그인이 성공하면 이동할 uri 설정 // 실패시 url 메소드 failureURL?
+
                         .userInfoEndpoint(userInfo -> userInfo
                                .userService(oAuth2MemberService) // 로그인 후 받아온 유저 정보 처리
                         )
                         .successHandler(oAuth2AuthenticationSuccessHandler)
-
+                        .failureHandler(oAuth2AuthenticationFailureHandler)
                 )
                 //TODO 추후 API 인증 필요 응답 시 401 응답 할지 결정
-                // .exceptionHandling(exception -> exception.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider) , UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
