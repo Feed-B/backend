@@ -3,10 +3,7 @@ package com.example.team_12_be.member.domain;
 import com.example.team_12_be.base.TimeStamp;
 import com.example.team_12_be.member.domain.vo.TechStackValue;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -17,6 +14,7 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("IS_DELETED = false")
 @Builder
 @AllArgsConstructor
+@ToString
 public class Member extends TimeStamp {
 
     @Id
