@@ -1,6 +1,7 @@
 package com.example.team_12_be.project.service.dto.request;
 
 import com.example.team_12_be.member.domain.Member;
+import com.example.team_12_be.member.domain.vo.TechStackValue;
 import com.example.team_12_be.project.domain.Project;
 import com.example.team_12_be.project.domain.ProjectLink;
 import com.example.team_12_be.project.domain.ProjectTeammate;
@@ -19,25 +20,22 @@ public record ProjectRequestDto(
         @NotBlank
         String serviceUrl,
         @NotEmpty
-        List<ProjectTechStack> projectTechStacks,
+        List<TechStackValue> projectTechStacks,
 //        Long thumbnailImageId,
 //        List<PrjectImage> projectImages,
 //        List<ProjectComment> projectComments,
 //        List<ProjectLike> projectLikes,
         @NotEmpty
-        List<ProjectTeammate> projectTeammates,
+        List<String> projectTeammates,
         @NotEmpty
-        List<ProjectLink> projectLinks
+        List<ProjectLinkRequestDto> projectLinks
 ) {
     public Project toEntity(Member author) {
         return new Project(
                 this.title,
                 this.introductions,
                 author,
-                serviceUrl,
-                projectTechStacks,
-                projectTeammates,
-                projectLinks
+                serviceUrl
         );
     }
 }

@@ -3,6 +3,7 @@ package com.example.team_12_be.project.domain;
 import com.example.team_12_be.base.TimeStamp;
 import com.example.team_12_be.member.domain.Member;
 import com.example.team_12_be.project.comment.domain.ProjectComment;
+import com.example.team_12_be.project.domain.vo.StarRank;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,6 +17,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -42,36 +44,109 @@ public class Project extends TimeStamp {
     private String serviceUrl;
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ProjectTechStack> projectTechStacks;
+    private List<ProjectTechStack> projectTechStacks = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<PrjectImage> projectImages;
+    private List<PrjectImage> projectImages = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ProjectComment> projectComments;
+    private List<ProjectComment> projectComments = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ProjectLike> projectLikes;
+    private List<ProjectLike> projectLikes = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ProjectTeammate> projectTeammates;
+    private List<ProjectTeammate> projectTeammates = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ProjectLink> projectLinks;
+    private List<ProjectLink> projectLinks = new ArrayList<>();
 
-    public Project(String title, String introductions, Member author, String serviceUrl, List<ProjectTechStack> projectTechStacks, List<ProjectTeammate> projectTeammates, List<ProjectLink> projectLinks) {
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ProjectRating> projectRatings = new ArrayList<>();
+
+    public Project(String title, String introductions, Member author, String serviceUrl) {
         this.title = title;
         this.introductions = introductions;
         this.viewCount = 0L;
         this.author = author;
         this.serviceUrl = serviceUrl;
-        this.projectTechStacks = projectTechStacks;
-        this.projectTeammates = projectTeammates;
-        this.projectLinks = projectLinks;
 
         // TODO : images
 //        this.thumbnail = thumbnail;
 //        this.projectImages = projectImages;
     }
 
+    public void addTechStack(ProjectTechStack projectTechStack){
+        projectTechStacks.add(projectTechStack);
+        projectTechStack.assign(this);
+    }
+
+    public void removeTechStack(ProjectTechStack projectLike){
+        projectTechStacks.remove(projectLike);
+        projectLike.assign(null);
+    }
+
+    public void addTeammate(ProjectTeammate projectTeammate){
+        projectTeammates.add(projectTeammate);
+        projectTeammate.assign(this);
+    }
+
+    public void removeTeammate(ProjectTeammate projectTeammate){
+        projectTeammates.remove(projectTeammate);
+        projectTeammate.assign(null);
+    }
+
+    public void addLink(ProjectLink projectLink){
+        projectLinks.add(projectLink);
+        projectLink.assign(this);
+    }
+
+    public void removeLink(ProjectLink projectLink){
+        projectLinks.remove(projectLink);
+        projectLink.assign(null);
+    }
+
+    public void addProjectLike(ProjectLike projectLike){
+        projectLikes.add(projectLike);
+        projectLike.assign(this);
+    }
+
+    public void removeProjectLike(ProjectLike projectLike){
+        projectLikes.remove(projectLike);
+        projectLike.assign(null);
+    }
+
+    public void addProjectRating(ProjectRating projectRating){
+        projectRatings.add(projectRating);
+        projectRating.assignToProject(this);
+    }
+
+    public void removeProjectRating(ProjectRating projectRating){
+        projectRatings.remove(projectRating);
+        projectRating.assignToProject(null);
+    }
+
+    public StarRank calculateAverageStarRank() {
+        int size = projectRatings.size();
+        if (size == 0) {
+            throw new IllegalArgumentException("No ratings available.");
+        }
+
+        float totalIdeaRank = 0f, totalDesignRank = 0f, totalFunctionRank = 0f, totalCompletionRank = 0f;
+
+        for (ProjectRating projectRating : projectRatings) {
+            StarRank starRank = projectRating.getStarRank();
+            totalIdeaRank += starRank.getIdeaRank();
+            totalDesignRank += starRank.getDesignRank();
+            totalFunctionRank += starRank.getFunctionRank();
+            totalCompletionRank += starRank.getCompletionRank();
+        }
+
+        float avgIdeaRank = totalIdeaRank / size;
+        float avgDesignRank = totalDesignRank / size;
+        float avgFunctionRank = totalFunctionRank / size;
+        float avgCompletionRank = totalCompletionRank / size;
+
+        return StarRank.ofAverage(avgIdeaRank, avgDesignRank, avgFunctionRank, avgCompletionRank);
+    }
 }

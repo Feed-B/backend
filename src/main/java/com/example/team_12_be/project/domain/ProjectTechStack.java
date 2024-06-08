@@ -26,4 +26,11 @@ public class ProjectTechStack {
     @JoinColumn(name = "post_id")
     private Project project;
 
+    public ProjectTechStack(TechStackValue techStack) {
+        this.techStack = techStack;
+    }
+
+    public void assign(Project project){
+        this.project = project;
+    }
 }
