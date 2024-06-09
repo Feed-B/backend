@@ -31,12 +31,12 @@ public class Member extends TimeStamp {
     private String aboutMe;
 
     @Enumerated(EnumType.STRING)
-    private Job memberTechStack;
+    private Job memberJob;
 
-    public Member(String email, String nickName, String aboutMe, Job memberTechStack) {
+    public Member(String email, String nickName, String aboutMe, Job memberJob) {
         this.email = email;
         this.nickName = nickName;
         this.aboutMe = aboutMe;
-        this.memberTechStack = memberTechStack;
+        this.memberJob = memberJob;
     }
 }

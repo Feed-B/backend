@@ -44,4 +44,9 @@ public class DefaultProjectQueryRepository implements ProjectQueryRepository {
     public long countLikeByProjectId(Long projectId){
         return projectLikeJpaRepository.countByProjectId(projectId);
     }
+
+    @Override
+    public long countRankByProjectId(Long projectId){
+        return projectLikeJpaRepository.countByProjectId(projectId);
+    }
 }

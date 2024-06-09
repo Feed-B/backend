@@ -11,4 +11,6 @@ public interface ProjectQueryRepository {
     List<ProjectLike> findLikesByProjectIdWithMember(Long projectId);
 
     long countLikeByProjectId(Long projectId);
+
+    long countRankByProjectId(Long projectId);
 }

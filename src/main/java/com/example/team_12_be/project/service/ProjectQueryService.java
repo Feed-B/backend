@@ -16,7 +16,6 @@ import com.example.team_12_be.project.service.dto.response.StarRankResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -28,7 +27,6 @@ import java.util.stream.Collectors;
 public class ProjectQueryService {
 
     private final ProjectQueryRepository projectQueryRepository;
-    private final ProjectService projectService;
 
     public Project findById(Long id) {
         return projectQueryRepository.findById(id).orElseThrow(
@@ -55,7 +53,7 @@ public class ProjectQueryService {
         // 그룹화된 결과를 JobWithTeammateResponseDto 형식의 리스트로 변환
         return groupedByJob.entrySet().stream()
                 .map(entry -> new JobWithTeammateResponseDto(entry.getKey(), entry.getValue()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public ProjectRatingResponseDto getMemberProjectRating(Long memberId, Long projectId) {
@@ -68,7 +66,9 @@ public class ProjectQueryService {
 
     public StarRankResponseDto getProjectAverageStarRankWithLikedInfo(Long projectId) {
         StarRank projectAverageStarRank = this.getProjectAverageStarRank(projectId);
-        return StarRankResponseDto.of(projectAverageStarRank);
+        long rankCount = projectQueryRepository.countRankByProjectId(projectId);
+
+        return StarRankResponseDto.of(projectAverageStarRank, rankCount);
     }
 
     public StarRank getProjectAverageStarRank(Long projectId){
@@ -79,7 +79,7 @@ public class ProjectQueryService {
     public List<LikedMembersTechStackResponseDto> getLikedMembersTechStack(Long projectId){
         List<ProjectLike> projectLikesWithMembers = projectQueryRepository.findLikesByProjectIdWithMember(projectId);
         List<Job> memberTechStacks = projectLikesWithMembers.stream()
-                .map(each -> each.getMember().getMemberTechStack())
+                .map(each -> each.getMember().getMemberJob())
                 .toList();
 
         return memberTechStacks.stream()
