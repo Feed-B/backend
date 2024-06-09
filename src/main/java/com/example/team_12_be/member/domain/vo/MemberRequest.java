@@ -13,6 +13,6 @@ public class MemberRequest {
     private String email;
     private String nickName;
     private String aboutMe;
-    private TechStackValue techStack;
+    private Job techStack;
 
 }
