@@ -26,7 +26,11 @@ public class DefaultProjectCommentRepository implements ProjectCommentRepository
     }
 
     @Override
-    public Slice<ProjectComment> findAllByProjectId(Long projectId, Pageable pageable) {
-        return projectCommentJpaRepository.findAllByProjectId(projectId, pageable);
+    public Slice<ProjectComment> findAllByProjectIdWithMember(Long projectId, Pageable pageable) {
+        return projectCommentJpaRepository.findAllByProjectIdWithMember(projectId, pageable);
+    }
+    @Override
+    public long countByParentCommentId(Long parentCommentId) {
+        return projectCommentJpaRepository.countByParentId(parentCommentId);
     }
 }

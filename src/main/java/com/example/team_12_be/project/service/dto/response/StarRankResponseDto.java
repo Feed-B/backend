@@ -6,15 +6,17 @@ public record StarRankResponseDto(float averageRank,
                                   float ideaRank,
                                   float designRank,
                                   float functionRank,
-                                  float completionRank) {
+                                  float completionRank,
+                                  long rankCount) {
 
-    public static StarRankResponseDto of(StarRank rank) {
+    public static StarRankResponseDto of(StarRank rank, long rankCount) {
         return new StarRankResponseDto(
                 rank.getAverageRank(),
                 rank.getIdeaRank(),
                 rank.getDesignRank(),
                 rank.getFunctionRank(),
-                rank.getCompletionRank()
+                rank.getCompletionRank(),
+                rankCount
         );
     }
 }

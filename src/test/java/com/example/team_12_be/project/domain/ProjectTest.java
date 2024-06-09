@@ -21,6 +21,7 @@ class ProjectTest {
         project = new Project(
                 "Test Project",
                 "Test introduction",
+                "content",
                 author,
                 "http://service.url"
         );

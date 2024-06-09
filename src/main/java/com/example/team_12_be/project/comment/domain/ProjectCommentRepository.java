@@ -12,6 +12,7 @@ public interface ProjectCommentRepository {
     Optional<ProjectComment> findById(Long id);
 
     // 혹은 pageAble
-    Slice<ProjectComment> findAllByProjectId(Long projectId, Pageable pageable);
+    Slice<ProjectComment> findAllByProjectIdWithMember(Long projectId, Pageable pageable);
 
+    long countByParentCommentId(Long parentCommentId);
 }

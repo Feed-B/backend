@@ -6,6 +6,7 @@ import com.example.team_12_be.project.domain.*;
 import com.example.team_12_be.project.service.dto.request.ProjectLinkRequestDto;
 import com.example.team_12_be.project.service.dto.request.ProjectRatingRequestDto;
 import com.example.team_12_be.project.service.dto.request.ProjectRequestDto;
+import com.example.team_12_be.project.service.dto.request.ProjectTeammateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class ProjectService {
         List<ProjectTechStack> techStacks = projectRequestDto.projectTechStacks().stream().map(ProjectTechStack::new).toList();
         techStacks.forEach(each -> each.assign(project));
 
-        List<ProjectTeammate> teammates = projectRequestDto.projectTeammates().stream().map(ProjectTeammate::new).toList();
+        List<ProjectTeammate> teammates = projectRequestDto.projectTeammates().stream().map(ProjectTeammateRequestDto::toEntity).toList();
         teammates.forEach(each -> each.assign(project));
 
         List<ProjectLink> links = projectRequestDto.projectLinks().stream().map(ProjectLinkRequestDto::toEntity).toList();

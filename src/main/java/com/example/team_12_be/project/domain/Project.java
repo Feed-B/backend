@@ -33,6 +33,8 @@ public class Project extends TimeStamp {
 
     private String introductions;
 
+    private String content;
+
     private Long viewCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -64,9 +66,10 @@ public class Project extends TimeStamp {
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ProjectRating> projectRatings = new ArrayList<>();
 
-    public Project(String title, String introductions, Member author, String serviceUrl) {
+    public Project(String title, String introductions, String content, Member author, String serviceUrl) {
         this.title = title;
         this.introductions = introductions;
+        this.content = content;
         this.viewCount = 0L;
         this.author = author;
         this.serviceUrl = serviceUrl;
