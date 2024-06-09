@@ -29,7 +29,7 @@ public class JwtProvider {
 
     private Key key;
 
-    private static final long EXPIRATION_TIME_IN_MILLISECONDS = 1000L * 60 * 60;
+    private static final long EXPIRATION_TIME_IN_MILLISECONDS = 1000L * 60 * 60 * 6; //6시간(보안 + 사용자 경험 중간)
 
     private final CustomUserDetailsService customUserDetailsService;
 

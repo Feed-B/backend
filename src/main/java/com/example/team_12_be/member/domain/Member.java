@@ -3,8 +3,7 @@ package com.example.team_12_be.member.domain;
 import com.example.team_12_be.base.TimeStamp;
 import com.example.team_12_be.member.domain.vo.Job;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -13,6 +12,9 @@ import org.hibernate.annotations.SQLRestriction;
 @Getter
 @SQLDelete(sql = "UPDATE MEMBER SET IS_DELETED = true WHERE id = ?")
 @SQLRestriction("IS_DELETED = false")
+@Builder
+@AllArgsConstructor
+@ToString
 public class Member extends TimeStamp {
 
     @Id
