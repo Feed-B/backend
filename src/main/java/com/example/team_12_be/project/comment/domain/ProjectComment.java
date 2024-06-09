@@ -3,7 +3,10 @@ package com.example.team_12_be.project.comment.domain;
 import com.example.team_12_be.base.TimeStamp;
 import com.example.team_12_be.member.domain.Member;
 import com.example.team_12_be.project.domain.Project;
+import com.example.team_12_be.project.domain.vo.StarRank;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -35,6 +38,9 @@ public class ProjectComment extends TimeStamp {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Project project;
+
+    @Embedded
+    private StarRank starRank;
 
     public ProjectComment(Long parentId, String comment, Project project, Member member) {
         this.parentId = parentId;

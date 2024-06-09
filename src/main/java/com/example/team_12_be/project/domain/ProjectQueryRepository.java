@@ -9,4 +9,6 @@ public interface ProjectQueryRepository {
     Optional<ProjectRating> findProjectRatingByMemberIdAndProjectId(Long memberId, Long projectId);
 
     List<ProjectLike> findLikesByProjectIdWithMember(Long projectId);
+
+    long countLikeByProjectId(Long projectId);
 }

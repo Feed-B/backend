@@ -15,4 +15,6 @@ public interface ProjectLikeJpaRepository extends JpaRepository<ProjectLike, Lon
     boolean existsByMemberIdAndProjectId(Long memberId, Long projectId);
 
     void deleteLikeByMemberIdAndProjectId(Long memberId, Long projectId);
+
+    long countByProjectId(Long projectId);
 }

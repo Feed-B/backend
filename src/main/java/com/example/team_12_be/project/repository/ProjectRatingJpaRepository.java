@@ -10,5 +10,4 @@ public interface ProjectRatingJpaRepository extends JpaRepository<ProjectRating,
     boolean existsByMemberIdAndProjectId(Long memberId, Long projectId);
 
     Optional<ProjectRating> findByMemberIdAndProjectId(Long memberId, Long projectId);
-
 }

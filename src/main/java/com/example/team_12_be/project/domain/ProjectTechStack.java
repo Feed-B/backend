@@ -1,6 +1,6 @@
 package com.example.team_12_be.project.domain;
 
-import com.example.team_12_be.member.domain.vo.TechStackValue;
+import com.example.team_12_be.member.domain.vo.Job;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -19,14 +19,13 @@ public class ProjectTechStack {
     @Id
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private TechStackValue techStack;
+    private String techStack;
 
     @ManyToOne(fetch = FetchType.LAZY) // LAZY 로 하지 않아도 무방할듯
     @JoinColumn(name = "post_id")
     private Project project;
 
-    public ProjectTechStack(TechStackValue techStack) {
+    public ProjectTechStack(String techStack) {
         this.techStack = techStack;
     }
 

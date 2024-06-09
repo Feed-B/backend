@@ -19,12 +19,18 @@ public class ProjectCommentQueryController {
 
     @GetMapping("/{projectId}/comments")
     public CustomPageResponse<ProjectCommentResponseDto> getProjectComments(@PathVariable Long projectId,
-                                                                            @RequestParam(defaultValue = "0") int page,
+                                                                            @RequestParam(defaultValue = "1") int page,
                                                                             @RequestParam(defaultValue = "10") int size,
                                                                             @RequestParam(defaultValue = "100") int limit) {
+        if (page < 1) {
+            page = 1;
+        }
+
         int adjustedPageSize = Math.min(size, limit);
         Pageable pageable = PageRequest.of(page, adjustedPageSize);
 
         return projectCommentQueryService.findProjectCommentsByProjectId(projectId, pageable);
     }
+
+
 }
