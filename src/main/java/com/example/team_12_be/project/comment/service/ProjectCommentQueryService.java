@@ -8,6 +8,7 @@ import com.example.team_12_be.project.comment.service.dto.ProjectCommentResponse
 import com.example.team_12_be.project.domain.ProjectRating;
 import com.example.team_12_be.project.repository.ProjectRatingJpaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,27 @@ public class ProjectCommentQueryService {
 
     // TODO : 대댓글 조회 API 작성
 
+    public Page<ProjectComment> findAllReplyByParentCommentId(Long parentCommentId, Pageable pageable){
+        return projectCommentRepository.findAllByParentCommentId(parentCommentId, pageable);
+    }
+
     private ProjectCommentResponseDto getProjectCommentResponseDto(Long projectId, ProjectComment projectComment) {
+        long childCommentCount = projectCommentRepository.countByParentCommentId(projectComment.getParentId());
+        Member commentAuthor = projectComment.getMember();
+
+        ProjectRating projectRating = projectRatingJpaRepository.findByMemberIdAndProjectId(commentAuthor.getId(), projectId).orElseThrow(
+                () -> new IllegalArgumentException("평가하지 않은 유저")
+        );
+        float averageRank = projectRating.getStarRank().getAverageRank();
+
+        return ProjectCommentResponseDto.of(projectComment, commentAuthor, childCommentCount, averageRank);
+    }
+
+    public ProjectCommentResponseDto getProjectCommentResponseDto(Long projectId, Long commentId) {
+        ProjectComment projectComment = projectCommentRepository.findById(commentId).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 댓글")
+        );
+
         long childCommentCount = projectCommentRepository.countByParentCommentId(projectComment.getParentId());
         Member commentAuthor = projectComment.getMember();
 
