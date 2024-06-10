@@ -8,6 +8,7 @@ import com.example.team_12_be.member.exception.MemberAlreadyExistsException;
 import com.example.team_12_be.security.CustomUserDetails;
 import com.example.team_12_be.security.JwtProvider;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,9 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class MemberController {
 
         private final MemberService memberService;
@@ -28,7 +29,7 @@ public class MemberController {
         @GetMapping("/member-info")
         public void memberInfo(@AuthenticationPrincipal CustomUserDetails userDetails){
                 Member member = userDetails.getMember();
-                System.out.println(member.toString());
+                log.info(member.toString());
         }
 
         //회원가입
@@ -44,7 +45,7 @@ public class MemberController {
                 //토큰 생성
                 String token = jwtProvider.createToken(memberRequest.getEmail());
 
-                MemberResponse memberResponse = new MemberResponse(member.getId(), member.getEmail() , member.getNickName() , member.getAboutMe() , memberRequest.getTechStack() , token);
+                MemberResponse memberResponse = new MemberResponse(member.getId(), member.getEmail() , member.getNickName() , member.getAboutMe() , member.getMemberJob() , token);
                 return ResponseEntity.status(HttpStatus.CREATED).body(memberResponse);
         }
 }

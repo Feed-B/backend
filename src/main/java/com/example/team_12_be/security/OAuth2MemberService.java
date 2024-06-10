@@ -28,18 +28,15 @@ public class OAuth2MemberService implements OAuth2UserService<OAuth2UserRequest 
         DefaultOAuth2UserService delegeate = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = delegeate.loadUser(userRequest);
         OAuth2MemberInfo memberInfo = null;
-        System.out.println("oauth2User.getAttributes() : " + oAuth2User.getAttributes());
+        //System.out.println("oauth2User.getAttributes() : " + oAuth2User.getAttributes());
 
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
-        System.out.println("registrationId : " + registrationId);
+        //System.out.println("registrationId : " + registrationId);
         if(registrationId.equals("kakao")) {
             memberInfo = new KakaoMemberInfo(oAuth2User.getAttributes());
         }
         else if(registrationId.equals("naver")) {
             memberInfo = new NaverMemberInfo((Map) oAuth2User.getAttributes().get("response"));
-        }
-        else {
-            System.out.println("로그인 실패");
         }
 
         String provider = memberInfo.getProvider();

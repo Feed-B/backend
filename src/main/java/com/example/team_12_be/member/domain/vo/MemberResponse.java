@@ -14,14 +14,14 @@ public class MemberResponse {
     private String email;
     private String nickName;
     private String aboutMe;
-    private Job techStack;
+    private Job job;
     private String token;
-    public MemberResponse(Long id, String email, String nickName, String aboutMe, Job techStack, String token) {
+    public MemberResponse(Long id, String email, String nickName, String aboutMe, Job job, String token) {
         this.id = id;
         this.email = email;
         this.nickName = nickName;
         this.aboutMe = aboutMe;
-        this.techStack = techStack;
+        this.job = job;
         this.token = token;
     }
 }
