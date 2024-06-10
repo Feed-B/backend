@@ -1,12 +1,10 @@
 package com.example.team_12_be.project.presentation;
 
 import com.example.team_12_be.project.service.ProjectQueryService;
-import com.example.team_12_be.project.service.dto.response.JobWithTeammateResponseDto;
-import com.example.team_12_be.project.service.dto.response.LikedMembersTechStackResponseDto;
-import com.example.team_12_be.project.service.dto.response.ProjectDetailResponseDto;
-import com.example.team_12_be.project.service.dto.response.ProjectRatingResponseDto;
-import com.example.team_12_be.project.service.dto.response.StarRankResponseDto;
+import com.example.team_12_be.project.service.dto.response.*;
+import com.example.team_12_be.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +23,12 @@ public class ProjectQueryController {
     @GetMapping("/projects/{projectId}")
     public ProjectDetailResponseDto getProjectDetail(@PathVariable Long projectId) {
         return projectQueryService.getDetailById(projectId);
+    }
+
+    @GetMapping("/projects/{projectId}/edits")
+    public ProjectDetailForEditResponseDto getDetailForEditByProjectId(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long projectId){
+        Long memberId = userDetails.getMember().getId();
+        return projectQueryService.getDetailForEditByProjectId(memberId, projectId);
     }
 
     @GetMapping("/projects/{projectId}/teammates")

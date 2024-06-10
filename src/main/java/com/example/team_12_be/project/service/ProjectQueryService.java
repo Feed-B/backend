@@ -1,5 +1,6 @@
 package com.example.team_12_be.project.service;
 
+import com.example.team_12_be.member.domain.Member;
 import com.example.team_12_be.member.domain.vo.Job;
 import com.example.team_12_be.project.domain.Project;
 import com.example.team_12_be.project.domain.ProjectLike;
@@ -7,18 +8,14 @@ import com.example.team_12_be.project.domain.ProjectQueryRepository;
 import com.example.team_12_be.project.domain.ProjectRating;
 import com.example.team_12_be.project.domain.ProjectTeammate;
 import com.example.team_12_be.project.domain.vo.StarRank;
-import com.example.team_12_be.project.service.dto.response.JobWithTeammateResponseDto;
-import com.example.team_12_be.project.service.dto.response.LikedMembersTechStackResponseDto;
-import com.example.team_12_be.project.service.dto.response.ProjectDetailResponseDto;
-import com.example.team_12_be.project.service.dto.response.ProjectRatingResponseDto;
-import com.example.team_12_be.project.service.dto.response.ProjectTeammateResponseDto;
-import com.example.team_12_be.project.service.dto.response.StarRankResponseDto;
+import com.example.team_12_be.project.service.dto.response.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -39,6 +36,15 @@ public class ProjectQueryService {
         long likeCount = projectQueryRepository.countLikeByProjectId(projectId);
 
         return ProjectDetailResponseDto.of(project, likeCount);
+    }
+
+    public ProjectDetailForEditResponseDto getDetailForEditByProjectId(Long memberId, Long projectId){
+        Project project = this.findById(projectId);
+        if (!Objects.equals(project.getAuthor().getId(), memberId)){
+            throw new IllegalArgumentException("회원만 수정 뷰를 가져올 수 있다.");
+        }
+
+        return ProjectDetailForEditResponseDto.of(project);
     }
 
     public List<JobWithTeammateResponseDto> getTeammateListByProjectId(Long projectId) {
