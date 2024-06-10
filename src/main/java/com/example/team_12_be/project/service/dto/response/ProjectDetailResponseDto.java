@@ -13,6 +13,7 @@ public record ProjectDetailResponseDto(
         LocalDateTime createdAt,
         Long likeCount,
         String title,
+        String content,
         String introductions,
         String serviceUrl,
         List<ProjectLinkResponseDto> projectLinks,
@@ -28,6 +29,7 @@ public record ProjectDetailResponseDto(
                 likeCount,
                 project.getTitle(),
                 project.getIntroductions(),
+                project.getContent(),
                 project.getServiceUrl(),
                 project.getProjectLinks().stream().map(ProjectLinkResponseDto::of).toList(),
                 project.getProjectTechStacks().stream().map(ProjectTechStackResponseDto::of).toList()
