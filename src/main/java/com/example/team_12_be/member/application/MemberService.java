@@ -23,7 +23,7 @@ public class MemberService {
                 .nickName(memberRequest.getNickName())
                 .aboutMe(memberRequest.getAboutMe())
                 .isDeleted(false)
-                .memberJob(memberRequest.getTechStack())
+                .memberJob(memberRequest.getJob())
                 .build();
         memberRepository.save(member);
         return member;

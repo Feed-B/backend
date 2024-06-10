@@ -4,6 +4,14 @@ spring:
   config:
     activate:
       on-profile: set1
+  security:
+    oauth2:
+      client:
+        registration:
+          naver:
+            redirect-uri: http://3.37.64.186:8080/login/oauth2/code/naver
+          kakao:
+            redirect-uri: http://3.37.64.186:8080/login/oauth2/code/kakao
 server:
   port: 8081
 
@@ -12,5 +20,13 @@ spring:
   config:
     activate:
       on-profile: set2
+  security:
+    oauth2:
+      client:
+        registration:
+          naver:
+            redirect-uri: http://3.37.64.186:8080/login/oauth2/code/naver
+          kakao:
+            redirect-uri: http://3.37.64.186:8080/login/oauth2/code/kakao
 server:
   port: 8082
