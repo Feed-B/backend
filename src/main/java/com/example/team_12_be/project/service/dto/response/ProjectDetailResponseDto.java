@@ -13,10 +13,11 @@ public record ProjectDetailResponseDto(
         LocalDateTime createdAt,
         Long likeCount,
         String title,
+        String content,
         String introductions,
         String serviceUrl,
         List<ProjectLinkResponseDto> projectLinks,
-        List<ProjectTechStackResponseDto> projectTechStackResponseDtoList
+        List<ProjectTechStackResponseDto> projectTechStacks
 ) {
     // TODO : 온전한 데이터를 완성한다.
     public static ProjectDetailResponseDto of(Project project, Long likeCount) {
@@ -28,6 +29,7 @@ public record ProjectDetailResponseDto(
                 likeCount,
                 project.getTitle(),
                 project.getIntroductions(),
+                project.getContent(),
                 project.getServiceUrl(),
                 project.getProjectLinks().stream().map(ProjectLinkResponseDto::of).toList(),
                 project.getProjectTechStacks().stream().map(ProjectTechStackResponseDto::of).toList()
