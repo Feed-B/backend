@@ -9,11 +9,13 @@ import com.example.team_12_be.project.service.dto.request.ProjectRequestDto;
 import com.example.team_12_be.project.service.dto.request.ProjectTeammateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
@@ -49,7 +51,6 @@ public class ProjectService {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 프로젝트이다."));
 
         ProjectRating projectRating = new ProjectRating(member, project, projectRatingRequestDto.toStarRank());
-        projectRepository.saveProjectRating(projectRating);
         project.addProjectRating(projectRating);
     }
 
@@ -64,8 +65,7 @@ public class ProjectService {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 프로젝트이다."));
 
         ProjectLike projectLike = new ProjectLike(member, project);
-
-        projectRepository.saveLike(projectLike);
+        project.addProjectLike(projectLike);
     }
 
     public void unlikeProject(Long memberId, Long projectId){
