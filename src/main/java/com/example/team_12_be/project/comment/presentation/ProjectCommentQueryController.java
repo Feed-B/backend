@@ -1,11 +1,10 @@
 package com.example.team_12_be.project.comment.presentation;
 
 import com.example.team_12_be.global.page.CustomPageResponse;
-import com.example.team_12_be.project.comment.domain.ProjectComment;
 import com.example.team_12_be.project.comment.service.dto.ProjectCommentResponseDto;
 import com.example.team_12_be.project.comment.service.ProjectCommentQueryService;
+import com.example.team_12_be.project.comment.service.dto.ReplyCommentResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,11 +39,11 @@ public class ProjectCommentQueryController {
     }
 
     @GetMapping("/projects/{projectId}/comments/{commentId}")
-    public Page<ProjectComment> findAllReplyByParentCommentId(@PathVariable Long projectId,
-                                    @PathVariable Long commentId,
-                                    @RequestParam(defaultValue = "1") int page,
-                                    @RequestParam(defaultValue = "10") int size,
-                                    @RequestParam(defaultValue = "100") int limit){
+    public CustomPageResponse<ReplyCommentResponseDto> findAllReplyByParentCommentId(@PathVariable Long projectId,
+                                                                                     @PathVariable Long commentId,
+                                                                                     @RequestParam(defaultValue = "1") int page,
+                                                                                     @RequestParam(defaultValue = "10") int size,
+                                                                                     @RequestParam(defaultValue = "100") int limit){
 
         if (page < 1) {
             page = 1;

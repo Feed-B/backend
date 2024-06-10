@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -16,9 +17,6 @@ import java.util.List;
 public class ProjectQueryController {
     // TODO : Auth 완성되면 다시
     private final ProjectQueryService projectQueryService;
-
-    // TODO : 리스트 조회 응답 시에도 좋아요 여부를 같이 태워 보내준다.
-    // TODO : 리스트 조회 API
 
     @GetMapping("/projects/{projectId}")
     public ProjectDetailResponseDto getProjectDetail(@PathVariable Long projectId) {
@@ -49,4 +47,15 @@ public class ProjectQueryController {
     public List<LikedMembersTechStackResponseDto> likedMembersTechStackList(@PathVariable Long projectId){
         return projectQueryService.getLikedMembersTechStack(projectId);
     }
+    // TODO : 리스트 조회 응답 시에도 좋아요 여부를 같이 태워 보내준다.
+    // TODO : 리스트 조회 API
+//    @GetMapping("/projects")
+//    public void foo(
+//            @RequestParam(required = false) boolean latest,
+//            @RequestParam(required = false) boolean viewCount,
+//            @RequestParam(required = false) boolean likeCount,
+//            @RequestParam(required = false) List<String> projectTechStacks // TODO : 이거 enum 으로 교체
+//    ){
+//        projectQueryService.
+//    }
 }

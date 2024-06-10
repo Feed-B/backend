@@ -5,6 +5,7 @@ import com.example.team_12_be.member.domain.Member;
 import com.example.team_12_be.project.comment.domain.ProjectComment;
 import com.example.team_12_be.project.comment.domain.ProjectCommentRepository;
 import com.example.team_12_be.project.comment.service.dto.ProjectCommentResponseDto;
+import com.example.team_12_be.project.comment.service.dto.ReplyCommentResponseDto;
 import com.example.team_12_be.project.domain.ProjectRating;
 import com.example.team_12_be.project.repository.ProjectRatingJpaRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,8 +35,14 @@ public class ProjectCommentQueryService {
 
     // TODO : 대댓글 조회 API 작성
 
-    public Page<ProjectComment> findAllReplyByParentCommentId(Long parentCommentId, Pageable pageable){
-        return projectCommentRepository.findAllByParentCommentId(parentCommentId, pageable);
+    public CustomPageResponse<ReplyCommentResponseDto> findAllReplyByParentCommentId(Long parentCommentId, Pageable pageable){
+
+        Page<ProjectComment> replyCommentList = projectCommentRepository.findAllByParentCommentId(parentCommentId, pageable);
+        List<ReplyCommentResponseDto> replyCommentResponseDtoList = replyCommentList.stream()
+                .map(ReplyCommentResponseDto::of)
+                .toList();
+
+        return new CustomPageResponse<>(replyCommentResponseDtoList, pageable, replyCommentList.getTotalElements());
     }
 
     private ProjectCommentResponseDto getProjectCommentResponseDto(Long projectId, ProjectComment projectComment) {

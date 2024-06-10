@@ -10,6 +10,7 @@ import com.example.team_12_be.project.domain.ProjectTeammate;
 import com.example.team_12_be.project.domain.vo.StarRank;
 import com.example.team_12_be.project.service.dto.response.*;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.query.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -96,4 +97,8 @@ public class ProjectQueryService {
                 .map(entry -> new LikedMembersTechStackResponseDto(entry.getKey(), entry.getValue()))
                 .toList();
     }
+
+//    public List<ProjectListResponseDto> getProjectList(){
+//
+//    }
 }
