@@ -79,44 +79,9 @@ public class Project extends TimeStamp {
 //        this.projectImages = projectImages;
     }
 
-    public void addTechStack(ProjectTechStack projectTechStack){
-        projectTechStacks.add(projectTechStack);
-        projectTechStack.assign(this);
-    }
-
-    public void removeTechStack(ProjectTechStack projectLike){
-        projectTechStacks.remove(projectLike);
-        projectLike.assign(null);
-    }
-
-    public void addTeammate(ProjectTeammate projectTeammate){
-        projectTeammates.add(projectTeammate);
-        projectTeammate.assign(this);
-    }
-
-    public void removeTeammate(ProjectTeammate projectTeammate){
-        projectTeammates.remove(projectTeammate);
-        projectTeammate.assign(null);
-    }
-
-    public void addLink(ProjectLink projectLink){
-        projectLinks.add(projectLink);
-        projectLink.assign(this);
-    }
-
-    public void removeLink(ProjectLink projectLink){
-        projectLinks.remove(projectLink);
-        projectLink.assign(null);
-    }
-
     public void addProjectLike(ProjectLike projectLike){
         projectLikes.add(projectLike);
         projectLike.assign(this);
-    }
-
-    public void removeProjectLike(ProjectLike projectLike){
-        projectLikes.remove(projectLike);
-        projectLike.assign(null);
     }
 
     public void addProjectRating(ProjectRating projectRating){
