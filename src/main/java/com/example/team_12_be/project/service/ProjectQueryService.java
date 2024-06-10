@@ -1,20 +1,22 @@
 package com.example.team_12_be.project.service;
 
-import com.example.team_12_be.member.domain.vo.TechStackValue;
+import com.example.team_12_be.member.domain.Member;
+import com.example.team_12_be.member.domain.vo.Job;
 import com.example.team_12_be.project.domain.Project;
 import com.example.team_12_be.project.domain.ProjectLike;
 import com.example.team_12_be.project.domain.ProjectQueryRepository;
 import com.example.team_12_be.project.domain.ProjectRating;
+import com.example.team_12_be.project.domain.ProjectTeammate;
 import com.example.team_12_be.project.domain.vo.StarRank;
-import com.example.team_12_be.project.service.dto.response.LikedMembersTechStackResponseDto;
-import com.example.team_12_be.project.service.dto.response.ProjectDetailResponseDto;
-import com.example.team_12_be.project.service.dto.response.ProjectRatingResponseDto;
-import com.example.team_12_be.project.service.dto.response.StarRankResponseDto;
+import com.example.team_12_be.project.service.dto.response.*;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.query.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -26,13 +28,39 @@ public class ProjectQueryService {
 
     public Project findById(Long id) {
         return projectQueryRepository.findById(id).orElseThrow(
-                () -> new NoSuchElementException("Project with id " + id + " not found")
+                () -> new NoSuchElementException("Project with projectId " + id + " not found")
         );
     }
 
     public ProjectDetailResponseDto getDetailById(Long projectId) {
-        Project project = projectQueryRepository.findById(projectId).orElseThrow(() -> new NoSuchElementException("Project with projectId " + projectId + " not found"));
-        return ProjectDetailResponseDto.of(project);
+        Project project = this.findById(projectId);
+        long likeCount = projectQueryRepository.countLikeByProjectId(projectId);
+
+        return ProjectDetailResponseDto.of(project, likeCount);
+    }
+
+    public ProjectDetailForEditResponseDto getDetailForEditByProjectId(Long memberId, Long projectId){
+        Project project = this.findById(projectId);
+        if (!Objects.equals(project.getAuthor().getId(), memberId)){
+            throw new IllegalArgumentException("회원만 수정 뷰를 가져올 수 있다.");
+        }
+
+        return ProjectDetailForEditResponseDto.of(project);
+    }
+
+    public List<JobWithTeammateResponseDto> getTeammateListByProjectId(Long projectId) {
+        Project project = this.findById(projectId);
+        List<ProjectTeammate> projectTeammates = project.getProjectTeammates();
+
+        // 팀메이트들을 Job 별로 그룹화하고 ProjectTeammateResponseDto로 변환
+        Map<Job, List<ProjectTeammateResponseDto>> groupedByJob = projectTeammates.stream()
+                .map(teammate -> new ProjectTeammateResponseDto(teammate.getTeammateName(), teammate.getJob()))
+                .collect(Collectors.groupingBy(ProjectTeammateResponseDto::job));
+
+        // 그룹화된 결과를 JobWithTeammateResponseDto 형식의 리스트로 변환
+        return groupedByJob.entrySet().stream()
+                .map(entry -> new JobWithTeammateResponseDto(entry.getKey(), entry.getValue()))
+                .toList();
     }
 
     public ProjectRatingResponseDto getMemberProjectRating(Long memberId, Long projectId) {
@@ -45,7 +73,9 @@ public class ProjectQueryService {
 
     public StarRankResponseDto getProjectAverageStarRankWithLikedInfo(Long projectId) {
         StarRank projectAverageStarRank = this.getProjectAverageStarRank(projectId);
-        return StarRankResponseDto.of(projectAverageStarRank);
+        long rankCount = projectQueryRepository.countRankByProjectId(projectId);
+
+        return StarRankResponseDto.of(projectAverageStarRank, rankCount);
     }
 
     public StarRank getProjectAverageStarRank(Long projectId){
@@ -55,8 +85,8 @@ public class ProjectQueryService {
 
     public List<LikedMembersTechStackResponseDto> getLikedMembersTechStack(Long projectId){
         List<ProjectLike> projectLikesWithMembers = projectQueryRepository.findLikesByProjectIdWithMember(projectId);
-        List<TechStackValue> memberTechStacks = projectLikesWithMembers.stream()
-                .map(each -> each.getMember().getMemberTechStack())
+        List<Job> memberTechStacks = projectLikesWithMembers.stream()
+                .map(each -> each.getMember().getMemberJob())
                 .toList();
 
         return memberTechStacks.stream()
@@ -67,4 +97,8 @@ public class ProjectQueryService {
                 .map(entry -> new LikedMembersTechStackResponseDto(entry.getKey(), entry.getValue()))
                 .toList();
     }
+
+//    public List<ProjectListResponseDto> getProjectList(){
+//
+//    }
 }

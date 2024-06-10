@@ -39,4 +39,14 @@ public class DefaultProjectQueryRepository implements ProjectQueryRepository {
     public List<ProjectLike> findLikesByProjectIdWithMember(Long projectId){
         return projectLikeJpaRepository.findByProjectIdWithMember(projectId);
     }
+
+    @Override
+    public long countLikeByProjectId(Long projectId){
+        return projectLikeJpaRepository.countByProjectId(projectId);
+    }
+
+    @Override
+    public long countRankByProjectId(Long projectId){
+        return projectLikeJpaRepository.countByProjectId(projectId);
+    }
 }

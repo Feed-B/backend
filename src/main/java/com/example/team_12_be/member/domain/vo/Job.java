@@ -1,6 +1,6 @@
 package com.example.team_12_be.member.domain.vo;
 
-public enum TechStackValue {
+public enum Job {
     FRONTEND,
     BACKEND,
     DESIGNER,

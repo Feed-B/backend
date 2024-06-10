@@ -3,6 +3,7 @@ package com.example.team_12_be.project.comment.presentation;
 import com.example.team_12_be.global.page.CustomPageResponse;
 import com.example.team_12_be.project.comment.service.dto.ProjectCommentResponseDto;
 import com.example.team_12_be.project.comment.service.ProjectCommentQueryService;
+import com.example.team_12_be.project.comment.service.dto.ReplyCommentResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,12 +20,38 @@ public class ProjectCommentQueryController {
 
     @GetMapping("/{projectId}/comments")
     public CustomPageResponse<ProjectCommentResponseDto> getProjectComments(@PathVariable Long projectId,
-                                                                            @RequestParam(defaultValue = "0") int page,
+                                                                            @RequestParam(defaultValue = "1") int page,
                                                                             @RequestParam(defaultValue = "10") int size,
                                                                             @RequestParam(defaultValue = "100") int limit) {
+        if (page < 1) {
+            page = 1;
+        }
+
         int adjustedPageSize = Math.min(size, limit);
         Pageable pageable = PageRequest.of(page, adjustedPageSize);
 
         return projectCommentQueryService.findProjectCommentsByProjectId(projectId, pageable);
+    }
+
+    @GetMapping("/{projectId}/comments/{commentId}")
+    public ProjectCommentResponseDto getProjectCommentResponseDto(@PathVariable Long projectId, @PathVariable Long commentId){
+        return projectCommentQueryService.getProjectCommentResponseDto(projectId, commentId);
+    }
+
+    @GetMapping("/projects/{projectId}/comments/{commentId}")
+    public CustomPageResponse<ReplyCommentResponseDto> findAllReplyByParentCommentId(@PathVariable Long projectId,
+                                                                                     @PathVariable Long commentId,
+                                                                                     @RequestParam(defaultValue = "1") int page,
+                                                                                     @RequestParam(defaultValue = "10") int size,
+                                                                                     @RequestParam(defaultValue = "100") int limit){
+
+        if (page < 1) {
+            page = 1;
+        }
+
+        int adjustedPageSize = Math.min(size, limit);
+        Pageable pageable = PageRequest.of(page, adjustedPageSize);
+
+        return projectCommentQueryService.findAllReplyByParentCommentId(commentId, pageable);
     }
 }

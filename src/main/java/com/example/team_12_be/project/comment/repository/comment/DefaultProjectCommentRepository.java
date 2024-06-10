@@ -3,6 +3,7 @@ package com.example.team_12_be.project.comment.repository.comment;
 import com.example.team_12_be.project.comment.domain.ProjectComment;
 import com.example.team_12_be.project.comment.domain.ProjectCommentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
@@ -26,7 +27,16 @@ public class DefaultProjectCommentRepository implements ProjectCommentRepository
     }
 
     @Override
-    public Slice<ProjectComment> findAllByProjectId(Long projectId, Pageable pageable) {
-        return projectCommentJpaRepository.findAllByProjectId(projectId, pageable);
+    public Slice<ProjectComment> findAllByProjectIdWithMember(Long projectId, Pageable pageable) {
+        return projectCommentJpaRepository.findAllByProjectIdWithMember(projectId, pageable);
+    }
+    @Override
+    public long countByParentCommentId(Long parentCommentId) {
+        return projectCommentJpaRepository.countByParentId(parentCommentId);
+    }
+
+    @Override
+    public Page<ProjectComment> findAllByParentCommentId(Long parentCommentId, Pageable pageable){
+        return projectCommentJpaRepository.findAllByParentIdWithMember(parentCommentId, pageable);
     }
 }

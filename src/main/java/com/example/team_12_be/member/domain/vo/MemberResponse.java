@@ -14,9 +14,9 @@ public class MemberResponse {
     private String email;
     private String nickName;
     private String aboutMe;
-    private TechStackValue techStack;
+    private Job techStack;
     private String token;
-    public MemberResponse(Long id, String email, String nickName, String aboutMe, TechStackValue techStack, String token) {
+    public MemberResponse(Long id, String email, String nickName, String aboutMe, Job techStack, String token) {
         this.id = id;
         this.email = email;
         this.nickName = nickName;

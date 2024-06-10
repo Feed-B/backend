@@ -2,9 +2,9 @@ package com.example.team_12_be.project.service.dto.response;
 
 import com.example.team_12_be.project.domain.ProjectLink;
 
-public record ProjectLinkResponseDto(String url) {
+public record ProjectLinkResponseDto(String siteType, String url) {
 
     public static ProjectLinkResponseDto of(ProjectLink projectLink) {
-        return new ProjectLinkResponseDto(projectLink.getUrl());
+        return new ProjectLinkResponseDto(projectLink.getSiteType(), projectLink.getUrl());
     }
 }

@@ -2,32 +2,37 @@ package com.example.team_12_be.project.service.dto.response;
 
 import com.example.team_12_be.project.domain.Project;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public record ProjectDetailResponseDto(
         // 프로젝트 정보, 댓글 8개(최대)
-        Long id,
-        String title,
-        String introductions,
+        Long projectId,
         Long memberId,
+        String authorName,
+        LocalDateTime createdAt,
+        Long likeCount,
+        String title,
+        String content,
+        String introductions,
         String serviceUrl,
-        List<ProjectTechStackResponseDto> projectTechStackResponseDtoList,
-        List<ProjectTeammateResponseDto> projectTeammateResponseDtoList,
-        List<ProjectLinkResponseDto> projectLinkResponseDtoList
-//        List<ProjectCommentResponseDto> projectCommentResponseDtoList
+        List<ProjectLinkResponseDto> projectLinks,
+        List<ProjectTechStackResponseDto> projectTechStacks
 ) {
     // TODO : 온전한 데이터를 완성한다.
-    public static ProjectDetailResponseDto of(Project project) {
+    public static ProjectDetailResponseDto of(Project project, Long likeCount) {
         return new ProjectDetailResponseDto(
                 project.getId(),
+                project.getAuthor().getId(),
+                project.getAuthor().getNickName(),
+                project.getCreatedAt(),
+                likeCount,
                 project.getTitle(),
                 project.getIntroductions(),
-                project.getAuthor().getId(),
+                project.getContent(),
                 project.getServiceUrl(),
-                project.getProjectTechStacks().stream().map(ProjectTechStackResponseDto::of).toList(),
-                project.getProjectTeammates().stream().map(ProjectTeammateResponseDto::of).toList(),
-                project.getProjectLinks().stream().map(ProjectLinkResponseDto::of).toList()
-//                project.getProjectComments().stream().map(ProjectCommentResponseDto::of).toList()
+                project.getProjectLinks().stream().map(ProjectLinkResponseDto::of).toList(),
+                project.getProjectTechStacks().stream().map(ProjectTechStackResponseDto::of).toList()
         );
     }
 }
