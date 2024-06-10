@@ -17,7 +17,7 @@ public record ProjectDetailResponseDto(
         String introductions,
         String serviceUrl,
         List<ProjectLinkResponseDto> projectLinks,
-        List<ProjectTechStackResponseDto> projectTechStackResponseDtoList
+        List<ProjectTechStackResponseDto> projectTechStacks
 ) {
     // TODO : 온전한 데이터를 완성한다.
     public static ProjectDetailResponseDto of(Project project, Long likeCount) {
