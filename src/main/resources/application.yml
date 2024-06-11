@@ -1,3 +1,4 @@
+#TODO 보안강화를 위해 .env 파일에 옮기고 github action secret 설정해서 사용(Spring Boot Application에도 코드 추가)
 spring:
   datasource:
       driver-class-name: org.h2.Driver
@@ -45,15 +46,19 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 jwt:
-  secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHb17 #TODO 노출되지 않게 HOW?
+  secret: ${JWT_SECRET:default_jwt_secret} #TODO 노출되지 않게 HOW?
 
 # S3
-#TODO 깃허브에 올리면 안됌 x -> 우선 github action secret 변수로 사용 가능한 지 해보고 안되면 다시 생각
 cloud:
   aws:
     credentials:
-      access-key:
-      secret-key:
+      access-key: ${AWS_ACCESS_KEY_ID:default_access_key}
+      secret-key: ${AWS_SECRET_ACCESS_KEY:default_secret_key}
+    s3:
+      region: ${AWS_REGION:default_region}
+    stack:
+      auto: false
+
 
 
 

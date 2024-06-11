@@ -49,7 +49,7 @@ public class Project extends TimeStamp {
     private List<ProjectTechStack> projectTechStacks = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<PrjectImage> projectImages = new ArrayList<>();
+    private List<ProjectImage> projectImages = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ProjectComment> projectComments = new ArrayList<>();
