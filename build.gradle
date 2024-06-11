@@ -28,6 +28,9 @@ dependencies {
     // web
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
+    //S3 Image Upload
+    implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.4'
+
     // oauth2 - optional
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.security:spring-security-oauth2-client'

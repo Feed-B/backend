@@ -46,3 +46,15 @@ spring:
             user-name-attribute: id
 jwt:
   secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHb17 #TODO 노출되지 않게 HOW?
+
+# S3
+#TODO 깃허브에 올리면 안됌 x -> 우선 github action secret 변수로 사용 가능한 지 해보고 안되면 다시 생각
+cloud:
+  aws:
+    credentials:
+      access-key:
+      secret-key:
+
+
+
+
