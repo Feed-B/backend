@@ -35,7 +35,6 @@ public class SpringSecurityConfig {
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        String baseUrl = "http://localhost:8080";  // 실제 base URL을 설정해야 합니다.
 
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
