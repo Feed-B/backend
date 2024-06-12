@@ -46,7 +46,7 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 jwt:
-  secret: ${JWT_SECRET:default_jwt_secret} #TODO 노출되지 않게 HOW?
+  secret: ${JWT_SECRET:default_jwt_secret}
 
 # S3
 cloud:
