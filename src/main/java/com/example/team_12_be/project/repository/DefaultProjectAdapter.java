@@ -3,7 +3,7 @@ package com.example.team_12_be.project.repository;
 import com.example.team_12_be.project.domain.Project;
 import com.example.team_12_be.project.domain.ProjectLike;
 import com.example.team_12_be.project.domain.ProjectRating;
-import com.example.team_12_be.project.domain.ProjectRepository;
+import com.example.team_12_be.project.domain.ProjectPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +12,7 @@ import java.util.Optional;
 // TODO : 루트 애그리거트인 Project 의 처리 범위가 늘어감에 따라 Repository 라는 이름보다 Port 라는 이름을 사용하는 것이 더 명확해 질 수 있다.
 @Repository
 @RequiredArgsConstructor
-public class DefaultProjectRepository implements ProjectRepository {
+public class DefaultProjectAdapter implements ProjectPort {
 
     private final ProejctJpaRepository proejctJpaRepository;
 

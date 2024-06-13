@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface ProjectRepository {
+public interface ProjectPort {
 
     Project saveProject(Project project);
 
