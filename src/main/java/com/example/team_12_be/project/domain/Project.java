@@ -45,7 +45,7 @@ public class Project extends TimeStamp {
 
     private String serviceUrl;
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectTechStack> projectTechStacks = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -79,10 +79,59 @@ public class Project extends TimeStamp {
 //        this.projectImages = projectImages;
     }
 
+    public void updateProject(String title, String introductions, String content,  String serviceUrl) {
+        this.title = title;
+        this.introductions = introductions;
+        this.content = content;
+        this.viewCount = 0L;
+        this.serviceUrl = serviceUrl;
+
+        // TODO : images
+//        this.thumbnail = thumbnail;
+//        this.projectImages = projectImages;
+    }
+
+    public void addTechStack(ProjectTechStack projectTechStack){
+        projectTechStacks.add(projectTechStack);
+        projectTechStack.assign(this);
+    }
+
+    public void removeTechStack(ProjectTechStack projectTechStack){
+        projectTechStacks.remove(projectTechStack);
+        projectTechStack.assign(null);
+    }
+
+    public void addTeammate(ProjectTeammate projectTeammate){
+        projectTeammates.add(projectTeammate);
+        projectTeammate.assign(this);
+    }
+
+    public void removeTeammate(ProjectTeammate projectTeammate){
+        projectTeammates.remove(projectTeammate);
+        projectTeammate.assign(null);
+    }
+
+    public void addLink(ProjectLink projectLink){
+        projectLinks.add(projectLink);
+        projectLink.assign(this);
+    }
+
+    public void removeLink(ProjectLink projectLink){
+        projectLinks.remove(projectLink);
+        projectLink.assign(null);
+    }
+
+
     public void addProjectLike(ProjectLike projectLike){
         projectLikes.add(projectLike);
         projectLike.assign(this);
     }
+
+    public void removeProjectLike(ProjectLike projectLike){
+        projectLikes.remove(projectLike);
+        projectLike.assign(null);
+    }
+
 
     public void addProjectRating(ProjectRating projectRating){
         projectRatings.add(projectRating);
