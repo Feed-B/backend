@@ -41,7 +41,7 @@ public class ProjectImageService { //TODO 단일책임의 원칙을 최대한 �
         try{
             return this.uploadImageToS3(images);
         }catch (Exception e) {
-            throw new ProjectImageException(ImgErrorCode.IO_EXCEPTION_ON_IMAGE_UPLOAD);
+            throw new ProjectImageException(ImgErrorCode.IO_EXCEPTION_ON_IMAGE_UPLOAD,e);
         }
     }
     //S3에 이미지 저장
@@ -68,7 +68,7 @@ public class ProjectImageService { //TODO 단일책임의 원칙을 최대한 �
                                 .withCannedAcl(CannedAccessControlList.PublicRead);
                 amazonS3.putObject(putObjectRequest); // put image to S3
             } catch (Exception e) {
-                throw new ProjectImageException(ImgErrorCode.PUT_OBJECT_EXCEPTION);
+                throw new ProjectImageException(ImgErrorCode.PUT_OBJECT_EXCEPTION , e);
             }finally {
                 byteArrayInputStream.close();
                 is.close();
@@ -79,7 +79,7 @@ public class ProjectImageService { //TODO 단일책임의 원칙을 최대한 �
         }
 
         //TODO 여기서 url DB 저장 메소드 구현?
-        return null;
+        return "이거야?";
     }
 
     //파일 형태 검증 메소드

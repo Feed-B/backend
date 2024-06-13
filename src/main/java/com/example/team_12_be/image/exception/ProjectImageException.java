@@ -6,8 +6,12 @@ public class ProjectImageException extends RuntimeException {
 
     public ProjectImageException(ImgErrorCode errorCode) {
         super(errorCode.getMessage());
+        this.errorCode = errorCode;
     }
-
+    public ProjectImageException(ImgErrorCode errorCode, Throwable cause) {
+        super(errorCode.getMessage(), cause);
+        this.errorCode = errorCode;
+    }
     public ImgErrorCode getImgErrorCode() {
         return errorCode;
     }
