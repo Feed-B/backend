@@ -2,6 +2,7 @@ package com.example.team_12_be.image;
 
 import com.example.team_12_be.image.service.ProjectImageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -10,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 public class ImageTestController {
 

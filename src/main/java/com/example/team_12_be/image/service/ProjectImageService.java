@@ -36,6 +36,7 @@ public class ProjectImageService { //TODO 단일책임의 원칙을 최대한 �
         }
         return this.uploadImage(images);
     }
+
     private String uploadImage(List<MultipartFile> images) {
         this.validateImageFileExtention(images);
         try{
@@ -44,6 +45,7 @@ public class ProjectImageService { //TODO 단일책임의 원칙을 최대한 �
             throw new ProjectImageException(ImgErrorCode.IO_EXCEPTION_ON_IMAGE_UPLOAD,e);
         }
     }
+
     //S3에 이미지 저장
     private String uploadImageToS3(List<MultipartFile> images) throws IOException {
         List<String> urls = new ArrayList<String>();
@@ -100,8 +102,4 @@ public class ProjectImageService { //TODO 단일책임의 원칙을 최대한 �
             }
        }
     }
-
-
-
-
 }

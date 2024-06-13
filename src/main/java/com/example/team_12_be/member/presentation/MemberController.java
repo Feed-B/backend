@@ -7,6 +7,7 @@ import com.example.team_12_be.member.domain.vo.MemberResponse;
 import com.example.team_12_be.member.exception.MemberAlreadyExistsException;
 import com.example.team_12_be.security.CustomUserDetails;
 import com.example.team_12_be.security.JwtProvider;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+@Tag(name = "회원가입 토큰 발급 컨트롤러")
 @RestController
 @RequiredArgsConstructor
 @Slf4j
