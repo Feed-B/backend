@@ -143,6 +143,14 @@ public class Project extends TimeStamp {
         projectRating.assignToProject(null);
     }
 
+    public void addProjectImage(ProjectImage projectImage) {
+        projectImages.add(projectImage);
+        projectImage.assign(this);
+    }
+    public void removeProjectImage(ProjectImage projectImage) {
+        projectImages.remove(projectImage);
+        projectImage.assign(null);
+    }
     public StarRank calculateAverageStarRank() {
         int size = projectRatings.size();
         if (size == 0) {

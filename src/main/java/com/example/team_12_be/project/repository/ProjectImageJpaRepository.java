@@ -1,4 +1,4 @@
-package com.example.team_12_be.image.repository;
+package com.example.team_12_be.project.repository;
 
 import com.example.team_12_be.project.domain.ProjectImage;
 import org.springframework.data.jpa.repository.JpaRepository;

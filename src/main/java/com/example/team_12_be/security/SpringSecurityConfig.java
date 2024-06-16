@@ -44,13 +44,10 @@ public class SpringSecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((request -> request
-                        .requestMatchers(new AntPathRequestMatcher("/test/**")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/h2-console/*")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**")).permitAll()
-                        .requestMatchers(antMatcher("/h2-console")).permitAll()
-                        .requestMatchers("loginForm.html" ,"/signUp").permitAll()
+                        .requestMatchers("/h2-console/*","/swagger-ui/**","/actuator/health","/nginx/profile","/swagger-resources/**" , "/v3/api-docs/**").permitAll() //기본 설정 관련
+                        .requestMatchers("/test/**","/login/{service}" ,"/signUp").permitAll()
                         //TODO : permitAll 제거할 것
-                        .requestMatchers("/**").permitAll()
+//                        .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated()
                 ))
                 .oauth2Login(oauth2 -> oauth2

@@ -1,9 +1,6 @@
 package com.example.team_12_be.project.repository;
 
-import com.example.team_12_be.project.domain.Project;
-import com.example.team_12_be.project.domain.ProjectLike;
-import com.example.team_12_be.project.domain.ProjectRating;
-import com.example.team_12_be.project.domain.ProjectPort;
+import com.example.team_12_be.project.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +16,8 @@ public class DefaultProjectAdapter implements ProjectPort {
     private final ProjectRatingJpaRepository projectRatingJpaRepository;
 
     private final ProjectLikeJpaRepository projectLikeJpaRepository;
+
+    private final ProjectImageJpaRepository projectImageJpaRepository;
 
     /**
      * 자주 사용될 것이므로 QueryRepository 에 넘기지 않는다.
@@ -63,5 +62,10 @@ public class DefaultProjectAdapter implements ProjectPort {
     @Override
     public void deleteLikeByMemberIdAndProjectId(Long memberId, Long projectId) {
         projectLikeJpaRepository.deleteLikeByMemberIdAndProjectId(memberId, projectId);
+    }
+
+    @Override
+    public ProjectImage saveImage(ProjectImage projectImage) {
+        return projectImageJpaRepository.save(projectImage);
     }
 }
