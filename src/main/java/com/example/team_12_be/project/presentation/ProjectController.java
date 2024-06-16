@@ -5,6 +5,7 @@ import com.example.team_12_be.project.service.dto.request.ProjectRatingRequestDt
 import com.example.team_12_be.project.service.dto.request.ProjectRequestDto;
 import com.example.team_12_be.security.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "프로젝트 기능(C,U,D) 컨트롤러")
+@SecurityRequirement(name = "Bearer Authentication")
 @RestController
 @RequiredArgsConstructor
 public class ProjectController {

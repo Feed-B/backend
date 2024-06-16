@@ -1,20 +1,26 @@
 package com.example.team_12_be.project.presentation;
 
 import com.example.team_12_be.project.service.ProjectQueryService;
-import com.example.team_12_be.project.service.dto.response.*;
+import com.example.team_12_be.project.service.dto.response.JobWithTeammateResponseDto;
+import com.example.team_12_be.project.service.dto.response.LikedMembersTechStackResponseDto;
+import com.example.team_12_be.project.service.dto.response.ProjectDetailForEditResponseDto;
+import com.example.team_12_be.project.service.dto.response.ProjectDetailResponseDto;
+import com.example.team_12_be.project.service.dto.response.ProjectRatingResponseDto;
+import com.example.team_12_be.project.service.dto.response.StarRankResponseDto;
 import com.example.team_12_be.security.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @Tag(name = "프로젝트 GET(조회) 컨트롤러")
+@SecurityRequirement(name = "Bearer Authentication")
 @RestController
 @RequiredArgsConstructor
 public class ProjectQueryController {

@@ -6,7 +6,6 @@ import com.example.team_12_be.project.domain.Project;
 import java.util.List;
 
 public record ProjectDetailForEditResponseDto(
-        Long projectId,
         String title,
         String introduction,
         String content,
@@ -19,7 +18,6 @@ public record ProjectDetailForEditResponseDto(
         ) {
     public static ProjectDetailForEditResponseDto of(Project project){
         return new ProjectDetailForEditResponseDto(
-                project.getId(),
                 project.getTitle(),
                 project.getIntroductions(),
                 project.getContent(),

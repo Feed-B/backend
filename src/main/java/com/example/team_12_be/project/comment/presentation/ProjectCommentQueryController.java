@@ -35,12 +35,12 @@ public class ProjectCommentQueryController {
         return projectCommentQueryService.findProjectCommentsByProjectId(projectId, pageable);
     }
 
-    @GetMapping("/{projectId}/comments/{commentId}")
-    public ProjectCommentResponseDto getProjectCommentResponseDto(@PathVariable Long projectId, @PathVariable Long commentId){
+    @GetMapping("/projects/{projectId}/comments/{commentId}")
+    public ProjectCommentResponseDto getProjectCommentDetail(@PathVariable Long projectId, @PathVariable Long commentId){
         return projectCommentQueryService.getProjectCommentResponseDto(projectId, commentId);
     }
 
-    @GetMapping("/projects/{projectId}/comments/{commentId}")
+    @GetMapping("/projects/{projectId}/comments/{commentId}/replies")
     public CustomPageResponse<ReplyCommentResponseDto> findAllReplyByParentCommentId(@PathVariable Long projectId,
                                                                                      @PathVariable Long commentId,
                                                                                      @RequestParam(defaultValue = "1") int page,
