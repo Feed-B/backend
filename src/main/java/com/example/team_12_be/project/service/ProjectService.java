@@ -22,7 +22,7 @@ public class ProjectService {
 
     private final MemberService memberService;
 
-    public void saveProject(ProjectRequestDto projectRequestDto, Member author) {
+    public Long saveProject(ProjectRequestDto projectRequestDto, Member author) {
         Project project = projectRequestDto.toEntity(author);
         projectPort.saveProject(project);
 
@@ -34,6 +34,8 @@ public class ProjectService {
 
         List<ProjectLink> links = projectRequestDto.projectLinks().stream().map(ProjectLinkRequestDto::toEntity).toList();
         links.forEach(project::addLink);
+
+        return project.getId();
     }
 
 //    // TODO : 한번에? 아니면 여러차례 나눠서?

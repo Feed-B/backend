@@ -28,8 +28,8 @@ public class ProjectQueryController {
     private final ProjectQueryService projectQueryService;
 
     @GetMapping("/projects/{projectId}")
-    @Operation(description="프로젝트에 상세 조회")
-    public ProjectDetailResponseDto getProjectDetail(@PathVariable Long projectId) {
+    @Operation(description="프로젝트 상세 조회")
+    public ProjectDetailResponseDto getProjectDetail(@PathVariable  Long projectId) {
         return projectQueryService.getDetailById(projectId);
     }
 
