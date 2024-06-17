@@ -11,7 +11,7 @@ public class Team12BeApplication {
             + "classpath:application.yml,"
             + "classpath:nginx-set.yml";
     public static void main(String[] args) {
-        // 현재 작업 디렉토리를 로그로 출력
+        // 현재 작업 디렉토리를 로그로 출력(
         String currentDir = System.getProperty("user.dir");
         System.out.println("Current working directory: " + currentDir);
 
