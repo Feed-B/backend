@@ -21,7 +21,6 @@ public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
         if (exception instanceof OAuth2UserNotFoundException) {
             email = ((OAuth2UserNotFoundException) exception).getEmail();
         }
-        log.info("failure");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
 

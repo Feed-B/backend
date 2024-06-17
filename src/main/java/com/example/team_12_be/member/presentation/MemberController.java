@@ -68,9 +68,9 @@ public class MemberController {
                 Member member = memberService.registerMemberWithTechStack(memberRequest);
 
                 //토큰 생성
-                String token = jwtProvider.createToken(memberRequest.getEmail());
+//              String token = jwtProvider.createToken(memberRequest.getEmail());
 
-                MemberResponse memberResponse = new MemberResponse(member.getId(), member.getEmail() , member.getNickName() , member.getAboutMe() , member.getMemberJob() , token);
+                MemberResponse memberResponse = new MemberResponse(member.getId(), member.getEmail() , member.getNickName() , member.getAboutMe() , member.getMemberJob());
                 return ResponseEntity.status(HttpStatus.CREATED).body(memberResponse);
         }
 }
