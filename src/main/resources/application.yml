@@ -1,14 +1,13 @@
-#TODO 보안강화를 위해 .env 파일에 옮기고 github action secret 설정해서 사용(Spring Boot Application에도 코드 추가)
 spring:
   datasource:
-      driver-class-name: org.h2.Driver
-      url: jdbc:h2:mem:db;MODE=MYSQL
-      username: sa
-      password:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:db;MODE=MYSQL
+    username: sa
+    password: ${{ spring.datasource.password }}
   h2:
     console:
-      enabled: true  # H2 Console? ???? ?? (H2 Console? H2 Database? UI? ????? ??)
-      path: /h2-console  # H2 Console? Path
+      enabled: true
+      path: /h2-console
   jpa:
     hibernate:
       ddl-auto: create
@@ -21,17 +20,17 @@ spring:
       client:
         registration:
           naver:
-            client-id: moMQFUSHmEQLJ24OlDhj
-            client-secret: HupMrYC8yt #TODO 외부 노출 방지 필요
-            redirect-uri: http://localhost:8080/login/oauth2/code/naver #고정값(운영일 때 profile에 맞춰 변경)
+            client-id: ${{ security.oauth2.client.registration.naver.clientId }}
+            client-secret: ${{ security.oauth2.client.registration.naver.clientSecret }}
+            redirect-uri: http://localhost:8080/login/oauth2/code/naver
             authorization-grant-type: authorization_code
-            scope: name , email
+            scope: name, email
             client-name: Naver
           kakao:
-            client-id: 1e8cf90e4a41d3250b08438a95b69f98
-            redirect-uri: http://localhost:8080/login/oauth2/code/kakao #고정값(운영일 때 profile에 맞춰 변경)
+            client-id: ${{ security.oauth2.client.registration.kakao.clientId }}
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
-            scope: profile_nickname , account_email #profile_nickname
+            scope: profile_nickname, account_email
             client-name: Kakao
             provider: kakao
         provider:
@@ -46,21 +45,14 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 jwt:
-  secret: ${JWT_SECRET:default_jwt_secret}
+  secret: ${{ jwt.secret }}
 
-# S3
 cloud:
   aws:
     credentials:
-      access-key: ${AWS_ACCESS_KEY_ID:default_access_key}
-      secret-key: ${AWS_SECRET_ACCESS_KEY:default_secret_key}
+      access-key: ${{ cloud.aws.credentials.accessKey }}
+      secret-key: ${{ cloud.aws.credentials.secretKey }}
     s3:
-      region: ${AWS_REGION:default_region}
+      region: ${{ cloud.aws.s3.region }}
     stack:
       auto: false
-
-
-
-
-
-

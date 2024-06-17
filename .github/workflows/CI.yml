@@ -36,6 +36,21 @@ jobs:
           echo "JWT_SECRET=VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHb17" >> .env
         shell: bash
 
+        #..
+      - name : s
+        uses: microsoft/variable-substitution@v1
+        with:
+          files : src/main/resources/application.yml
+        env:
+          cloud.aws.credentials.accessKey: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          cloud.aws.credentials.secretKey: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          cloud.aws.s3.region: ${{ secrets.AWS_REGION }}
+          jwt.secret: ${{ secrets.JWT_SECRET }}
+          spring.datasource.password: ${{ secrets.POSTGRES_PASSWORD }}
+          security.oauth2.client.registration.naver.clientId: ${{ secrets.NAVER_CLIENT_ID }}
+          security.oauth2.client.registration.naver.clientSecret: ${{ secrets.NAVER_CLIENT_SECRET }}
+          security.oauth2.client.registration.kakao.clientId: ${{ secrets.KAKAO_CLIENT_ID }}
+
       - name: Build with Gradle
         run: ./gradlew build
         shell: bash
