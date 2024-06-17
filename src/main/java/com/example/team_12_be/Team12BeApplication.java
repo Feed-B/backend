@@ -11,8 +11,14 @@ public class Team12BeApplication {
             + "classpath:application.yml,"
             + "classpath:nginx-set.yml";
     public static void main(String[] args) {
-        //보안을 위한 .env 파일 사용
-        Dotenv dotenv = Dotenv.load();
+        // 현재 작업 디렉토리를 로그로 출력
+        String currentDir = System.getProperty("user.dir");
+        System.out.println("Current working directory: " + currentDir);
+
+        // 보안을 위한 .env 파일 사용
+        Dotenv dotenv = Dotenv.configure()
+                .directory(currentDir)  // 현재 작업 디렉토리로 설정
+                .load();
         System.setProperty("AWS_ACCESS_KEY_ID", dotenv.get("AWS_ACCESS_KEY_ID"));
         System.setProperty("AWS_SECRET_ACCESS_KEY", dotenv.get("AWS_SECRET_ACCESS_KEY"));
         System.setProperty("AWS_REGION", dotenv.get("AWS_REGION"));
