@@ -25,10 +25,13 @@ public class ProjectCommentQueryController {
                                                                             @RequestParam(defaultValue = "1") int page,
                                                                             @RequestParam(defaultValue = "10") int size,
                                                                             @RequestParam(defaultValue = "100") int limit) {
-        if (page < 1) {
-            page = 1;
+        if (page < 0){
+            page = 0;
         }
 
+        if (page > 0) {
+            page -= 1;
+        }
         int adjustedPageSize = Math.min(size, limit);
         Pageable pageable = PageRequest.of(page, adjustedPageSize);
 
@@ -47,8 +50,12 @@ public class ProjectCommentQueryController {
                                                                                      @RequestParam(defaultValue = "10") int size,
                                                                                      @RequestParam(defaultValue = "100") int limit){
 
-        if (page < 1) {
-            page = 1;
+        if (page < 0){
+            page = 0;
+        }
+
+        if (page > 0) {
+            page -= 1;
         }
 
         int adjustedPageSize = Math.min(size, limit);

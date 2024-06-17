@@ -9,19 +9,22 @@ import com.example.team_12_be.security.CustomUserDetails;
 import com.example.team_12_be.security.JwtProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jdk.jfr.Description;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
 @Tag(name = "회원가입 토큰 발급 컨트롤러")
 @RestController
 @RequiredArgsConstructor
@@ -55,6 +58,13 @@ public class MemberController {
         public void memberInfo(@AuthenticationPrincipal CustomUserDetails userDetails){
                 Member member = userDetails.getMember();
                 log.info(member.toString());
+        }
+
+        @GetMapping("/token")
+        public String getTokenTest(){
+                String uuid = UUID.randomUUID().toString().substring(0, 8);
+                memberService.saveRandomTestUser(uuid);
+                return jwtProvider.createToken(uuid);
         }
 
         //회원가입

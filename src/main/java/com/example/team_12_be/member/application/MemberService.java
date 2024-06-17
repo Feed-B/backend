@@ -2,6 +2,7 @@ package com.example.team_12_be.member.application;
 
 import com.example.team_12_be.member.domain.Member;
 import com.example.team_12_be.member.domain.MemberRepository;
+import com.example.team_12_be.member.domain.vo.Job;
 import com.example.team_12_be.member.domain.vo.MemberRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,13 @@ public class MemberService {
     }
     public Member findById(Long id) {
         return memberRepository.findById(id).orElseThrow();
+    }
+
+    public void saveRandomTestUser(String uuid){
+        if (findByEmail(uuid).isPresent()){
+            return;
+        }
+        memberRepository.save(new Member(uuid, uuid, uuid, Job.IOS));
     }
 
     public Optional<Member> findByEmail(String email) { return memberRepository.findByEmail(email);
