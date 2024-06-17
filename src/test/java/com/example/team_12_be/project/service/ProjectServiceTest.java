@@ -4,7 +4,10 @@ import com.example.team_12_be.member.domain.Member;
 import com.example.team_12_be.member.domain.MemberRepository;
 import com.example.team_12_be.member.domain.vo.Job;
 import com.example.team_12_be.project.domain.Project;
+import com.example.team_12_be.project.domain.ProjectImage;
+import com.example.team_12_be.project.image.service.ProjectImageService;
 import com.example.team_12_be.project.repository.ProejctJpaRepository;
+import com.example.team_12_be.project.service.dto.request.ProjectImageDto;
 import com.example.team_12_be.project.service.dto.request.ProjectLinkRequestDto;
 import com.example.team_12_be.project.service.dto.request.ProjectRequestDto;
 import com.example.team_12_be.project.service.dto.request.ProjectTeammateRequestDto;
@@ -13,11 +16,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @Transactional
@@ -35,6 +42,9 @@ class ProjectServiceTest {
     ProjectRequestDto requestDtoFixture;
 
     Member memberFixture;
+
+    @MockBean
+    ProjectImageService projectImageService;
 
     @BeforeEach
     void setup(){
@@ -72,19 +82,24 @@ class ProjectServiceTest {
         );
     }
 
-//    @Test
-//    void testSave() {
-//        projectService.saveProject(requestDtoFixture, memberFixture);
-//
-//        Project project = proejctJpaRepository.findAll().getFirst();
-//
-//        SoftAssertions.assertSoftly(
-//                softly -> {
-//                    softly.assertThat(project.getProjectTechStacks()).hasSameSizeAs(requestDtoFixture.projectTechStacks());
-//                    softly.assertThat(project.getProjectTeammates()).hasSameSizeAs(requestDtoFixture.projectTeammates());
-//                    softly.assertThat(project.getProjectLinks()).hasSameSizeAs(requestDtoFixture.projectLinks());
-//                }
-//        );
-//    }
+    @Test
+    void testSave() {
+        // given
+        List<ProjectImageDto> projectImageDtoList = List.of(mock(ProjectImageDto.class));
+        projectService.saveProject(requestDtoFixture, memberFixture, projectImageDtoList);
+
+        List<ProjectImage> projectImages = new ArrayList<>();
+        when(projectImageService.upload(projectImageDtoList))
+                .thenReturn(projectImages);
+        Project project = proejctJpaRepository.findAll().getFirst();
+
+        SoftAssertions.assertSoftly(
+                softly -> {
+                    softly.assertThat(project.getProjectTechStacks()).hasSameSizeAs(requestDtoFixture.projectTechStacks());
+                    softly.assertThat(project.getProjectTeammates()).hasSameSizeAs(requestDtoFixture.projectTeammates());
+                    softly.assertThat(project.getProjectLinks()).hasSameSizeAs(requestDtoFixture.projectLinks());
+                }
+        );
+    }
 
 }

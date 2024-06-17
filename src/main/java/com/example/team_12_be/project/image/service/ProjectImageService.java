@@ -34,7 +34,7 @@ public class ProjectImageService { //TODO 단일책임의 원칙을 최대한 �
 
     @Transactional
     public List<ProjectImage> upload(List<ProjectImageDto> projectImageDtoList) {
-        if(projectImageDtoList.isEmpty() || Objects.isNull(projectImageDtoList.getFirst().image().getOriginalFilename())) {
+        if(Objects.isNull(projectImageDtoList) || projectImageDtoList.isEmpty() || Objects.isNull(projectImageDtoList.getFirst().image().getOriginalFilename())) {
             throw new IllegalArgumentException("File must not be empty or null");
         }
         return this.uploadImage(projectImageDtoList);
