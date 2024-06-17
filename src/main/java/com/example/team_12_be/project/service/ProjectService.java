@@ -22,7 +22,7 @@ public class ProjectService {
 
     private final ProjectImageService projectImageService;
 
-    public void saveProject(ProjectRequestDto projectRequestDto, Member author , List<ProjectImageDto> projectImageDtoList) {
+    public Long saveProject(ProjectRequestDto projectRequestDto, Member author , List<ProjectImageDto> projectImageDtoList) {
         Project project = projectRequestDto.toEntity(author);
         projectPort.saveProject(project);
 
@@ -38,6 +38,7 @@ public class ProjectService {
         List<ProjectImage> images = projectImageService.upload(projectImageDtoList);
         images.forEach(project::addProjectImage);
 
+        return project.getId();
     }
 
 //    // TODO : 한번에? 아니면 여러차례 나눠서?
