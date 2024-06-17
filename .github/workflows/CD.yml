@@ -26,6 +26,14 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
         shell: bash
+      # .env 파일 생성
+      - name: Create .env file
+        run: |
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
+          echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> .env
+          echo "JWT_SECRET=VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHb17" >> .env
+        shell: bash
 
       - name: Build with Gradle
         run: ./gradlew build
