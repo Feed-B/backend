@@ -49,7 +49,7 @@ public class Project extends TimeStamp {
     private List<ProjectTechStack> projectTechStacks = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<PrjectImage> projectImages = new ArrayList<>();
+    private List<ProjectImage> projectImages = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ProjectComment> projectComments = new ArrayList<>();
@@ -143,6 +143,14 @@ public class Project extends TimeStamp {
         projectRating.assignToProject(null);
     }
 
+    public void addProjectImage(ProjectImage projectImage) {
+        projectImages.add(projectImage);
+        projectImage.assign(this);
+    }
+    public void removeProjectImage(ProjectImage projectImage) {
+        projectImages.remove(projectImage);
+        projectImage.assign(null);
+    }
     public StarRank calculateAverageStarRank() {
         int size = projectRatings.size();
         if (size == 0) {

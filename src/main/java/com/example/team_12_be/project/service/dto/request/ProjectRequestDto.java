@@ -21,7 +21,7 @@ public record ProjectRequestDto(
         @NotEmpty
         List<String> projectTechStacks,
 //        Long thumbnailImageId,
-//        List<PrjectImage> projectImages,
+//        List<ProjectImageRequestDto> projectImages,
 //        List<ProjectComment> projectComments,
 //        List<ProjectLike> projectLikes,
         @NotEmpty

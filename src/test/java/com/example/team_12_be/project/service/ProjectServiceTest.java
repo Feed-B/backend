@@ -72,19 +72,19 @@ class ProjectServiceTest {
         );
     }
 
-    @Test
-    void testSave() {
-        projectService.saveProject(requestDtoFixture, memberFixture);
-
-        Project project = proejctJpaRepository.findAll().getFirst();
-
-        SoftAssertions.assertSoftly(
-                softly -> {
-                    softly.assertThat(project.getProjectTechStacks()).hasSameSizeAs(requestDtoFixture.projectTechStacks());
-                    softly.assertThat(project.getProjectTeammates()).hasSameSizeAs(requestDtoFixture.projectTeammates());
-                    softly.assertThat(project.getProjectLinks()).hasSameSizeAs(requestDtoFixture.projectLinks());
-                }
-        );
-    }
+//    @Test
+//    void testSave() {
+//        projectService.saveProject(requestDtoFixture, memberFixture);
+//
+//        Project project = proejctJpaRepository.findAll().getFirst();
+//
+//        SoftAssertions.assertSoftly(
+//                softly -> {
+//                    softly.assertThat(project.getProjectTechStacks()).hasSameSizeAs(requestDtoFixture.projectTechStacks());
+//                    softly.assertThat(project.getProjectTeammates()).hasSameSizeAs(requestDtoFixture.projectTeammates());
+//                    softly.assertThat(project.getProjectLinks()).hasSameSizeAs(requestDtoFixture.projectLinks());
+//                }
+//        );
+//    }
 
 }

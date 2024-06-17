@@ -1,12 +1,10 @@
 package com.example.team_12_be.project.service;
 
+import com.example.team_12_be.project.image.service.ProjectImageService;
 import com.example.team_12_be.member.application.MemberService;
 import com.example.team_12_be.member.domain.Member;
 import com.example.team_12_be.project.domain.*;
-import com.example.team_12_be.project.service.dto.request.ProjectLinkRequestDto;
-import com.example.team_12_be.project.service.dto.request.ProjectRatingRequestDto;
-import com.example.team_12_be.project.service.dto.request.ProjectRequestDto;
-import com.example.team_12_be.project.service.dto.request.ProjectTeammateRequestDto;
+import com.example.team_12_be.project.service.dto.request.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +20,9 @@ public class ProjectService {
 
     private final MemberService memberService;
 
-    public Long saveProject(ProjectRequestDto projectRequestDto, Member author) {
+    private final ProjectImageService projectImageService;
+
+    public Long saveProject(ProjectRequestDto projectRequestDto, Member author , List<ProjectImageDto> projectImageDtoList) {
         Project project = projectRequestDto.toEntity(author);
         projectPort.saveProject(project);
 
@@ -34,6 +34,9 @@ public class ProjectService {
 
         List<ProjectLink> links = projectRequestDto.projectLinks().stream().map(ProjectLinkRequestDto::toEntity).toList();
         links.forEach(project::addLink);
+
+        List<ProjectImage> images = projectImageService.upload(projectImageDtoList);
+        images.forEach(project::addProjectImage);
 
         return project.getId();
     }

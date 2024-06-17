@@ -22,4 +22,6 @@ public interface ProjectPort {
     ProjectLike saveLike(ProjectLike projectLike);
 
     void deleteLikeByMemberIdAndProjectId(Long memberId, Long projectId);
+
+    ProjectImage saveImage(ProjectImage projectImage);
 }

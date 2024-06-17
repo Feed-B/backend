@@ -15,13 +15,13 @@ public class MemberResponse {
     private String nickName;
     private String aboutMe;
     private Job job;
-    private String token;
-    public MemberResponse(Long id, String email, String nickName, String aboutMe, Job job, String token) {
+   // private String token;
+    public MemberResponse(Long id, String email, String nickName, String aboutMe, Job job) {
         this.id = id;
         this.email = email;
         this.nickName = nickName;
         this.aboutMe = aboutMe;
         this.job = job;
-        this.token = token;
+       // this.token = token;
     }
 }
