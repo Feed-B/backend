@@ -35,7 +35,6 @@ public class SpringSecurityConfig {
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        String baseUrl = "http://localhost:8080";  // 실제 base URL을 설정해야 합니다.
 
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
@@ -45,11 +44,8 @@ public class SpringSecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((request -> request
-                        .requestMatchers(new AntPathRequestMatcher("/test/**")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/h2-console/*")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**")).permitAll()
-                        .requestMatchers(antMatcher("/h2-console")).permitAll()
-                        .requestMatchers("loginForm.html" ,"/signUp").permitAll()
+                        .requestMatchers("/h2-console/*","/swagger-ui/**","/actuator/health","/nginx/profile","/swagger-resources/**" , "/v3/api-docs/**").permitAll() //기본 설정 관련
+                        .requestMatchers("/test/**","/login/{service}" ,"/signUp").permitAll()
                         //TODO : permitAll 제거할 것
                         .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated()

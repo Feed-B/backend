@@ -2,6 +2,7 @@ echo "> ============ deploy.sh 실행 =============" >> /home/ec2-user/deploy.lo
 BASE_PATH=/home/ec2-user/FeedB-project
 BUILD_PATH=$(ls $BASE_PATH/build/libs/*.jar | grep -i 'SNAPSHOT.jar$')
 JAR_NAME=$(basename $BUILD_PATH)
+
 echo "> build 파일명: $JAR_NAME" >> /home/ec2-user/deploy.log #deploy.log에 기록 남기기
 
 echo "> build 파일 복사" >> /home/ec2-user/deploy.log

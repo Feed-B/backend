@@ -1,6 +1,7 @@
 package com.example.team_12_be.project.presentation;
 
 import com.example.team_12_be.project.service.ProjectService;
+import com.example.team_12_be.project.service.dto.request.ProjectImageDto;
 import com.example.team_12_be.project.service.dto.request.ProjectRatingRequestDto;
 import com.example.team_12_be.project.service.dto.request.ProjectRequestDto;
 import com.example.team_12_be.security.CustomUserDetails;
@@ -8,16 +9,16 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.IntStream;
 
 @Tag(name = "프로젝트 기능(C,U,D) 컨트롤러")
 @SecurityRequirement(name = "Bearer Authentication")
@@ -27,10 +28,20 @@ public class ProjectController {
 
     private final ProjectService projectService;
 
-    @PostMapping("/projects")
+    // TODO : Authentication 완료되면 작성 유저의 정보도 받아야 한다.
+
+    @PostMapping(value ="/projects" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(description="프로젝트를 생성")
-    public ResponseEntity<Void> saveProject(@RequestBody ProjectRequestDto projectRequestDto, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        Long projectId = projectService.saveProject(projectRequestDto, customUserDetails.getMember());
+    public ResponseEntity<Void> saveProject(@RequestPart ProjectRequestDto projectRequestDto,
+                                      @RequestPart List<MultipartFile> multipartFileList,
+                                      @RequestPart List<Integer> indexes,
+                                      @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        //file 형태를 데이터와 포함해서 요청하기엔 객체 바인딩 이슈로 개별로 받아서 record 생성
+        List<ProjectImageDto> projectImageDtoList = IntStream.range(0, multipartFileList.size())
+                .mapToObj(i -> new ProjectImageDto(multipartFileList.get(i),indexes.get(i)))
+                .toList();
+
+        Long projectId = projectService.saveProject(projectRequestDto, customUserDetails.getMember(),projectImageDtoList);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -38,6 +49,7 @@ public class ProjectController {
                 .toUri();
 
         return ResponseEntity.created(location).build();
+
     }
 
     @DeleteMapping("/projects/{projectId}")

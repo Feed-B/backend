@@ -11,11 +11,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @NoArgsConstructor
 @Getter
-public class PrjectImage extends TimeStamp {
+public class ProjectImage extends TimeStamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +29,14 @@ public class PrjectImage extends TimeStamp {
 
     private String url;
 
+    private int index;
+
+    public ProjectImage(String url , int index) {
+        this.url = url;
+        this.index = index;
+    }
+
+    public void assign(Project project) {
+        this.project = project;
+    }
 }
