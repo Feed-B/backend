@@ -1,6 +1,6 @@
 package com.example.team_12_be.project.service;
 
-import com.example.team_12_be.member.domain.Member;
+import com.example.team_12_be.global.page.CustomPageResponse;
 import com.example.team_12_be.member.domain.vo.Job;
 import com.example.team_12_be.project.domain.Project;
 import com.example.team_12_be.project.domain.ProjectLike;
@@ -8,9 +8,12 @@ import com.example.team_12_be.project.domain.ProjectQueryRepository;
 import com.example.team_12_be.project.domain.ProjectRating;
 import com.example.team_12_be.project.domain.ProjectTeammate;
 import com.example.team_12_be.project.domain.vo.StarRank;
+import com.example.team_12_be.project.presentation.request.SortCondition;
+import com.example.team_12_be.project.repository.query.ProjectQuerydslRepository;
 import com.example.team_12_be.project.service.dto.response.*;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.query.Page;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +28,7 @@ import java.util.stream.Collectors;
 public class ProjectQueryService {
 
     private final ProjectQueryRepository projectQueryRepository;
+    private final ProjectQuerydslRepository projectQuerydslRepository;
 
     public Project findById(Long id) {
         return projectQueryRepository.findById(id).orElseThrow(
@@ -98,7 +102,26 @@ public class ProjectQueryService {
                 .toList();
     }
 
-//    public List<ProjectListResponseDto> getProjectList(){
-//
-//    }
+    public CustomPageResponse<ProjectListResponseDto> getProjectList(SortCondition sortCondition, List<String> projectTechStacks, Long memberId, Pageable pageable){
+        Page<Project> projects = projectQuerydslRepository.findProjectsProjectTechStacksOrderBySortCondition(sortCondition, projectTechStacks, pageable);
+
+        List<ProjectListResponseDto> projectListResponseDtoList = projects.stream()
+                .map(project -> {
+                    Long likeCount = projectQueryRepository.countLikeByProjectId(project.getId());
+                    boolean isLiked = isLiked(memberId, project);
+                    Long viewCount = project.getViewCount();
+                    return ProjectListResponseDto.of(project, likeCount, isLiked, viewCount);
+                })
+                .toList();
+
+        return new CustomPageResponse<>(projectListResponseDtoList, pageable, projects.getTotalElements());
+    }
+
+    private boolean isLiked(Long memberId, Project project) {
+        if (Objects.isNull(memberId)){
+            return false;
+        }
+
+        return projectQueryRepository.existsLikeByMemberIdAndProjectId(memberId, project.getId());
+    }
 }
