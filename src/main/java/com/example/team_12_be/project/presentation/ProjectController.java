@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 @Tag(name = "프로젝트 기능(C,U,D) 컨트롤러")
+@SecurityRequirement(name = "Bearer Authentication")
 @RestController
 @RequiredArgsConstructor
 @SecurityRequirement(name = "Bearer Authentication")

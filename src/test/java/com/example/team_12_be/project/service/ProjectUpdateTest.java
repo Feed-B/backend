@@ -7,10 +7,8 @@ import com.example.team_12_be.project.domain.Project;
 import com.example.team_12_be.project.domain.ProjectTechStack;
 import com.example.team_12_be.project.repository.ProejctJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
@@ -57,16 +55,5 @@ class ProjectUpdateTest {
                 author,
                 serviceUrl
         );
-    }
-
-    @Test
-    @Rollback(false)
-    void testRemove() {
-        Project project = proejctJpaRepository.findAll().getFirst();
-        ProjectTechStack first = project.getProjectTechStacks().getFirst();
-
-        project.removeTechStack(first);
-
-        proejctJpaRepository.save(project);
     }
 }

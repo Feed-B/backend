@@ -45,9 +45,9 @@ class ProjectServiceTest {
 
     Member createMemberFixture(){
         return new Member(
-                "test",
-                "test",
-                "test",
+                "tes123t",
+                "te123st",
+                "tes123t",
                 Job.IOS
         );
     }
