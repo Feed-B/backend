@@ -21,7 +21,6 @@ import java.util.stream.IntStream;
 @SecurityRequirement(name = "Bearer Authentication")
 @RestController
 @RequiredArgsConstructor
-@SecurityRequirement(name = "Bearer Authentication")
 public class ProjectController {
 
     private final ProjectService projectService;
