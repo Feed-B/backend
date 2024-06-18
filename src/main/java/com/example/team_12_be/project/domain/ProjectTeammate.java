@@ -36,9 +36,10 @@ public class ProjectTeammate {
 
     private String url;
 
-    public ProjectTeammate(String teammateName, Job job) {
+    public ProjectTeammate(String teammateName, Job job, String url) {
         this.teammateName = teammateName;
         this.job = job;
+        this.url = url;
     }
 
     public void assign(Project project){

@@ -2,7 +2,6 @@ package com.example.team_12_be.project.service.dto.response;
 
 import com.example.team_12_be.project.domain.Project;
 import com.example.team_12_be.project.domain.ProjectImage;
-import com.example.team_12_be.project.service.dto.request.ProjectImageDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,7 +21,8 @@ public record ProjectDetailResponseDto(
         List<ProjectTechStackResponseDto> projectTechStacks,
         String thumbnailUrl,
         List<String> imageUrlList
-        ) {
+        // TODO : 내가 올린 프로젝트인지 판별해서 리턴
+) {
     // TODO : 온전한 데이터를 완성한다.
     public static ProjectDetailResponseDto of(Project project, Long likeCount) {
         return new ProjectDetailResponseDto(

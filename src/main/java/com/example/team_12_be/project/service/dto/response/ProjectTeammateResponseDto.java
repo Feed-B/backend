@@ -5,9 +5,10 @@ import com.example.team_12_be.project.domain.ProjectTeammate;
 
 public record ProjectTeammateResponseDto(
         String teammateName,
-        Job job
+        Job job,
+        String url
 ) {
     public static ProjectTeammateResponseDto of(ProjectTeammate projectTeammate) {
-        return new ProjectTeammateResponseDto(projectTeammate.getTeammateName(), projectTeammate.getJob());
+        return new ProjectTeammateResponseDto(projectTeammate.getTeammateName(), projectTeammate.getJob(), projectTeammate.getUrl());
     }
 }

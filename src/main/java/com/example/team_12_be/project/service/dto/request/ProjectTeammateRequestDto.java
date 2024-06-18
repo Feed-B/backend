@@ -5,9 +5,10 @@ import com.example.team_12_be.project.domain.ProjectTeammate;
 
 public record ProjectTeammateRequestDto(
         String name,
-        Job job
+        Job job,
+        String url
 ) {
     public ProjectTeammate toEntity(){
-        return new ProjectTeammate(name, job);
+        return new ProjectTeammate(name, job, url);
     }
 }
