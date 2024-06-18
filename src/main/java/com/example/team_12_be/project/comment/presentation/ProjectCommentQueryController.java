@@ -6,12 +6,14 @@ import com.example.team_12_be.project.comment.service.ProjectCommentQueryService
 import com.example.team_12_be.project.comment.service.dto.MyProjectCommentResponse;
 import com.example.team_12_be.project.comment.service.dto.ProjectCommentResponseDto;
 import com.example.team_12_be.project.comment.service.dto.ReplyCommentResponseDto;
+import com.example.team_12_be.security.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,11 +53,11 @@ public class ProjectCommentQueryController {
         return projectCommentQueryService.findAllReplyByParentCommentId(commentId, pageable);
     }
 
-    @GetMapping("/projects/{projectId}/comments/{commentId}/replies")
+    @GetMapping("/projects/{projectId}/comments/mine")
     @Operation(description = "프로젝트에 달린 나의 댓글 조회 - (exists 로 존재여부 판별)")
     public MyProjectCommentResponse getMyComment(@PathVariable Long projectId,
-                                                  @PathVariable Long commentId){
-        ProjectCommentResponseDto myProjectComment = projectCommentQueryService.getMyProjectComment(projectId, commentId);
+                                                 @AuthenticationPrincipal CustomUserDetails customUserDetails){
+        ProjectCommentResponseDto myProjectComment = projectCommentQueryService.getMyProjectComment(projectId, customUserDetails.getMember().getId());
 
         if (myProjectComment == null) {
             return new MyProjectCommentResponse(false, null);
