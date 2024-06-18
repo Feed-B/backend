@@ -4,6 +4,7 @@ import com.example.team_12_be.project.service.ProjectService;
 import com.example.team_12_be.project.service.dto.request.ProjectImageDto;
 import com.example.team_12_be.project.service.dto.request.ProjectRatingRequestDto;
 import com.example.team_12_be.project.service.dto.request.ProjectRequestDto;
+import com.example.team_12_be.project.service.dto.request.ProjectThumbnailDto;
 import com.example.team_12_be.security.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -33,15 +34,19 @@ public class ProjectController {
     @PostMapping(value ="/projects" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(description="프로젝트를 생성")
     public ResponseEntity<Void> saveProject(@RequestPart ProjectRequestDto projectRequestDto,
-                                      @RequestPart List<MultipartFile> multipartFileList,
-                                      @RequestPart List<Integer> indexes,
+                                      @RequestPart List<MultipartFile> images,
+                                      @RequestPart List<Integer> imageIndexes,
+                                      @RequestPart MultipartFile thumbnail,
+                                      @RequestPart Integer thumbnailIndex,
                                       @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         //file 형태를 데이터와 포함해서 요청하기엔 객체 바인딩 이슈로 개별로 받아서 record 생성
-        List<ProjectImageDto> projectImageDtoList = IntStream.range(0, multipartFileList.size())
-                .mapToObj(i -> new ProjectImageDto(multipartFileList.get(i),indexes.get(i)))
+        List<ProjectImageDto> projectImageDtoList = IntStream.range(0, images.size())
+                .mapToObj(i -> new ProjectImageDto(images.get(i),imageIndexes.get(i)))
                 .toList();
 
-        Long projectId = projectService.saveProject(projectRequestDto, customUserDetails.getMember(),projectImageDtoList);
+        ProjectThumbnailDto projectThumbnailDto = new ProjectThumbnailDto(thumbnail , thumbnailIndex);
+
+        Long projectId = projectService.saveProject(projectRequestDto, customUserDetails.getMember(),projectImageDtoList , projectThumbnailDto);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")

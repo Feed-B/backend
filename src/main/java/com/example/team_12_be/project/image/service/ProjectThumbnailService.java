@@ -6,9 +6,8 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.util.IOUtils;
 import com.example.team_12_be.project.domain.ProjectImage;
-import com.example.team_12_be.project.domain.ProjectPort;
 import com.example.team_12_be.project.service.dto.request.ProjectImageDto;
-
+import com.example.team_12_be.project.service.dto.request.ProjectThumbnailDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,38 +22,33 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ProjectImageService { //TODO 단일책임의 원칙을 최대한 적용해보자.
+public class ProjectThumbnailService {
 
     private final AmazonS3 amazonS3;
-
     private String bucketName = "feedb-bucket";
     private String bucketFolder = "image/";
 
-    private final ProjectPort projectPort;
-
     @Transactional
-    public List<ProjectImage> upload(List<ProjectImageDto> projectImageDtoList) {
-        if(Objects.isNull(projectImageDtoList) || projectImageDtoList.isEmpty() || Objects.isNull(projectImageDtoList.getFirst().image().getOriginalFilename())) {
+    public String upload(ProjectThumbnailDto projectThumbnailDto) {
+        if(Objects.isNull(projectThumbnailDto) || Objects.isNull(projectThumbnailDto.image().getOriginalFilename())) {
             throw new IllegalArgumentException("File must not be empty or null");
         }
-        return this.uploadImage(projectImageDtoList);
+        return this.uploadImage(projectThumbnailDto);
     }
 
-    private List<ProjectImage> uploadImage(List<ProjectImageDto> projectImageDtoList) {
-        this.validateImageFileExtention(projectImageDtoList);
+    private String uploadImage(ProjectThumbnailDto projectThumbnailDto) {
+        this.validateImageFileExtention(projectThumbnailDto);
         try{
-            return this.uploadImageToS3(projectImageDtoList);
+            return this.uploadImageToS3(projectThumbnailDto);
         }catch (IOException e) {
             throw new RuntimeException("IOException occurred during image upload" , e);
         }
     }
 
     //S3에 이미지 저장
-    private List<ProjectImage> uploadImageToS3(List<ProjectImageDto> projectImageDtoList) throws IOException {
-        List<ProjectImage> projectImageList = new ArrayList<>();
+    private String uploadImageToS3(ProjectThumbnailDto projectThumbnailDto) throws IOException {
 
-        for (ProjectImageDto projectImageDto : projectImageDtoList) {
-            MultipartFile image = projectImageDto.image();
+            MultipartFile image = projectThumbnailDto.image();
             String originalFilename = image.getOriginalFilename(); // 원본 파일
             String extention = originalFilename.substring(originalFilename.lastIndexOf(".")); //파일 확장자
 
@@ -80,20 +74,14 @@ public class ProjectImageService { //TODO 단일책임의 원칙을 최대한 �
                 is.close();
             }
             String url = amazonS3.getUrl(bucketName , s3FileName).toString();
-
-            ProjectImage projectImage = new ProjectImage(url , projectImageDto.index());
-            projectImageList.add(projectImage);
-        }
-
-        //projectImageList.stream().forEach(value -> log.info("index , url = " + value.getIndex() + " , " + value.getUrl()));
-        return projectImageList;
+            //log.info("Thumbnail Url = " + url);
+        return url;
     }
 
     //파일 형태 검증 메소드
-    private void validateImageFileExtention(List<ProjectImageDto> projectImageDtoList) {
+    private void validateImageFileExtention(ProjectThumbnailDto projectThumbnailDto) {
 
-       for(ProjectImageDto projectImageRequestDto : projectImageDtoList) {
-            String filename = projectImageRequestDto.image().getOriginalFilename();
+            String filename = projectThumbnailDto.image().getOriginalFilename();
             int lastDotIndex = filename.lastIndexOf(".");
             if(lastDotIndex == -1) {
                 throw new IllegalArgumentException("File extension is missing"); //TODO 에러 응답 형태 테스트!
@@ -105,6 +93,7 @@ public class ProjectImageService { //TODO 단일책임의 원칙을 최대한 �
             if(!allowedExtentionList.contains(extention)) {
                 throw new IllegalArgumentException("Invalid file extention: " + extention);
             }
-       }
+
     }
 }
+

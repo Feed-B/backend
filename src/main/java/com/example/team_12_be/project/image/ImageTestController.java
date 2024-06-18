@@ -4,6 +4,7 @@ import com.example.team_12_be.project.image.service.ProjectImageService;
 import com.example.team_12_be.project.service.dto.request.ProjectImageDto;
 import com.example.team_12_be.project.service.dto.request.ProjectRequestDto;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.stream.IntStream;
 @SecurityRequirement(name = "Bearer Authentication")
+@Tag(name = "이미지 업로드 테스트")
 @RestController
 @RequiredArgsConstructor
 public class ImageTestController {

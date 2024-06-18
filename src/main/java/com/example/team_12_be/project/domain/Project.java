@@ -4,15 +4,7 @@ import com.example.team_12_be.base.TimeStamp;
 import com.example.team_12_be.member.domain.Member;
 import com.example.team_12_be.project.comment.domain.ProjectComment;
 import com.example.team_12_be.project.domain.vo.StarRank;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,6 +41,7 @@ public class Project extends TimeStamp {
     private List<ProjectTechStack> projectTechStacks = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OrderBy("index ASC")  // index 값에 따라 오름차순 정렬
     private List<ProjectImage> projectImages = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -86,9 +79,6 @@ public class Project extends TimeStamp {
         this.viewCount = 0L;
         this.serviceUrl = serviceUrl;
 
-        // TODO : images
-//        this.thumbnail = thumbnail;
-//        this.projectImages = projectImages;
     }
 
     public void addTechStack(ProjectTechStack projectTechStack){
@@ -150,6 +140,10 @@ public class Project extends TimeStamp {
     public void removeProjectImage(ProjectImage projectImage) {
         projectImages.remove(projectImage);
         projectImage.assign(null);
+    }
+
+    public void addThumbnailUrl(String url) {
+        this.thumbnailUrl = url;
     }
     public StarRank calculateAverageStarRank() {
         int size = projectRatings.size();

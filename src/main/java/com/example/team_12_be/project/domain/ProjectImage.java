@@ -20,15 +20,16 @@ public class ProjectImage extends TimeStamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "projectId", nullable = false)
+    @Column(name = "id", nullable = false)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "project_id")
     private Project project;
 
     private String url;
 
+    @Column(name = "index")
     private int index;
 
     public ProjectImage(String url , int index) {

@@ -6,11 +6,9 @@ import com.example.team_12_be.member.domain.vo.Job;
 import com.example.team_12_be.project.domain.Project;
 import com.example.team_12_be.project.domain.ProjectImage;
 import com.example.team_12_be.project.image.service.ProjectImageService;
+import com.example.team_12_be.project.image.service.ProjectThumbnailService;
 import com.example.team_12_be.project.repository.ProejctJpaRepository;
-import com.example.team_12_be.project.service.dto.request.ProjectImageDto;
-import com.example.team_12_be.project.service.dto.request.ProjectLinkRequestDto;
-import com.example.team_12_be.project.service.dto.request.ProjectRequestDto;
-import com.example.team_12_be.project.service.dto.request.ProjectTeammateRequestDto;
+import com.example.team_12_be.project.service.dto.request.*;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,6 +43,9 @@ class ProjectServiceTest {
 
     @MockBean
     ProjectImageService projectImageService;
+
+    @MockBean
+    ProjectThumbnailService projectThumbnailService;
 
     @BeforeEach
     void setup(){
@@ -86,11 +87,14 @@ class ProjectServiceTest {
     void testSave() {
         // given
         List<ProjectImageDto> projectImageDtoList = List.of(mock(ProjectImageDto.class));
-        projectService.saveProject(requestDtoFixture, memberFixture, projectImageDtoList);
+        ProjectThumbnailDto projectThumbnailDto = mock(ProjectThumbnailDto.class);
+        projectService.saveProject(requestDtoFixture, memberFixture, projectImageDtoList , projectThumbnailDto);
 
         List<ProjectImage> projectImages = new ArrayList<>();
         when(projectImageService.upload(projectImageDtoList))
                 .thenReturn(projectImages);
+        when(projectThumbnailService.upload(projectThumbnailDto))
+                .thenReturn("");
         Project project = proejctJpaRepository.findAll().getFirst();
 
         SoftAssertions.assertSoftly(
