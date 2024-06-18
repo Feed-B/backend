@@ -20,11 +20,10 @@ public record ProjectDetailResponseDto(
         List<ProjectLinkResponseDto> projectLinks,
         List<ProjectTechStackResponseDto> projectTechStacks,
         String thumbnailUrl,
-        List<String> imageUrlList
-        // TODO : 내가 올린 프로젝트인지 판별해서 리턴
+        List<String> imageUrlList,
+        boolean isMine
 ) {
-    // TODO : 온전한 데이터를 완성한다.
-    public static ProjectDetailResponseDto of(Project project, Long likeCount) {
+    public static ProjectDetailResponseDto of(Project project, Long likeCount, boolean isMine) {
         return new ProjectDetailResponseDto(
                 project.getId(),
                 project.getAuthor().getId(),
@@ -38,7 +37,8 @@ public record ProjectDetailResponseDto(
                 project.getProjectLinks().stream().map(ProjectLinkResponseDto::of).toList(),
                 project.getProjectTechStacks().stream().map(ProjectTechStackResponseDto::of).toList(),
                 project.getThumbnailUrl(),
-                project.getProjectImages().stream().map(ProjectImage::getUrl).toList()
+                project.getProjectImages().stream().map(ProjectImage::getUrl).toList(),
+                isMine
         );
     }
 }

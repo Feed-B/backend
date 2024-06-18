@@ -36,11 +36,12 @@ public class ProjectQueryService {
         );
     }
 
-    public ProjectDetailResponseDto getDetailById(Long projectId) {
+    public ProjectDetailResponseDto getDetailById(Long projectId, Long memberId) {
         Project project = this.findById(projectId);
         long likeCount = projectQueryRepository.countLikeByProjectId(projectId);
+        boolean isMine = project.getAuthor().getId().equals(memberId);
 
-        return ProjectDetailResponseDto.of(project, likeCount);
+        return ProjectDetailResponseDto.of(project, likeCount, isMine);
     }
 
     public ProjectDetailForEditResponseDto getDetailForEditByProjectId(Long memberId, Long projectId){
@@ -58,7 +59,7 @@ public class ProjectQueryService {
 
         // 팀메이트들을 Job 별로 그룹화하고 ProjectTeammateResponseDto로 변환
         Map<Job, List<ProjectTeammateResponseDto>> groupedByJob = projectTeammates.stream()
-                .map(teammate -> new ProjectTeammateResponseDto(teammate.getTeammateName(), teammate.getJob()))
+                .map(teammate -> new ProjectTeammateResponseDto(teammate.getTeammateName(), teammate.getJob(), teammate.getUrl()))
                 .collect(Collectors.groupingBy(ProjectTeammateResponseDto::job));
 
         // 그룹화된 결과를 JobWithTeammateResponseDto 형식의 리스트로 변환

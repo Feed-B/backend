@@ -37,8 +37,8 @@ public class ProjectQueryController {
 
     @GetMapping("/projects/{projectId}")
     @Operation(description = "프로젝트 상세 조회")
-    public ProjectDetailResponseDto getProjectDetail(@PathVariable Long projectId) {
-        return projectQueryService.getDetailById(projectId);
+    public ProjectDetailResponseDto getProjectDetail(@PathVariable Long projectId, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        return projectQueryService.getDetailById(projectId, customUserDetails.getMember().getId());
     }
 
     @GetMapping("/projects/{projectId}/edits")
