@@ -9,8 +9,14 @@ import com.example.team_12_be.project.domain.ProjectRating;
 import com.example.team_12_be.project.domain.ProjectTeammate;
 import com.example.team_12_be.project.domain.vo.StarRank;
 import com.example.team_12_be.project.presentation.request.SortCondition;
-import com.example.team_12_be.project.repository.query.ProjectQuerydslRepository;
-import com.example.team_12_be.project.service.dto.response.*;
+import com.example.team_12_be.project.service.dto.response.JobWithTeammateResponseDto;
+import com.example.team_12_be.project.service.dto.response.LikedMembersTechStackResponseDto;
+import com.example.team_12_be.project.service.dto.response.ProjectDetailForEditResponseDto;
+import com.example.team_12_be.project.service.dto.response.ProjectDetailResponseDto;
+import com.example.team_12_be.project.service.dto.response.ProjectListResponseDto;
+import com.example.team_12_be.project.service.dto.response.ProjectRatingResponseDto;
+import com.example.team_12_be.project.service.dto.response.ProjectTeammateResponseDto;
+import com.example.team_12_be.project.service.dto.response.StarRankResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +34,6 @@ import java.util.stream.Collectors;
 public class ProjectQueryService {
 
     private final ProjectQueryRepository projectQueryRepository;
-    private final ProjectQuerydslRepository projectQuerydslRepository;
 
     public Project findById(Long id) {
         return projectQueryRepository.findById(id).orElseThrow(
@@ -104,7 +109,7 @@ public class ProjectQueryService {
     }
 
     public CustomPageResponse<ProjectListResponseDto> getProjectList(SortCondition sortCondition, List<String> projectTechStacks, Long memberId, String searchString, Pageable pageable){
-        Page<Project> projects = projectQuerydslRepository.findProjectsProjectTechStacksOrderBySortCondition(sortCondition, projectTechStacks, searchString, pageable);
+        Page<Project> projects = projectQueryRepository.findProjectsProjectTechStacksOrderBySortCondition(sortCondition, projectTechStacks, searchString, pageable);
 
         List<ProjectListResponseDto> projectListResponseDtoList = projects.stream()
                 .map(project -> getProjectListResponseDto(memberId, project))
