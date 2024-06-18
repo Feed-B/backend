@@ -39,4 +39,9 @@ public class DefaultProjectCommentRepository implements ProjectCommentRepository
     public Page<ProjectComment> findAllByParentCommentId(Long parentCommentId, Pageable pageable){
         return projectCommentJpaRepository.findAllByParentIdWithMember(parentCommentId, pageable);
     }
+
+    @Override
+    public Optional<ProjectComment> findByProjectIdAndMemberId(Long projectId, Long memberId) {
+        return projectCommentJpaRepository.findByProjectIdAndMemberId(projectId, memberId);
+    }
 }

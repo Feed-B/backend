@@ -18,4 +18,6 @@ public interface ProjectCommentRepository {
     long countByParentCommentId(Long parentCommentId);
 
     Page<ProjectComment> findAllByParentCommentId(Long parentCommentId, Pageable pageable);
+
+    Optional<ProjectComment> findByProjectIdAndMemberId(Long projectId, Long memberId);
 }

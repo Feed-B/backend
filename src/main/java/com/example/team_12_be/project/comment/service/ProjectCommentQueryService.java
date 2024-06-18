@@ -15,6 +15,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,8 +34,6 @@ public class ProjectCommentQueryService {
         return new CustomPageResponse<>(projectCommentResponses, pageable, projectCommentsPage.hasNext());
     }
 
-    // TODO : 대댓글 조회 API 작성
-
     public CustomPageResponse<ReplyCommentResponseDto> findAllReplyByParentCommentId(Long parentCommentId, Pageable pageable){
 
         Page<ProjectComment> replyCommentList = projectCommentRepository.findAllByParentCommentId(parentCommentId, pageable);
@@ -45,23 +44,26 @@ public class ProjectCommentQueryService {
         return new CustomPageResponse<>(replyCommentResponseDtoList, pageable, replyCommentList.getTotalElements());
     }
 
-    private ProjectCommentResponseDto getProjectCommentResponseDto(Long projectId, ProjectComment projectComment) {
-        long childCommentCount = projectCommentRepository.countByParentCommentId(projectComment.getParentId());
-        Member commentAuthor = projectComment.getMember();
-
-        ProjectRating projectRating = projectRatingJpaRepository.findByMemberIdAndProjectId(commentAuthor.getId(), projectId).orElseThrow(
-                () -> new IllegalArgumentException("평가하지 않은 유저")
-        );
-        float averageRank = projectRating.getStarRank().getAverageRank();
-
-        return ProjectCommentResponseDto.of(projectComment, commentAuthor, childCommentCount, averageRank);
-    }
-
     public ProjectCommentResponseDto getProjectCommentResponseDto(Long projectId, Long commentId) {
         ProjectComment projectComment = projectCommentRepository.findById(commentId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 댓글")
         );
 
+        return getProjectCommentResponseDto(projectId, projectComment);
+    }
+
+    public ProjectCommentResponseDto getMyProjectComment(Long projectId, Long memberId) {
+        Optional<ProjectComment> projectCommentOpt = projectCommentRepository.findByProjectIdAndMemberId(projectId, memberId);
+
+        if (projectCommentOpt.isEmpty()){
+            return null;
+        }
+
+        ProjectComment projectComment = projectCommentOpt.get();
+        return getProjectCommentResponseDto(projectId, projectComment);
+    }
+
+    private ProjectCommentResponseDto getProjectCommentResponseDto(Long projectId, ProjectComment projectComment) {
         long childCommentCount = projectCommentRepository.countByParentCommentId(projectComment.getParentId());
         Member commentAuthor = projectComment.getMember();
 

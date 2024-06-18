@@ -1,4 +1,4 @@
-package com.example.team_12_be.project.presentation.request;
+package com.example.team_12_be.global.presentation;
 
 public record CustomPageRequest(
         int page,

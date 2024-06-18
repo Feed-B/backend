@@ -1,7 +1,7 @@
 package com.example.team_12_be.project.presentation;
 
 import com.example.team_12_be.global.page.CustomPageResponse;
-import com.example.team_12_be.project.presentation.request.CustomPageRequest;
+import com.example.team_12_be.global.presentation.CustomPageRequest;
 import com.example.team_12_be.project.presentation.request.SortCondition;
 import com.example.team_12_be.project.service.ProjectQueryService;
 import com.example.team_12_be.project.service.dto.response.JobWithTeammateResponseDto;
