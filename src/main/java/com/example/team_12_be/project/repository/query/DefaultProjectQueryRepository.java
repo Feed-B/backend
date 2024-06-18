@@ -54,8 +54,8 @@ public class DefaultProjectQueryRepository implements ProjectQueryRepository {
     }
 
     @Override
-    public Page<Project> findProjectsProjectTechStacksOrderBySortCondition(SortCondition sortCondition, List<String> projectTechStacks, Pageable pageable) {
-        return projectQuerydslRepository.findProjectsProjectTechStacksOrderBySortCondition(sortCondition, projectTechStacks, pageable);
+    public Page<Project> findProjectsProjectTechStacksOrderBySortCondition(SortCondition sortCondition, List<String> projectTechStacks, String searchString, Pageable pageable) {
+        return projectQuerydslRepository.findProjectsProjectTechStacksOrderBySortCondition(sortCondition, projectTechStacks, searchString, pageable);
     }
 
     @Override

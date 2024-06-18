@@ -18,7 +18,7 @@ public interface ProjectQueryRepository {
 
     long countRankByProjectId(Long projectId);
 
-    Page<Project> findProjectsProjectTechStacksOrderBySortCondition(SortCondition sortCondition, List<String> projectTechStacks, Pageable pageable);
+    Page<Project> findProjectsProjectTechStacksOrderBySortCondition(SortCondition sortCondition, List<String> projectTechStacks, String searchString, Pageable pageable);
 
     boolean existsLikeByMemberIdAndProjectId(Long memberId, Long projectId);
 

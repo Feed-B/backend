@@ -103,8 +103,8 @@ public class ProjectQueryService {
                 .toList();
     }
 
-    public CustomPageResponse<ProjectListResponseDto> getProjectList(SortCondition sortCondition, List<String> projectTechStacks, Long memberId, Pageable pageable){
-        Page<Project> projects = projectQuerydslRepository.findProjectsProjectTechStacksOrderBySortCondition(sortCondition, projectTechStacks, pageable);
+    public CustomPageResponse<ProjectListResponseDto> getProjectList(SortCondition sortCondition, List<String> projectTechStacks, Long memberId, String searchString, Pageable pageable){
+        Page<Project> projects = projectQuerydslRepository.findProjectsProjectTechStacksOrderBySortCondition(sortCondition, projectTechStacks, searchString, pageable);
 
         List<ProjectListResponseDto> projectListResponseDtoList = projects.stream()
                 .map(project -> getProjectListResponseDto(memberId, project))

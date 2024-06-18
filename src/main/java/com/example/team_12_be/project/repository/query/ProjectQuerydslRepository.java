@@ -31,10 +31,18 @@ public class ProjectQuerydslRepository {
         return project.projectTechStacks.any().techStack.in(projectTechStacks);
     }
 
-    public Page<Project> findProjectsProjectTechStacksOrderBySortCondition(SortCondition sortCondition, List<String> projectTechStacks, Pageable pageable){
+    private BooleanExpression filterByTitleOrContent(String serachString){
+        if (Objects.isNull(serachString) || serachString.isEmpty()){
+            return null;
+        }
+
+        return project.title.like("%"+serachString+"%").or(project.content.like("%"+serachString+"%"));
+    }
+
+    public Page<Project> findProjectsProjectTechStacksOrderBySortCondition(SortCondition sortCondition, List<String> projectTechStacks, String searchString, Pageable pageable){
         List<Project> projectList = jpaQueryFactory.select(project)
                 .from(project)
-                .where(filterByProjectTechStacks(projectTechStacks))
+                .where(filterByProjectTechStacks(projectTechStacks), filterByTitleOrContent(searchString))
                 .orderBy(sortCondition.getSpecifier(project))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())

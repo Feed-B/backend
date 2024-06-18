@@ -80,7 +80,7 @@ public class ProjectQueryController {
             @RequestParam(name = "sortCondition") SortCondition sortCondition,
             @RequestParam(required = false) List<String> projectTechStacks,
             @AuthenticationPrincipal Optional<CustomUserDetails> customUserDetailsOpt,
-            @RequestParam(required = false) String content,
+            @RequestParam(required = false) String searchString,
             @ModelAttribute CustomPageRequest customPageRequest
     ) {
         Long memberId = null;
@@ -92,7 +92,7 @@ public class ProjectQueryController {
 
         Pageable pageable = PageRequest.of(customPageRequest.page(), customPageRequest.size());
 
-        return projectQueryService.getProjectList(sortCondition, projectTechStacks, memberId, pageable);
+        return projectQueryService.getProjectList(sortCondition, projectTechStacks, memberId, searchString, pageable);
     }
 
     @GetMapping("/projects/mine")
