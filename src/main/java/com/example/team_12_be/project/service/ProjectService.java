@@ -4,6 +4,7 @@ import com.example.team_12_be.project.image.service.ProjectImageService;
 import com.example.team_12_be.member.application.MemberService;
 import com.example.team_12_be.member.domain.Member;
 import com.example.team_12_be.project.domain.*;
+import com.example.team_12_be.project.image.service.ProjectThumbnailService;
 import com.example.team_12_be.project.service.dto.request.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,9 @@ public class ProjectService {
 
     private final ProjectImageService projectImageService;
 
-    public Long saveProject(ProjectRequestDto projectRequestDto, Member author , List<ProjectImageDto> projectImageDtoList) {
+    private final ProjectThumbnailService projectThumbnailService;
+
+    public Long saveProject(ProjectRequestDto projectRequestDto, Member author , List<ProjectImageDto> projectImageDtoList , ProjectThumbnailDto projectThumbnailDto) {
         Project project = projectRequestDto.toEntity(author);
         projectPort.saveProject(project);
 
@@ -37,6 +40,9 @@ public class ProjectService {
 
         List<ProjectImage> images = projectImageService.upload(projectImageDtoList);
         images.forEach(project::addProjectImage);
+
+        String thumbnailUrl = projectThumbnailService.upload(projectThumbnailDto);
+        project.addThumbnailUrl(thumbnailUrl);
 
         return project.getId();
     }
