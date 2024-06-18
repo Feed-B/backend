@@ -107,15 +107,37 @@ public class ProjectQueryService {
         Page<Project> projects = projectQuerydslRepository.findProjectsProjectTechStacksOrderBySortCondition(sortCondition, projectTechStacks, pageable);
 
         List<ProjectListResponseDto> projectListResponseDtoList = projects.stream()
-                .map(project -> {
-                    Long likeCount = projectQueryRepository.countLikeByProjectId(project.getId());
-                    boolean isLiked = isLiked(memberId, project);
-                    Long viewCount = project.getViewCount();
-                    return ProjectListResponseDto.of(project, likeCount, isLiked, viewCount);
-                })
+                .map(project -> getProjectListResponseDto(memberId, project))
                 .toList();
 
         return new CustomPageResponse<>(projectListResponseDtoList, pageable, projects.getTotalElements());
+    }
+
+    public CustomPageResponse<ProjectListResponseDto> getMyProjectList(Long memberId, Pageable pageable){
+        Page<Project> projects = projectQueryRepository.findAllByAuthorIdOrderByCreatedAtDesc(memberId, pageable);
+
+        List<ProjectListResponseDto> projectListResponseDtoList = projects.stream()
+                .map(project -> getProjectListResponseDto(memberId, project))
+                .toList();
+
+        return new CustomPageResponse<>(projectListResponseDtoList, pageable, projects.getTotalElements());
+    }
+
+    public CustomPageResponse<ProjectListResponseDto> getLikedProjectList(Long memberId, Pageable pageable){
+        Page<Project> myLikedProjects = projectQueryRepository.findAllMyLikedProjects(memberId, pageable);
+
+        List<ProjectListResponseDto> projectListResponseDtoList = myLikedProjects.stream()
+                .map(project -> getProjectListResponseDto(memberId, project))
+                .toList();
+
+        return new CustomPageResponse<>(projectListResponseDtoList, pageable, myLikedProjects.getTotalElements());
+    }
+
+    private ProjectListResponseDto getProjectListResponseDto(Long memberId, Project project) {
+        Long likeCount = projectQueryRepository.countLikeByProjectId(project.getId());
+        boolean isLiked = isLiked(memberId, project);
+        Long viewCount = project.getViewCount();
+        return ProjectListResponseDto.of(project, likeCount, isLiked, viewCount);
     }
 
     private boolean isLiked(Long memberId, Project project) {

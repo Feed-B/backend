@@ -62,4 +62,14 @@ public class DefaultProjectQueryRepository implements ProjectQueryRepository {
     public boolean existsLikeByMemberIdAndProjectId(Long memberId, Long projectId) {
         return projectLikeJpaRepository.existsByMemberIdAndProjectId(memberId, projectId);
     }
+
+    @Override
+    public Page<Project> findAllMyLikedProjects(Long memberId, Pageable pageable) {
+        return projectQueryJpaRepository.findLikedProjectsByMemberId(memberId, pageable);
+    }
+
+    @Override
+    public Page<Project> findAllByAuthorIdOrderByCreatedAtDesc(Long memberId, Pageable pageable) {
+        return projectQueryJpaRepository.findAllByAuthorIdOrderByCreatedAtDesc(memberId, pageable);
+    }
 }

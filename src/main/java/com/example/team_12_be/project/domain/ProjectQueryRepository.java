@@ -21,4 +21,8 @@ public interface ProjectQueryRepository {
     Page<Project> findProjectsProjectTechStacksOrderBySortCondition(SortCondition sortCondition, List<String> projectTechStacks, Pageable pageable);
 
     boolean existsLikeByMemberIdAndProjectId(Long memberId, Long projectId);
+
+    Page<Project> findAllMyLikedProjects(Long memberId, Pageable pageable);
+
+    Page<Project> findAllByAuthorIdOrderByCreatedAtDesc(Long memberId, Pageable pageable);
 }

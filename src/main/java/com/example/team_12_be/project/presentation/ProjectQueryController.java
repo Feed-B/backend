@@ -1,6 +1,7 @@
 package com.example.team_12_be.project.presentation;
 
 import com.example.team_12_be.global.page.CustomPageResponse;
+import com.example.team_12_be.project.presentation.request.CustomPageRequest;
 import com.example.team_12_be.project.presentation.request.SortCondition;
 import com.example.team_12_be.project.service.ProjectQueryService;
 import com.example.team_12_be.project.service.dto.response.JobWithTeammateResponseDto;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -76,11 +78,10 @@ public class ProjectQueryController {
     @Operation(description = "프로젝트 리스트 조회")
     public CustomPageResponse<ProjectListResponseDto> getProjectList(
             @RequestParam(name = "sortCondition") SortCondition sortCondition,
-            @RequestParam(required = false) List<String> projectTechStacks, // TODO : 이거 enum 으로 교체
+            @RequestParam(required = false) List<String> projectTechStacks,
             @AuthenticationPrincipal Optional<CustomUserDetails> customUserDetailsOpt,
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "100") int limit
+            @RequestParam(required = false) String content,
+            @ModelAttribute CustomPageRequest customPageRequest
     ) {
         Long memberId = null;
 
@@ -89,17 +90,34 @@ public class ProjectQueryController {
             memberId = customUserDetails.getMember().getId();
         }
 
-        if (page < 0){
-            page = 0;
-        }
-
-        if (page > 0) {
-            page -= 1;
-        }
-
-        int adjustedPageSize = Math.min(size, limit);
-        Pageable pageable = PageRequest.of(page, adjustedPageSize);
+        Pageable pageable = PageRequest.of(customPageRequest.page(), customPageRequest.size());
 
         return projectQueryService.getProjectList(sortCondition, projectTechStacks, memberId, pageable);
     }
+
+    @GetMapping("/projects/mine")
+    @Operation(description = "내 프로젝트 리스트 조회(최신순)")
+    public CustomPageResponse<ProjectListResponseDto> getMyProjectList(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @ModelAttribute CustomPageRequest customPageRequest
+    ) {
+        Long memberId = customUserDetails.getMember().getId();
+        Pageable pageable = PageRequest.of(customPageRequest.page(), customPageRequest.size());
+
+        return projectQueryService.getMyProjectList(memberId, pageable);
+    }
+
+    @GetMapping("/projects/mine/likes")
+    @Operation(description = "좋아요 한 프로젝트 리스트 조회(최신순)")
+    public CustomPageResponse<ProjectListResponseDto> getMyLikedProjectList(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @ModelAttribute CustomPageRequest customPageRequest
+    ) {
+        Long memberId = customUserDetails.getMember().getId();
+        Pageable pageable = PageRequest.of(customPageRequest.page(), customPageRequest.size());
+
+        return projectQueryService.getLikedProjectList(memberId, pageable);
+    }
+
+
 }

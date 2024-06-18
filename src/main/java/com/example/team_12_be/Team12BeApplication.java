@@ -1,7 +1,6 @@
 package com.example.team_12_be;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
@@ -28,5 +27,4 @@ public class Team12BeApplication {
                 .properties(APPLICATION_LOCATIONS)
                 .run(args);
     }
-
 }
