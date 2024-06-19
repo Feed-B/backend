@@ -2,6 +2,7 @@ package com.example.team_12_be.project.service.dto.response;
 
 import com.example.team_12_be.project.domain.Project;
 import com.example.team_12_be.project.domain.ProjectImage;
+import com.example.team_12_be.project.service.dto.request.ProjectImageDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,7 +21,7 @@ public record ProjectDetailResponseDto(
         List<ProjectLinkResponseDto> projectLinks,
         List<ProjectTechStackResponseDto> projectTechStacks,
         String thumbnailUrl,
-        List<String> imageUrlList,
+        List<ProjectImageResponseDto> imageUrlList,
         boolean isMine
 ) {
     public static ProjectDetailResponseDto of(Project project, Long likeCount, boolean isMine) {
@@ -37,7 +38,7 @@ public record ProjectDetailResponseDto(
                 project.getProjectLinks().stream().map(ProjectLinkResponseDto::of).toList(),
                 project.getProjectTechStacks().stream().map(ProjectTechStackResponseDto::of).toList(),
                 project.getThumbnailUrl(),
-                project.getProjectImages().stream().map(ProjectImage::getUrl).toList(),
+                project.getProjectImages().stream().map(ProjectImageResponseDto::of).toList(),
                 isMine
         );
     }
