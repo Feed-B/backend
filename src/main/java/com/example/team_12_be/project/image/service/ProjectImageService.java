@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -52,13 +53,14 @@ public class ProjectImageService { //TODO 단일책임의 원칙을 최대한 �
     //S3에 이미지 저장
     private List<ProjectImage> uploadImageToS3(List<ProjectImageDto> projectImageDtoList) throws IOException {
         List<ProjectImage> projectImageList = new ArrayList<>();
+        String dateFolder = new SimpleDateFormat("yyyy.MM").format(new Date()) + "/";
 
         for (ProjectImageDto projectImageDto : projectImageDtoList) {
             MultipartFile image = projectImageDto.image();
             String originalFilename = image.getOriginalFilename(); // 원본 파일
             String extention = originalFilename.substring(originalFilename.lastIndexOf(".")); //파일 확장자
 
-            String s3FileName = bucketFolder + UUID.randomUUID().toString().substring(0, 10)+ "_" + originalFilename; // s3 저장 파일명 ex) 랜덤값_원본파일명
+            String s3FileName = bucketFolder + dateFolder + UUID.randomUUID().toString().substring(0, 10)+ "_" + originalFilename;
 
             InputStream is = image.getInputStream();
             byte[] bytes = IOUtils.toByteArray(is);

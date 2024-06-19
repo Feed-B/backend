@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -51,8 +52,9 @@ public class ProjectThumbnailService {
             MultipartFile image = projectThumbnailDto.image();
             String originalFilename = image.getOriginalFilename(); // 원본 파일
             String extention = originalFilename.substring(originalFilename.lastIndexOf(".")); //파일 확장자
+            String dateFolder = new SimpleDateFormat("yyyy.MM").format(new Date()) + "/";
 
-            String s3FileName = bucketFolder + UUID.randomUUID().toString().substring(0, 10)+ "_" + originalFilename; // s3 저장 파일명 ex) 랜덤값_원본파일명
+            String s3FileName = bucketFolder + dateFolder + UUID.randomUUID().toString().substring(0, 10)+ "_" + originalFilename; // s3 저장 파일명 ex) 랜덤값_원본파일명
 
             InputStream is = image.getInputStream();
             byte[] bytes = IOUtils.toByteArray(is);
