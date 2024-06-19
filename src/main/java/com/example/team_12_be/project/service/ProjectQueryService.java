@@ -64,7 +64,7 @@ public class ProjectQueryService {
 
         // 팀메이트들을 Job 별로 그룹화하고 ProjectTeammateResponseDto로 변환
         Map<Job, List<ProjectTeammateResponseDto>> groupedByJob = projectTeammates.stream()
-                .map(teammate -> new ProjectTeammateResponseDto(teammate.getTeammateName(), teammate.getJob(), teammate.getUrl()))
+                .map(teammate -> new ProjectTeammateResponseDto(teammate.getId(), teammate.getTeammateName(), teammate.getJob(), teammate.getUrl()))
                 .collect(Collectors.groupingBy(ProjectTeammateResponseDto::job));
 
         // 그룹화된 결과를 JobWithTeammateResponseDto 형식의 리스트로 변환
