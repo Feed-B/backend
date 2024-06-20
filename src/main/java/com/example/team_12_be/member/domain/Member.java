@@ -9,12 +9,11 @@ import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @NoArgsConstructor
-@Getter
 @SQLDelete(sql = "UPDATE MEMBER SET IS_DELETED = true WHERE id = ?")
 @SQLRestriction("IS_DELETED = false")
 @Builder
 @AllArgsConstructor
-@ToString
+@Data
 public class Member extends TimeStamp {
 
     @Id
@@ -35,8 +34,17 @@ public class Member extends TimeStamp {
     @Enumerated(EnumType.STRING)
     private Job memberJob;
 
+    private String imageUrl;
+
     public Member(String email, String nickName, String aboutMe, Job memberJob) {
         this.email = email;
+        this.nickName = nickName;
+        this.aboutMe = aboutMe;
+        this.memberJob = memberJob;
+    }
+
+    public Member(Long id , String nickName , String aboutMe , Job memberJob) {
+        this.id = id;
         this.nickName = nickName;
         this.aboutMe = aboutMe;
         this.memberJob = memberJob;

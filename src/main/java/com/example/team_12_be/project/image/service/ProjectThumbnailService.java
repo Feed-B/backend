@@ -75,9 +75,8 @@ public class ProjectThumbnailService {
                 byteArrayInputStream.close();
                 is.close();
             }
-            String url = amazonS3.getUrl(bucketName , s3FileName).toString();
-            //log.info("Thumbnail Url = " + url);
-        return url;
+
+        return amazonS3.getUrl(bucketName , s3FileName).toString();
     }
 
     //파일 형태 검증 메소드

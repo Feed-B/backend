@@ -1,7 +1,7 @@
 package com.example.team_12_be.security;
 
 import com.example.team_12_be.member.domain.Member;
-import com.example.team_12_be.member.domain.MemberRepository;
+import com.example.team_12_be.member.repository.MemberRepository;
 import com.example.team_12_be.security.exception.OAuth2UserNotFoundException;
 import com.example.team_12_be.security.oauth_info.KakaoMemberInfo;
 import com.example.team_12_be.security.oauth_info.NaverMemberInfo;
