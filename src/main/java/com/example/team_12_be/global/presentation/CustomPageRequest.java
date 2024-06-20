@@ -2,11 +2,10 @@ package com.example.team_12_be.global.presentation;
 
 public record CustomPageRequest(
         int page,
-        int size,
-        int limit
+        int size
 ) {
-    private static final int LIMIT_CONSTRAINT = 100;
 
+    private static final int MAXIMUM_SIZE = 100;
     private static final int DEFAULT_PAGE_SIZE = 8;
 
     @Override
@@ -20,14 +19,10 @@ public record CustomPageRequest(
 
     @Override
     public int size(){
-        if (limit > LIMIT_CONSTRAINT){
-            return Math.min(size, LIMIT_CONSTRAINT);
-        }
-
-        if (size < 1){
+        if (size > MAXIMUM_SIZE){
             return DEFAULT_PAGE_SIZE;
         }
 
-        return Math.min(size, limit);
+        return Math.max(size, DEFAULT_PAGE_SIZE);
     }
 }
