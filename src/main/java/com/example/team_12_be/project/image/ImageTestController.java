@@ -3,6 +3,8 @@ package com.example.team_12_be.project.image;
 import com.example.team_12_be.project.domain.ProjectImage;
 import com.example.team_12_be.project.image.service.ProjectImageService;
 import com.example.team_12_be.project.image.service.ProjectImageUpdateService;
+import com.example.team_12_be.project.image.service.ProjectThumbnailService;
+import com.example.team_12_be.project.image.service.ProjectThumbnailUpdateService;
 import com.example.team_12_be.project.service.dto.request.ProjectImageDto;
 import com.example.team_12_be.project.service.dto.request.ProjectRequestDto;
 import com.example.team_12_be.project.service.dto.request.ProjectThumbnailDto;
@@ -26,6 +28,7 @@ public class ImageTestController {
 
     private final ProjectImageService projectImageService;
     private final ProjectImageUpdateService projectImageUpdateService;
+    private final ProjectThumbnailUpdateService projectThumbnailUpdateService;
     @PostMapping(value = "/s3/upload" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String create(@Valid @RequestPart ProjectRequestDto projectRequestDto,
                            @RequestPart List<MultipartFile> multipartFiles,
@@ -41,9 +44,9 @@ public class ImageTestController {
 
     @PostMapping(value = "/s3/update" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public List<String> update(@Valid @RequestPart ProjectRequestDto projectRequestDto,
-                         @RequestPart List<MultipartFile> images,
+                         @RequestPart(required = false) List<MultipartFile> images,
                          @RequestPart List<Integer> imageIndexes,
-                         @RequestPart MultipartFile thumbnail,
+                         @RequestPart(required = false) MultipartFile thumbnail,
                          @RequestPart Integer thumbnailIndex)
     {
         List<ProjectImageDto> projectImageDtoList = IntStream.range(0, images.size())
@@ -51,6 +54,7 @@ public class ImageTestController {
                 .toList();
 
         ProjectThumbnailDto projectThumbnailDto = new ProjectThumbnailDto(thumbnail ,thumbnailIndex);
+//        String thumbnailUrl = projectThumbnailUpdateService.update(projectThumbnailDto); 프로젝트 서비스 단에서 프로젝트으 ㅣ현재 url을 두번쨰 인자로
 
         return projectImageUpdateService.update(projectImageDtoList , 1L).stream().map(ProjectImage::getUrl).toList();
     }

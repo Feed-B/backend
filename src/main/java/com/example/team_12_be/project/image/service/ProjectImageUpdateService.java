@@ -33,7 +33,7 @@ public class ProjectImageUpdateService {
 
 
     public List<ProjectImage> update(List<ProjectImageDto> projectImageDtoList ,Long projectId) {
-        if(Objects.isNull(projectImageDtoList) || projectImageDtoList.isEmpty() || Objects.isNull(projectImageDtoList.getFirst().image().getOriginalFilename())) {
+        if(Objects.isNull(projectImageDtoList) || projectImageDtoList.isEmpty()) {
             throw new IllegalArgumentException("File must not be empty or null");
         }
         return this.updateImage(projectImageDtoList , projectId);
@@ -49,6 +49,7 @@ public class ProjectImageUpdateService {
     }
 
     private List<ProjectImage> orderImagesByIndex(List<ProjectImageDto> projectImageDtoList ,Long projectId) throws IOException {
+        //index - 기본 - db 인덱스 , 변경 - 0
         List<ProjectImage> projectImageList = new ArrayList<>();
         List<ProjectImage> removeProjectImgList = projectPort.findById(projectId).orElseThrow(
                 () -> new NoSuchElementException("Project with projectId " + projectId + " not found")).getProjectImages();
