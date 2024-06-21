@@ -1,8 +1,7 @@
 package com.example.team_12_be.project.service.dto.response;
 
 import com.example.team_12_be.project.domain.Project;
-import com.example.team_12_be.project.domain.ProjectImage;
-import com.example.team_12_be.project.service.dto.request.ProjectImageDto;
+import com.example.team_12_be.project.domain.vo.ImageType;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,6 +17,7 @@ public record ProjectDetailResponseDto(
         String content,
         String introductions,
         String serviceUrl,
+        ImageType imageType,
         List<ProjectLinkResponseDto> projectLinks,
         List<ProjectTechStackResponseDto> projectTechStacks,
         String thumbnailUrl,
@@ -35,6 +35,7 @@ public record ProjectDetailResponseDto(
                 project.getIntroductions(),
                 project.getContent(),
                 project.getServiceUrl(),
+                project.getImageType(),
                 project.getProjectLinks().stream().map(ProjectLinkResponseDto::of).toList(),
                 project.getProjectTechStacks().stream().map(ProjectTechStackResponseDto::of).toList(),
                 project.getThumbnailUrl(),

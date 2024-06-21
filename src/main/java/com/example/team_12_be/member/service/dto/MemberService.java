@@ -1,4 +1,4 @@
-package com.example.team_12_be.member.application;
+package com.example.team_12_be.member.service.dto;
 
 import com.example.team_12_be.member.domain.Member;
 import com.example.team_12_be.member.repository.MemberRepository;

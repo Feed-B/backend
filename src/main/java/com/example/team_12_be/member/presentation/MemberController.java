@@ -1,6 +1,6 @@
 package com.example.team_12_be.member.presentation;
 
-import com.example.team_12_be.member.application.MemberService;
+import com.example.team_12_be.member.service.dto.MemberService;
 import com.example.team_12_be.member.domain.Member;
 import com.example.team_12_be.member.service.dto.request.MemberEditRequestDto;
 import com.example.team_12_be.member.service.dto.request.MemberSignUpRequest;

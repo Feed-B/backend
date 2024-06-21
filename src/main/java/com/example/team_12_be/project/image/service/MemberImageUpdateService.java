@@ -45,8 +45,6 @@ public class MemberImageUpdateService {
         }
 
         return currentImageUrl;
-
-
     }
 
     private void deleteImageToS3(String currentImageUrl){

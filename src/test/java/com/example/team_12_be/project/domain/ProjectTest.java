@@ -1,6 +1,7 @@
 package com.example.team_12_be.project.domain;
 
 import com.example.team_12_be.member.domain.Member;
+import com.example.team_12_be.project.domain.vo.ImageType;
 import com.example.team_12_be.project.domain.vo.StarRank;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,8 @@ class ProjectTest {
                 "Test introduction",
                 "content",
                 author,
-                "http://service.url"
+                "http://service.url",
+                ImageType.MOBILE
         );
     }
 

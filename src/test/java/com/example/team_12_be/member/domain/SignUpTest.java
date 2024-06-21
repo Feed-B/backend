@@ -1,6 +1,6 @@
 package com.example.team_12_be.member.domain;
 
-import com.example.team_12_be.member.application.MemberService;
+import com.example.team_12_be.member.service.dto.MemberService;
 import com.example.team_12_be.member.domain.vo.Job;
 import com.example.team_12_be.member.service.dto.request.MemberSignUpRequest;
 import org.junit.jupiter.api.Test;

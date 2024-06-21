@@ -1,6 +1,6 @@
 package com.example.team_12_be.project.comment.service;
 
-import com.example.team_12_be.member.application.MemberService;
+import com.example.team_12_be.member.service.dto.MemberService;
 import com.example.team_12_be.member.domain.Member;
 import com.example.team_12_be.project.service.ProjectQueryService;
 import com.example.team_12_be.project.comment.service.dto.ProjectCommentRequestDto;
