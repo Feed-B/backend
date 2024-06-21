@@ -1,7 +1,7 @@
 package com.example.team_12_be.project.service;
 
 import com.example.team_12_be.project.image.service.ProjectImageService;
-import com.example.team_12_be.member.application.MemberService;
+import com.example.team_12_be.member.service.dto.MemberService;
 import com.example.team_12_be.member.domain.Member;
 import com.example.team_12_be.project.domain.*;
 import com.example.team_12_be.project.image.service.ProjectThumbnailService;

@@ -27,7 +27,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String token = jwtProvider.createToken(userDetails.getUserEmail());
         log.info("===================== onAuthenticationSuccess =================");
         response.addHeader("Authorization", "Bearer " + token);
-        response.getWriter().write("{\"token\":\"" + token + "\"}");
+        response.getWriter().write("{\"token\":\"" + token + "\", \"type\":\"login\"}");
         response.getWriter().flush();
     }
 }

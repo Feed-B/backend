@@ -1,31 +1,30 @@
 package com.example.team_12_be.member.presentation;
 
-import com.example.team_12_be.member.application.MemberService;
+import com.example.team_12_be.member.service.dto.MemberService;
 import com.example.team_12_be.member.domain.Member;
-import com.example.team_12_be.member.domain.vo.MemberRequest;
-import com.example.team_12_be.member.domain.vo.MemberResponse;
-import com.example.team_12_be.member.exception.MemberAlreadyExistsException;
+import com.example.team_12_be.member.service.dto.request.MemberEditRequestDto;
+import com.example.team_12_be.member.service.dto.request.MemberSignUpRequest;
+import com.example.team_12_be.member.service.dto.response.MemberIdResponseDto;
+import com.example.team_12_be.member.service.dto.response.MemberResponseDto;
+import com.example.team_12_be.member.service.dto.response.TokenResponseDto;
 import com.example.team_12_be.security.CustomUserDetails;
 import com.example.team_12_be.security.JwtProvider;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.Optional;
 import java.util.UUID;
 
-@Tag(name = "회원가입 토큰 발급 컨트롤러")
+@Tag(name = "계정(유저 정보) 관련 컨트롤러")
+@SecurityRequirement(name = "Bearer Authentication")
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -38,28 +37,14 @@ public class MemberController {
         @Operation(description = "{service} = kakao 또는 naver ")
         public RedirectView login(@PathVariable("service") String service) {
                 String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
-                String redirectUrl = "";
+                String redirectUrl = switch (service.toLowerCase()) {
+                    case "kakao" -> baseUrl + "/oauth2/authorization/kakao";
+                    case "naver" -> baseUrl + "/oauth2/authorization/naver";
+                    default -> throw new IllegalArgumentException("Unsupported service : " + service);
+                };
 
-                switch (service.toLowerCase()) {
-                        case "kakao" :
-                                redirectUrl = baseUrl + "/oauth2/authorization/kakao";
-                                break;
-                        case "naver" :
-                                redirectUrl = baseUrl + "/oauth2/authorization/naver";
-                                break;
-                        default:
-                                throw new IllegalArgumentException("Unsupported service : " + service);
-                }
-
-                return new RedirectView(redirectUrl);
+            return new RedirectView(redirectUrl);
         }
-        //TODO 인증된 정보로 Member 가져오는 예제 코드(추후 삭제
-        @GetMapping("/member-info")
-        public void memberInfo(@AuthenticationPrincipal CustomUserDetails userDetails){
-                Member member = userDetails.getMember();
-                log.info(member.toString());
-        }
-
         @GetMapping("/token")
         public String getTokenTest(){
                 String uuid = UUID.randomUUID().toString().substring(0, 8);
@@ -69,20 +54,39 @@ public class MemberController {
 
         //회원가입
         @PostMapping("/signUp")
-        public ResponseEntity<MemberResponse> signUp(@RequestBody MemberRequest memberRequest) {
-                Optional<Member> findMember = memberService.findByEmail(memberRequest.getEmail());
-                if(findMember.isPresent() && !findMember.get().getIsDeleted()) {
-                        throw new MemberAlreadyExistsException("Email is already in use.");
-                }
+        public TokenResponseDto signUp(@RequestBody MemberSignUpRequest memberSignUpRequest) {
 
-                Member member = memberService.registerMemberWithTechStack(memberRequest);
+                Member member = memberService.signUp(memberSignUpRequest);
+                String token = jwtProvider.createToken(member.getEmail());
 
-                //토큰 생성
-//              String token = jwtProvider.createToken(memberRequest.getEmail());
-
-                MemberResponse memberResponse = new MemberResponse(member.getId(), member.getEmail() , member.getNickName() , member.getAboutMe() , member.getMemberJob());
-                return ResponseEntity.status(HttpStatus.CREATED).body(memberResponse);
+                return new TokenResponseDto(token);
         }
+        @GetMapping("/profile")
+        @Operation(description = "현재 로그인된 유저 id 조회")
+        public MemberIdResponseDto getMemberId(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+                return new MemberIdResponseDto(customUserDetails.getMember().getId());
+        }
+
+        @GetMapping("/profile/{userId}")
+        @Operation(description = "유저 정보 조회")
+        public MemberResponseDto getMemberInfo(@PathVariable Long userId , @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+                Member member = memberService.findById(userId);
+
+                return MemberResponseDto.of(member);
+        }
+
+        @PutMapping(value = "/profile/{userId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+        @Operation(description = "유저 정보 수정")
+        public MemberResponseDto updateMemberInfo(@RequestPart(required = false) MultipartFile image,
+                                                  @RequestPart Integer imageIdx,
+                                                  @RequestPart MemberEditRequestDto memberEditRequestDto,
+                                                  @AuthenticationPrincipal CustomUserDetails customUserDetails)
+        {
+
+                Member updateMember = memberService.updateMemberInfo(memberEditRequestDto , image , imageIdx);
+                return MemberResponseDto.of(updateMember);
+        }
+
 }
 
 

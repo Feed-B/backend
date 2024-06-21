@@ -1,9 +1,8 @@
 package com.example.team_12_be.project.service.dto.request;
 
 import com.example.team_12_be.member.domain.Member;
-import com.example.team_12_be.member.domain.vo.Job;
 import com.example.team_12_be.project.domain.Project;
-import com.example.team_12_be.project.domain.ProjectTeammate;
+import com.example.team_12_be.project.domain.vo.ImageType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 
@@ -18,10 +17,10 @@ public record ProjectRequestDto(
         String content,
         @NotBlank
         String serviceUrl,
+        @NotBlank
+        ImageType imageType,
         @NotEmpty
         List<String> projectTechStacks,
-//        Long thumbnailImageId,
-//        List<ProjectImageRequestDto> projectImages,
 //        List<ProjectComment> projectComments,
 //        List<ProjectLike> projectLikes,
         @NotEmpty
@@ -35,7 +34,8 @@ public record ProjectRequestDto(
                 introduction,
                 content,
                 author,
-                serviceUrl
+                serviceUrl,
+                imageType
         );
     }
 }

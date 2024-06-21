@@ -1,10 +1,11 @@
 package com.example.team_12_be.project.service;
 
 import com.example.team_12_be.member.domain.Member;
-import com.example.team_12_be.member.domain.MemberRepository;
+import com.example.team_12_be.member.repository.MemberRepository;
 import com.example.team_12_be.member.domain.vo.Job;
 import com.example.team_12_be.project.domain.Project;
 import com.example.team_12_be.project.domain.ProjectImage;
+import com.example.team_12_be.project.domain.vo.ImageType;
 import com.example.team_12_be.project.image.service.ProjectImageService;
 import com.example.team_12_be.project.image.service.ProjectThumbnailService;
 import com.example.team_12_be.project.repository.ProejctJpaRepository;
@@ -68,6 +69,7 @@ class ProjectServiceTest {
         String introduction = "Test Introduction";
         String content = "Test Content";
         String serviceUrl = "http://localhost:8080";
+        ImageType imageType = ImageType.WEB;
         List<String> projectTechStacks = Arrays.asList("Java", "Spring", "JUnit");
         List<ProjectTeammateRequestDto> projectTeammates = new ArrayList<>();
         List<ProjectLinkRequestDto> projectLinks = new ArrayList<>();
@@ -77,6 +79,7 @@ class ProjectServiceTest {
                 introduction,
                 content,
                 serviceUrl,
+                imageType,
                 projectTechStacks,
                 projectTeammates,
                 projectLinks

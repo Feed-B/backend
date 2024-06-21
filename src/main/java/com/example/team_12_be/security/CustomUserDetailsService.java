@@ -1,7 +1,7 @@
 package com.example.team_12_be.security;
 
 import com.example.team_12_be.member.domain.Member;
-import com.example.team_12_be.member.domain.MemberRepository;
+import com.example.team_12_be.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

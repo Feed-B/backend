@@ -1,10 +1,11 @@
 package com.example.team_12_be.project.service;
 
 import com.example.team_12_be.member.domain.Member;
-import com.example.team_12_be.member.domain.MemberRepository;
+import com.example.team_12_be.member.repository.MemberRepository;
 import com.example.team_12_be.member.domain.vo.Job;
 import com.example.team_12_be.project.domain.Project;
 import com.example.team_12_be.project.domain.ProjectTechStack;
+import com.example.team_12_be.project.domain.vo.ImageType;
 import com.example.team_12_be.project.repository.ProejctJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,13 +48,15 @@ class ProjectUpdateTest {
         String introductions = "Test Introductions";
         String content = "Test Content";
         String serviceUrl = "http://localhost:8080";
+        ImageType imageType = ImageType.WEB;
 
         return new Project(
                 title,
                 introductions,
                 content,
                 author,
-                serviceUrl
+                serviceUrl,
+                imageType
         );
     }
 }

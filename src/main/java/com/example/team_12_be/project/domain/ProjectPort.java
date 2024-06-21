@@ -24,4 +24,6 @@ public interface ProjectPort {
     void deleteLikeByMemberIdAndProjectId(Long memberId, Long projectId);
 
     ProjectImage saveImage(ProjectImage projectImage);
+
+    ProjectImage findByIdx(int idx);
 }

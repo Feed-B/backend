@@ -3,6 +3,7 @@ package com.example.team_12_be.project.domain;
 import com.example.team_12_be.base.TimeStamp;
 import com.example.team_12_be.member.domain.Member;
 import com.example.team_12_be.project.comment.domain.ProjectComment;
+import com.example.team_12_be.project.domain.vo.ImageType;
 import com.example.team_12_be.project.domain.vo.StarRank;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -37,6 +38,9 @@ public class Project extends TimeStamp {
 
     private String serviceUrl;
 
+    @Enumerated(EnumType.STRING)
+    private ImageType imageType;
+
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectTechStack> projectTechStacks = new ArrayList<>();
 
@@ -59,14 +63,14 @@ public class Project extends TimeStamp {
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ProjectRating> projectRatings = new ArrayList<>();
 
-    public Project(String title, String introductions, String content, Member author, String serviceUrl) {
+    public Project(String title, String introductions, String content, Member author, String serviceUrl , ImageType imageType) {
         this.title = title;
         this.introductions = introductions;
         this.content = content;
         this.viewCount = 0L;
         this.author = author;
         this.serviceUrl = serviceUrl;
-
+        this.imageType = imageType;
         // TODO : images
 //        this.thumbnail = thumbnail;
 //        this.projectImages = projectImages;
