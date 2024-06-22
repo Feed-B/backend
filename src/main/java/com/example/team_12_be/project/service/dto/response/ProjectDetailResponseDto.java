@@ -1,5 +1,6 @@
 package com.example.team_12_be.project.service.dto.response;
 
+import com.example.team_12_be.member.domain.vo.Job;
 import com.example.team_12_be.project.domain.Project;
 import com.example.team_12_be.project.domain.vo.ImageType;
 
@@ -11,6 +12,7 @@ public record ProjectDetailResponseDto(
         Long projectId,
         Long memberId,
         String authorName,
+        Job authorJob,
         LocalDateTime createdAt,
         Long likeCount,
         String title,
@@ -29,6 +31,7 @@ public record ProjectDetailResponseDto(
                 project.getId(),
                 project.getAuthor().getId(),
                 project.getAuthor().getNickName(),
+                project.getAuthor().getMemberJob(),
                 project.getCreatedAt(),
                 likeCount,
                 project.getTitle(),
