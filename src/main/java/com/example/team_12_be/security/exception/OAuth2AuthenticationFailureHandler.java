@@ -3,34 +3,42 @@ package com.example.team_12_be.security.exception;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+
+    private final Environment environment;
+
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         String email = null;
+        String redirectUrl = environment.getProperty("redirect.base-url") + "/auth/success"; // 프론트엔드에서 처리할 URL
+
         if (exception instanceof OAuth2UserNotFoundException) {
             email = ((OAuth2UserNotFoundException) exception).getEmail();
         }
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.setContentType("application/json");
 
-        PrintWriter writer = response.getWriter();
-        //계정 없을 때와 기본 인증 에러간의 응답 구분
         if (email != null) {
-            writer.write("{\"type\":\"signUp\", \"email\":\"" + email + "\"}");
+            redirectUrl += "?type=signUp&email=" + email;
         } else {
-            writer.write("{\"error\":\"Unauthorized\"}");
+            redirectUrl += "?error=Unauthorized";
         }
-        writer.flush();
+
+        getRedirectStrategy().sendRedirect(request, response, redirectUrl);
     }
 }
