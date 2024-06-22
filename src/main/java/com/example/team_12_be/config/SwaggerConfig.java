@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@OpenAPIDefinition(info = @Info(version = "1.0") , servers = {@Server(url = "https://feedb.shop", description = "Default Server URL")})
+@OpenAPIDefinition(info = @Info(version = "1.0"))
 
 @SecurityScheme(
         name = "Bearer Authentication",
