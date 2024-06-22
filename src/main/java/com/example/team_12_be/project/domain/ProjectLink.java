@@ -36,4 +36,9 @@ public class ProjectLink {
     public void assign(Project project){
         this.project = project;
     }
+
+    public void update(String siteType, String url){
+        this.siteType = siteType;
+        this.url = url;
+    }
 }

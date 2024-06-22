@@ -1,10 +1,12 @@
 package com.example.team_12_be.project.presentation;
 
+import com.example.team_12_be.project.service.DefaultProjectUpdateService;
 import com.example.team_12_be.project.service.ProjectService;
 import com.example.team_12_be.project.service.dto.request.ProjectImageDto;
 import com.example.team_12_be.project.service.dto.request.ProjectRatingRequestDto;
 import com.example.team_12_be.project.service.dto.request.ProjectRequestDto;
 import com.example.team_12_be.project.service.dto.request.ProjectThumbnailDto;
+import com.example.team_12_be.project.service.usecase.update.dto.request.ProjectUpdateRequestDto;
 import com.example.team_12_be.security.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -13,7 +15,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -28,6 +36,8 @@ import java.util.stream.IntStream;
 public class ProjectController {
 
     private final ProjectService projectService;
+
+    private final DefaultProjectUpdateService projectUpdateService;
 
     // TODO : Authentication 완료되면 작성 유저의 정보도 받아야 한다.
 
@@ -90,5 +100,28 @@ public class ProjectController {
         projectService.unlikeProject(memberId, projectId);
     }
 
-    // TODO : 프로젝트 수정 API 추가
+    @PutMapping("/projects/{projectId}")
+    public ResponseEntity<Void> updateProject(
+            @PathVariable Long projectId,
+            @RequestBody ProjectUpdateRequestDto projectRequestDto,
+//                       @RequestPart List<MultipartFile> images,
+//                       @RequestPart List<Integer> imageIndexes,
+//                       @RequestPart MultipartFile thumbnail,
+//                       @RequestPart Integer thumbnailIndex,
+                       @AuthenticationPrincipal CustomUserDetails customUserDetails){
+//        List<ProjectImageDto> projectImages = IntStream.range(0, images.size() - 1)
+//                .mapToObj(idx -> new ProjectImageDto(images.get(idx), imageIndexes.get(idx)))
+//                .toList();
+//        ProjectThumbnailDto projectThumbnailDto = new ProjectThumbnailDto(thumbnail, thumbnailIndex);
+        Long memberId = customUserDetails.getMember().getId();
+        projectUpdateService.updateProject(projectId, memberId, projectRequestDto);
+
+//        projectUpdateService.updateProject(memberId, projectRequestDto, projectThumbnailDto, projectImages);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(projectId)
+                .toUri();
+        return ResponseEntity.created(location).build();
+    }
 }

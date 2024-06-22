@@ -32,4 +32,8 @@ public class ProjectTechStack {
     public void assign(Project project){
         this.project = project;
     }
+
+    public void update(String techStack){
+        this.techStack = techStack;
+    }
 }

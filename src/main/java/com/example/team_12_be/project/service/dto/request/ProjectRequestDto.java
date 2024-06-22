@@ -21,8 +21,6 @@ public record ProjectRequestDto(
         ImageType imageType,
         @NotEmpty
         List<String> projectTechStacks,
-//        List<ProjectComment> projectComments,
-//        List<ProjectLike> projectLikes,
         @NotEmpty
         List<ProjectTeammateRequestDto> projectTeammates,
         @NotEmpty

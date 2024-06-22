@@ -45,4 +45,10 @@ public class ProjectTeammate {
     public void assign(Project project){
         this.project = project;
     }
+
+    public void update(String teammateName, Job job, String url){
+        this.teammateName = teammateName;
+        this.job = job;
+        this.url = url;
+    }
 }

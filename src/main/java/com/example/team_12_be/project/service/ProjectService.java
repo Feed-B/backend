@@ -47,11 +47,6 @@ public class ProjectService {
         return project.getId();
     }
 
-//    // TODO : 한번에? 아니면 여러차례 나눠서?
-//    public void updateProject(ProjectRequestDto projectRequestDto) {
-//
-//    }
-
     public void deleteProject(Long projectId) {
         projectPort.deleteById(projectId);
     }
