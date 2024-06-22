@@ -39,8 +39,15 @@ public class ProjectQueryController {
 
     @GetMapping("/projects/{projectId}")
     @Operation(description = "프로젝트 상세 조회")
-    public ProjectDetailResponseDto getProjectDetail(@PathVariable Long projectId, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        return projectQueryService.getDetailById(projectId, customUserDetails.getMember().getId());
+    public ProjectDetailResponseDto getProjectDetail(@PathVariable Long projectId, @AuthenticationPrincipal Optional<CustomUserDetails> customUserDetailsOpt) {
+        Long memberId = null;
+
+        if (!Objects.isNull(customUserDetailsOpt) && customUserDetailsOpt.isPresent()) {
+            CustomUserDetails customUserDetails = customUserDetailsOpt.get();
+            memberId = customUserDetails.getMember().getId();
+        }
+
+        return projectQueryService.getDetailById(projectId, memberId);
     }
 
     @GetMapping("/projects/{projectId}/edits")

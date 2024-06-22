@@ -44,9 +44,16 @@ public class ProjectQueryService {
     public ProjectDetailResponseDto getDetailById(Long projectId, Long memberId) {
         Project project = this.findById(projectId);
         long likeCount = projectQueryRepository.countLikeByProjectId(projectId);
-        boolean isMine = project.getAuthor().getId().equals(memberId);
+        boolean isMine = isMine(memberId, project);
 
         return ProjectDetailResponseDto.of(project, likeCount, isMine);
+    }
+
+    private static boolean isMine(Long memberId, Project project) {
+        if (Objects.isNull(memberId)){
+            return false;
+        }
+        return project.getAuthor().getId().equals(memberId);
     }
 
     public ProjectDetailForEditResponseDto getDetailForEditByProjectId(Long memberId, Long projectId){
