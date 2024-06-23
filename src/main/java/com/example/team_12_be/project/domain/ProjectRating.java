@@ -45,6 +45,10 @@ public class ProjectRating extends TimeStamp {
         this.starRank = starRank;
     }
 
+    public void updateRank(StarRank starRank) {
+        this.starRank = starRank;
+    }
+
     public void assignToProject(Project project) {
         this.project = project;
     }

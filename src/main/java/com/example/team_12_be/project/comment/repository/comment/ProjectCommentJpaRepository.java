@@ -7,11 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ProjectCommentJpaRepository extends JpaRepository<ProjectComment, Long> {
 
-    @Query("SELECT pc FROM ProjectComment pc JOIN FETCH pc.member WHERE pc.project.id = :projectId")
+    @Query("SELECT pc FROM ProjectComment pc JOIN FETCH pc.member WHERE pc.project.id = :projectId AND pc.parentId IS NULL ")
     Page<ProjectComment> findAllByProjectIdWithMember(@Param("projectId") Long projectId, Pageable pageable);
 
     @Query("SELECT pc FROM ProjectComment pc JOIN FETCH pc.member WHERE pc.parentId = :parentId")
@@ -21,4 +22,7 @@ public interface ProjectCommentJpaRepository extends JpaRepository<ProjectCommen
 
     long countByParentId(Long parentId);
 
+    Optional<ProjectComment> findByIdAndMemberId(Long projectId, Long authorId);
+
+    List<ProjectComment> findAllByParentId(Long parentId);
 }

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -43,5 +44,25 @@ public class DefaultProjectCommentRepository implements ProjectCommentRepository
     @Override
     public Optional<ProjectComment> findByProjectIdAndMemberId(Long projectId, Long memberId) {
         return projectCommentJpaRepository.findByProjectIdAndMemberId(projectId, memberId);
+    }
+
+    @Override
+    public Optional<ProjectComment> findByIdAndMemberId(Long id, Long memberId) {
+        return projectCommentJpaRepository.findByIdAndMemberId(id, memberId);
+    }
+
+    @Override
+    public List<ProjectComment> findAllByParentId(Long parentId) {
+        return findAllByParentId(parentId);
+    }
+
+    @Override
+    public void delete(ProjectComment projectComment) {
+        projectCommentJpaRepository.delete(projectComment);
+    }
+
+    @Override
+    public void deleteAll(List<ProjectComment> projectComments){
+        projectCommentJpaRepository.deleteAll(projectComments);
     }
 }

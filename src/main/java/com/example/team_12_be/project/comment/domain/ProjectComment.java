@@ -55,4 +55,8 @@ public class ProjectComment extends TimeStamp {
         }
         this.parentId = parentComment.getParentId();
     }
+
+    public void updateContent(String content) {
+        this.comment = content;
+    }
 }

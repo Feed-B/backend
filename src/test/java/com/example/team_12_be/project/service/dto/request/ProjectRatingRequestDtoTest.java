@@ -18,8 +18,9 @@ class ProjectRatingRequestDtoTest {
 
     @BeforeAll
     public static void setupValidatorInstance() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
+        try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
+            validator = factory.getValidator();
+        }
     }
 
     @Test

@@ -2,17 +2,23 @@ package com.example.team_12_be.project.comment.service;
 
 import com.example.team_12_be.member.service.dto.MemberService;
 import com.example.team_12_be.member.domain.Member;
+import com.example.team_12_be.project.comment.service.dto.CommentUpdateRequestDto;
 import com.example.team_12_be.project.service.ProjectQueryService;
 import com.example.team_12_be.project.comment.service.dto.ProjectCommentRequestDto;
 import com.example.team_12_be.project.domain.Project;
 import com.example.team_12_be.project.comment.domain.ProjectComment;
 import com.example.team_12_be.project.comment.domain.ProjectCommentRepository;
+import com.example.team_12_be.project.service.ProjectRatingService;
+import com.example.team_12_be.project.service.dto.request.ProjectRatingRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ProjectCommentService {
 
     private final ProjectCommentRepository projectCommentRepository;
@@ -21,11 +27,17 @@ public class ProjectCommentService {
 
     private final MemberService memberService;
 
-    @Transactional
-    public Long addComment(Long projectId, Long userId, ProjectCommentRequestDto projectCommentRequestDto) {
-        Project commnetedProject = projectQueryService.findById(projectId);
-        Member commentAuthor = memberService.findById(userId);
+    private final ProjectRatingService projectRatingService;
 
+    public Long addCommentAndRating(Long projectId, Long memberId, ProjectRatingRequestDto projectRatingRequestDto) {
+        Project commnetedProject = projectQueryService.findById(projectId);
+        Member commentAuthor = memberService.findById(memberId);
+        projectRatingService.addRating(commnetedProject, commentAuthor, projectRatingRequestDto);
+
+        return addComment(commnetedProject, commentAuthor, projectRatingRequestDto.commentRequest());
+    }
+
+    private Long addComment(Project commnetedProject, Member commentAuthor, ProjectCommentRequestDto projectCommentRequestDto) {
         ProjectComment newComment = projectCommentRequestDto.toEntity(commnetedProject, commentAuthor);
         projectCommentRepository.save(newComment);
 
@@ -34,15 +46,45 @@ public class ProjectCommentService {
         return newComment.getId();
     }
 
-    // 만약 요청으로 들어온 부모 아이디가 부모 아이디를 가진다면, 이 코멘트 또한 최상단 부모아이디를 참조한다.
+    public void updateComment(Long commentId, Long memberId, CommentUpdateRequestDto commentUpdateRequestDto) {
+        ProjectComment projectComment = projectCommentRepository.findByIdAndMemberId(commentId, memberId).orElseThrow(
+                () -> new IllegalArgumentException("없는 코멘트")
+        );
+
+        projectRatingService.modifyRating(memberId, commentUpdateRequestDto.projectRatingUpdateRequest());
+        projectComment.updateContent(commentUpdateRequestDto.comment());
+    }
+
+    public void deleteComment(Long commentId, Long memberId) {
+        ProjectComment projectComment = projectCommentRepository.findByIdAndMemberId(commentId, memberId).orElseThrow(
+                () -> new IllegalArgumentException("없는 코멘트")
+        );
+
+        Project commnetedProject = projectQueryService.findById(projectComment.getProject().getId());
+
+        deleteChildIfPresent(projectComment);
+        projectRatingService.deleteRating(memberId, commnetedProject);
+        projectCommentRepository.delete(projectComment);
+    }
+
+    private void deleteChildIfPresent(ProjectComment projectComment) {
+        List<ProjectComment> childComments = projectCommentRepository.findAllByParentId(projectComment.getParentId());
+        if (childComments.isEmpty()){
+            return;
+        }
+        projectCommentRepository.deleteAll(childComments);
+    }
+
     private void assignParentId(ProjectCommentRequestDto projectCommentRequestDto, ProjectComment newComment) {
+        // 만약 요청으로 들어온 부모 아이디가 부모 아이디를 가진다면, 이 코멘트 또한 최상단 부모아이디를 참조한다.
         Long requestParentId = projectCommentRequestDto.parentId();
 
-        if (requestParentId == null){
+        if (requestParentId == null || requestParentId == 0){
             return;
         }
 
         ProjectComment parentComment = projectCommentRepository.findById(requestParentId).orElseThrow();
         newComment.assignParentIdFrom(parentComment);
     }
+
 }

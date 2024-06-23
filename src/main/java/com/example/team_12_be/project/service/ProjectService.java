@@ -1,5 +1,6 @@
 package com.example.team_12_be.project.service;
 
+import com.example.team_12_be.project.comment.service.ProjectCommentService;
 import com.example.team_12_be.project.image.service.ProjectImageService;
 import com.example.team_12_be.member.service.dto.MemberService;
 import com.example.team_12_be.member.domain.Member;
@@ -24,6 +25,8 @@ public class ProjectService {
     private final ProjectImageService projectImageService;
 
     private final ProjectThumbnailService projectThumbnailService;
+
+    private final ProjectCommentService projectCommentService;
 
     public Long saveProject(ProjectRequestDto projectRequestDto, Member author , List<ProjectImageDto> projectImageDtoList , ProjectThumbnailDto projectThumbnailDto) {
         Project project = projectRequestDto.toEntity(author);
@@ -51,18 +54,6 @@ public class ProjectService {
         projectPort.deleteById(projectId);
     }
 
-    public void addRating(Long projectId, Long memberId, ProjectRatingRequestDto projectRatingRequestDto) {
-        boolean ratingExists = projectPort.existsRatingByMemberAndProject(memberId, projectId);
-        if (ratingExists) {
-            throw new IllegalArgumentException("이미 존재한다");
-        }
-
-        Member member = memberService.findById(memberId);
-        Project project = projectPort.findById(projectId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 프로젝트이다."));
-
-        ProjectRating projectRating = new ProjectRating(member, project, projectRatingRequestDto.toStarRank());
-        project.addProjectRating(projectRating);
-    }
 
     public void likeProject(Long memberId, Long projectId){
         boolean isLikeExists = projectPort.likeExistsByMemberIdAndProjectId(memberId, projectId);

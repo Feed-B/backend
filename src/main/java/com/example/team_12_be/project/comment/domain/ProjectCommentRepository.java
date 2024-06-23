@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ProjectCommentRepository {
@@ -20,4 +21,12 @@ public interface ProjectCommentRepository {
     Page<ProjectComment> findAllByParentCommentId(Long parentCommentId, Pageable pageable);
 
     Optional<ProjectComment> findByProjectIdAndMemberId(Long projectId, Long memberId);
+
+    Optional<ProjectComment> findByIdAndMemberId(Long id, Long memberId);
+
+    List<ProjectComment> findAllByParentId(Long parentId);
+
+    void delete(ProjectComment projectComment);
+
+    void deleteAll(List<ProjectComment> projectComments);
 }

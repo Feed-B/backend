@@ -23,12 +23,17 @@ public class ProjectQuerydslRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    private BooleanExpression filterByProjectTechStacks(List<String> projectTechStacks){
-        if (Objects.isNull(projectTechStacks) || projectTechStacks.isEmpty()){
+    private BooleanExpression filterByProjectTechStacks(List<String> projectTechStacks) {
+        if (Objects.isNull(projectTechStacks) || projectTechStacks.isEmpty()) {
             return null;
         }
 
-        return project.projectTechStacks.any().techStack.in(projectTechStacks);
+        BooleanExpression result = Expressions.asBoolean(true).isTrue();
+
+        for(String techStack : projectTechStacks){
+            result = result.and(project.projectTechStacks.any().techStack.eq(techStack));
+        }
+        return result;
     }
 
     private BooleanExpression filterByTitleOrContent(String serachString){

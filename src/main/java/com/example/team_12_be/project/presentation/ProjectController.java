@@ -3,7 +3,6 @@ package com.example.team_12_be.project.presentation;
 import com.example.team_12_be.project.service.DefaultProjectUpdateService;
 import com.example.team_12_be.project.service.ProjectService;
 import com.example.team_12_be.project.service.dto.request.ProjectImageDto;
-import com.example.team_12_be.project.service.dto.request.ProjectRatingRequestDto;
 import com.example.team_12_be.project.service.dto.request.ProjectRequestDto;
 import com.example.team_12_be.project.service.dto.request.ProjectThumbnailDto;
 import com.example.team_12_be.project.service.usecase.update.dto.request.ProjectUpdateRequestDto;
@@ -39,8 +38,6 @@ public class ProjectController {
 
     private final DefaultProjectUpdateService projectUpdateService;
 
-    // TODO : Authentication 완료되면 작성 유저의 정보도 받아야 한다.
-
     @PostMapping(value ="/projects" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(description="프로젝트를 생성")
     public ResponseEntity<Void> saveProject(@RequestPart ProjectRequestDto projectRequestDto,
@@ -71,15 +68,6 @@ public class ProjectController {
     @Operation(description="프로젝트를 삭제")
     public void deleteProject(@PathVariable Long projectId) {
         projectService.deleteProject(projectId);
-    }
-
-    @PostMapping("/projects/{projectId}/rank")
-    @Operation(description="프로젝트에 대한 사용자의 별점 생성")
-    public void addRating(@PathVariable Long projectId,
-                          @AuthenticationPrincipal CustomUserDetails customUserDetails,
-                          @RequestBody ProjectRatingRequestDto projectRatingRequestDto) {
-
-        projectService.addRating(projectId, customUserDetails.getMember().getId(), projectRatingRequestDto);
     }
 
     @PostMapping("/projects/{projectId}/like")

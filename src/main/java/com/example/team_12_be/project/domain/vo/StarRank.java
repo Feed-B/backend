@@ -44,7 +44,6 @@ public class StarRank {
         return new StarRank(ideaRank, designRank, functionRank, completionRank);
     }
 
-    // TODO : 총점 평균도 반올림 할것인지?
     public static StarRank ofAverage(float ideaRank, float designRank, float functionRank, float completionRank) {
         float avgIdeaRank = round(ideaRank);
         float avgDesignRank = round(designRank);
@@ -52,6 +51,10 @@ public class StarRank {
         float avgCompletionRank = round(completionRank);
 
         return new StarRank(avgIdeaRank, avgDesignRank, avgFunctionRank, avgCompletionRank);
+    }
+
+    public static StarRank ofNone(){
+        return new StarRank(0, 0, 0, 0);
     }
 
     private StarRank(float ideaRank, float designRank, float functionRank, float completionRank){
