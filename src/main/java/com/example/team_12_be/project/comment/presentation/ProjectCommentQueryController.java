@@ -27,7 +27,7 @@ public class ProjectCommentQueryController {
 
     private final ProjectCommentQueryService projectCommentQueryService;
 
-    @GetMapping("/{projectId}/comments")
+    @GetMapping("/projects/{projectId}/comments")
     @Operation(description = "프로젝트에 달린 댓글 조회")
     public CustomPageResponse<ProjectCommentResponseDto> getProjectComments(@PathVariable Long projectId,
                                                                            @ModelAttribute CustomPageRequest customPageRequest) {

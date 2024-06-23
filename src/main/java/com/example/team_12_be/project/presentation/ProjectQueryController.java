@@ -63,7 +63,7 @@ public class ProjectQueryController {
         return projectQueryService.getTeammateListByProjectId(projectId);
     }
 
-    @GetMapping("/project/{projectId}/average-rating")
+    @GetMapping("/projects/{projectId}/average-rating")
     @Operation(description = "프로젝트 별점 항목들 각각의 평균 조회")
     public StarRankResponseDto getProjectAverageStarRank(@PathVariable Long projectId) {
         return projectQueryService.getProjectAverageStarRankWithLikedInfo(projectId);
@@ -75,7 +75,7 @@ public class ProjectQueryController {
         return projectQueryService.getMemberProjectRating(memberId, projectId);
     }
 
-    @GetMapping("/project/{projectId}/likes")
+    @GetMapping("/projects/{projectId}/likes")
     @Operation(description = "프로젝트에 좋아요 누른 횟수가 제일 많은 3개의 {job + 좋아요} 조회")
     public List<LikedMembersTechStackResponseDto> likedMembersTechStackList(@PathVariable Long projectId) {
         return projectQueryService.getLikedMembersTechStack(projectId);

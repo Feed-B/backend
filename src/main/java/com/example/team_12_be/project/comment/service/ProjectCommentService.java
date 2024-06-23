@@ -37,8 +37,8 @@ public class ProjectCommentService {
         return addComment(commnetedProject, commentAuthor, projectRatingRequestDto.commentRequest());
     }
 
-    private Long addComment(Project commnetedProject, Member commentAuthor, ProjectCommentRequestDto projectCommentRequestDto) {
-        ProjectComment newComment = projectCommentRequestDto.toEntity(commnetedProject, commentAuthor);
+    private Long addComment(Project commentedProject, Member commentAuthor, ProjectCommentRequestDto projectCommentRequestDto) {
+        ProjectComment newComment = projectCommentRequestDto.toEntity(commentedProject, commentAuthor);
         projectCommentRepository.save(newComment);
 
         this.assignParentId(projectCommentRequestDto, newComment);

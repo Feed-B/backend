@@ -12,7 +12,9 @@ public record ProjectCommentRequestDto(
         String comment
 ) {
         public ProjectComment toEntity(Project project, Member member){
+                if (parentId == 0){
+                        return new ProjectComment(null, comment, project, member);
+                }
                 return new ProjectComment(parentId, comment, project, member);
-
         }
 }
