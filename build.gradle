@@ -54,9 +54,10 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-    // H2
+    // H2 , mysql
     implementation 'com.h2database:h2'
     runtimeOnly 'com.h2database:h2'
+    implementation 'mysql:mysql-connector-java:8.0.33'
 
     // JWT
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'

@@ -28,7 +28,7 @@ public class ProjectImage extends TimeStamp {
 
     private String url;
 
-    @Column(name = "index")
+    @Column(name = "idx")
     private int index;
 
     public ProjectImage(String url , int index) {

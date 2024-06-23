@@ -35,12 +35,12 @@ public class MemberImageUpdateService {
             return null;
         }
         if(idx == 0) { //기존 이미지 있지만 업로드 이미지 x
-            this.deleteImageToS3(currentImageUrl);
+           // this.deleteImageToS3(currentImageUrl);
             return null;
         }
 
         if(idx == 2) {
-            if(!Objects.isNull(currentImageUrl)) this.deleteImageToS3(currentImageUrl);
+            //if(!Objects.isNull(currentImageUrl)) this.deleteImageToS3(currentImageUrl);
             currentImageUrl = this.uploadImage(image);
         }
 

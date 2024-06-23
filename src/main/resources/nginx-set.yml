@@ -4,6 +4,14 @@ spring:
   config:
     activate:
       on-profile: set1
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://feedb-db.cjos0aaae8c0.ap-northeast-2.rds.amazonaws.com:3306/feedb_db?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    username: feedB_user
+    password: feedb_codeit
+  jpa:
+    hibernate:
+      ddl-auto: update
   security:
     oauth2:
       client:
@@ -20,6 +28,14 @@ spring:
   config:
     activate:
       on-profile: set2
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://feedb-db.cjos0aaae8c0.ap-northeast-2.rds.amazonaws.com:3306/feedb_db?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    username: feedB_user
+    password: feedb_codeit
+  jpa:
+    hibernate:
+      ddl-auto: update
   security:
     oauth2:
       client:

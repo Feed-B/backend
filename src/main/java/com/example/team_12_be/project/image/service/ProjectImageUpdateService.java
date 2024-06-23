@@ -75,7 +75,7 @@ public class ProjectImageUpdateService {
             projectImageList.add(projectImage);
         }
 
-        deleteImageToS3(removeProjectImgList); //사용 안 하는 이미지 S3 삭제
+        //deleteImageToS3(removeProjectImgList); //사용 안 하는 이미지 S3 삭제
 
         return projectImageList;
     }
