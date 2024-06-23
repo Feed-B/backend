@@ -2,12 +2,14 @@ package com.example.team_12_be.project.domain.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Embeddable
 @Getter
 @NoArgsConstructor
+@EqualsAndHashCode
 public class StarRank {
 
     @Column(name = "average_rank")

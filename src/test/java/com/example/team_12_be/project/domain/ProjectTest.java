@@ -6,8 +6,8 @@ import com.example.team_12_be.project.domain.vo.StarRank;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 
 class ProjectTest {
@@ -31,10 +31,8 @@ class ProjectTest {
 
     @Test
     void testCalculateAverageStarRank_NoRatings() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            project.calculateAverageStarRank();
-        });
-        assertEquals("No ratings available.", exception.getMessage());
+        StarRank starRank = project.calculateAverageStarRank();
+        assertThat(starRank).isEqualTo(StarRank.ofNone());
     }
 
     @Test

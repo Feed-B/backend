@@ -1,5 +1,6 @@
 package com.example.team_12_be.project.service.dto.request;
 
+import com.example.team_12_be.project.comment.service.dto.ProjectCommentRequestDto;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -28,7 +29,7 @@ class ProjectRatingRequestDtoTest {
     void starRankValidationTest() {
         // arrange
         ProjectRatingRequestDto dto = new ProjectRatingRequestDto(1L, 5f,
-                1f, 4.5f);
+                1f, 4.5f, new ProjectCommentRequestDto(null, "Test"));
 
         // act
         Set<ConstraintViolation<ProjectRatingRequestDto>> violations = validator.validate(dto);
