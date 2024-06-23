@@ -47,7 +47,7 @@ public class SpringSecurityConfig {
                 .authorizeHttpRequests((request -> request
                         .requestMatchers("/h2-console/*","/swagger-ui/**","/actuator/health","/nginx/profile","/swagger-resources/**" , "/v3/api-docs/**").permitAll() //기본 설정 관련
                         .requestMatchers("/token", "/test/**","/login/{service}" ,"/signUp" , "/login/*").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/projects" , "/projects/{projectId}","/projects/{projectId}" , "/projects/{projectId}/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/projects" ,"/projects/{projectId}" , "/projects/{projectId}/**" , "/{projectId}/comments").permitAll()
                         //TODO : permitAll 제거할 것
 //                        .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated()
