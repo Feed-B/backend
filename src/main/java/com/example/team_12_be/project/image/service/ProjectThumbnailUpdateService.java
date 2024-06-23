@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.util.IOUtils;
+import com.example.team_12_be.project.domain.Project;
 import com.example.team_12_be.project.service.dto.request.ProjectThumbnailDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,17 +29,18 @@ public class ProjectThumbnailUpdateService {
     private String bucketFolder = "image/";
 
     @Transactional
-    public String update(ProjectThumbnailDto projectThumbnailDto , String currenturl) {
+    public void updateProjectThumbnail(ProjectThumbnailDto projectThumbnailDto , Project project) {
+        String currentUrl = project.getThumbnailUrl();
 
         if(Objects.isNull(projectThumbnailDto)) {
             throw new IllegalArgumentException("File must not be empty or null");
         }
         //idx - 변경 - 0  / 기본이미지 - 1
         if(projectThumbnailDto.index() == 0 ) {
-            return this.updateImage(projectThumbnailDto);
+            currentUrl = updateImage(projectThumbnailDto);
         }
 
-        return currenturl;
+        project.addThumbnailUrl(currentUrl);
     }
 
     private String updateImage(ProjectThumbnailDto projectThumbnailDto) {

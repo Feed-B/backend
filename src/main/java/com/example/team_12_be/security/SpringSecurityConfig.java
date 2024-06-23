@@ -5,6 +5,7 @@ import com.example.team_12_be.security.exception.OAuth2AuthenticationSuccessHand
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -45,15 +46,13 @@ public class SpringSecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((request -> request
                         .requestMatchers("/h2-console/*","/swagger-ui/**","/actuator/health","/nginx/profile","/swagger-resources/**" , "/v3/api-docs/**").permitAll() //기본 설정 관련
-                        .requestMatchers("/test/**","/login/{service}" ,"/signUp").permitAll()
+                        .requestMatchers("/token", "/test/**","/login/{service}" ,"/signUp" , "/login/*").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/projects" , "/projects/{projectId}").permitAll()
                         //TODO : permitAll 제거할 것
-                        .requestMatchers("/**").permitAll()
+//                        .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated()
                 ))
                 .oauth2Login(oauth2 -> oauth2
-//                        .loginPage("/loginForm") // 로그인이 필요한데 로그인을 하지 않았다면 이동할 uri 설정
-//                        .defaultSuccessUrl("/h") // OAuth 구글 로그인이 성공하면 이동할 uri 설정 // 실패시 url 메소드 failureURL?
-
                         .userInfoEndpoint(userInfo -> userInfo
                                .userService(oAuth2MemberService) // 로그인 후 받아온 유저 정보 처리
                         )
@@ -76,6 +75,7 @@ public class SpringSecurityConfig {
         configuration.setAllowedOrigins(List.of("http://localhost:3000", "https://feedb.vercel.app"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setExposedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

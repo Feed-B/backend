@@ -88,23 +88,24 @@ public class ProjectController {
         projectService.unlikeProject(memberId, projectId);
     }
 
-    @PutMapping("/projects/{projectId}")
+    @PutMapping(value = "/projects/{projectId}" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> updateProject(
             @PathVariable Long projectId,
-            @RequestBody ProjectUpdateRequestDto projectRequestDto,
-//                       @RequestPart List<MultipartFile> images,
-//                       @RequestPart List<Integer> imageIndexes,
-//                       @RequestPart MultipartFile thumbnail,
-//                       @RequestPart Integer thumbnailIndex,
+            @RequestPart ProjectUpdateRequestDto projectRequestDto,
+                       @RequestPart(required = false) List<MultipartFile> images,
+                       @RequestPart List<Integer> imageIndexes,
+                       @RequestPart(required = false) MultipartFile thumbnail,
+                       @RequestPart Integer thumbnailIndex,
                        @AuthenticationPrincipal CustomUserDetails customUserDetails){
-//        List<ProjectImageDto> projectImages = IntStream.range(0, images.size() - 1)
-//                .mapToObj(idx -> new ProjectImageDto(images.get(idx), imageIndexes.get(idx)))
-//                .toList();
-//        ProjectThumbnailDto projectThumbnailDto = new ProjectThumbnailDto(thumbnail, thumbnailIndex);
-        Long memberId = customUserDetails.getMember().getId();
-        projectUpdateService.updateProject(projectId, memberId, projectRequestDto);
 
-//        projectUpdateService.updateProject(memberId, projectRequestDto, projectThumbnailDto, projectImages);
+        List<ProjectImageDto> projectImageList = IntStream.range(0, imageIndexes.size())
+                .mapToObj(idx -> new ProjectImageDto(images != null && idx < images.size() ? images.get(idx) : null, imageIndexes.get(idx)))
+                .toList();
+
+        ProjectThumbnailDto projectThumbnailDto = new ProjectThumbnailDto(thumbnail, thumbnailIndex);
+
+        Long memberId = customUserDetails.getMember().getId();
+        projectUpdateService.updateProject(projectId, memberId, projectRequestDto , projectImageList , projectThumbnailDto);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")

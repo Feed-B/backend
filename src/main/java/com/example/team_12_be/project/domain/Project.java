@@ -54,7 +54,7 @@ public class Project extends TimeStamp {
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectTechStack> projectTechStacks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectImage> projectImages = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -150,6 +150,12 @@ public class Project extends TimeStamp {
     public void removeProjectImage(ProjectImage projectImage) {
         projectImages.remove(projectImage);
         projectImage.assign(null);
+    }
+    public void replaceProjectImages(List<ProjectImage> projectImageList) {
+        this.projectImages.clear(); // 기존 컬렉션을 비웁니다.(대체 하게 되면 연관관계깨지는 이슈 발생)
+        for (ProjectImage projectImage : projectImageList) {
+            this.addProjectImage(projectImage); // 새로운 이미지들을 추가합니다.
+        }
     }
 
     public void addThumbnailUrl(String url) {
