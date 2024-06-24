@@ -105,11 +105,10 @@ public class ProjectCommentService {
         // 만약 요청으로 들어온 부모 아이디가 부모 아이디를 가진다면, 이 코멘트 또한 최상단 부모아이디를 참조한다.
         Long requestParentId = projectCommentRequestDto.parentId();
 
-        if (requestParentId == null || requestParentId == 0){
-            return;
-        }
+        ProjectComment parentComment = projectCommentRepository.findById(requestParentId).orElseThrow(
+                () -> new IllegalArgumentException("부모 댓글 아이디가 부적절하다.")
+        );
 
-        ProjectComment parentComment = projectCommentRepository.findById(requestParentId).orElseThrow();
         newComment.assignParentIdFrom(parentComment);
     }
 

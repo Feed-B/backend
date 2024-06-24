@@ -31,7 +31,7 @@ public class ProjectCommentQueryService {
                 .map(each -> this.getProjectCommentResponseDto(projectId, each))
                 .toList();
 
-        return new CustomPageResponse<>(projectCommentResponses, pageable, projectCommentsPage.hasNext());
+        return new CustomPageResponse<>(projectCommentResponses, pageable, projectCommentsPage.getNumberOfElements());
     }
 
     public CustomPageResponse<ReplyCommentResponseDto> findAllReplyByParentCommentId(Long parentCommentId, Pageable pageable){

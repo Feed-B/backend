@@ -15,13 +15,8 @@ public class CustomPageResponse<T> {
 
     private final CustomPageable<T> customPageable;
 
-    public CustomPageResponse(List<T> content, Pageable pageable, long total) {
+    public CustomPageResponse(List<T> content, Pageable pageable, long numberOfElements) {
         this.content = content;
-        this.customPageable = new CustomPageable<>(new PageImpl<>(content, pageable, total));
-    }
-
-    public CustomPageResponse(List<T> content, Pageable pageable, boolean hasNext) {
-        this.content = content;
-        this.customPageable = new CustomPageable<>(new SliceImpl<>(content, pageable, hasNext));
+        this.customPageable = new CustomPageable<>(new PageImpl<>(content, pageable, numberOfElements));
     }
 }
