@@ -1,7 +1,6 @@
 package com.example.team_12_be.project.service.dto.request;
 
 import com.example.team_12_be.global.validate.HalfOrWholeNumber;
-import com.example.team_12_be.project.comment.service.dto.CommentUpdateRequestDto;
 import com.example.team_12_be.project.domain.vo.StarRank;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -21,9 +20,7 @@ public record ProjectRatingUpdateRequestDto(
         float functionRank,
 
         @NotNull @Min(1) @Max(5) @HalfOrWholeNumber
-        float completionRank,
-
-        CommentUpdateRequestDto commentUpdateRequest
+        float completionRank
 ) {
     public StarRank toStarRank() {
         return StarRank.of(ideaRank, designRank, functionRank, completionRank);

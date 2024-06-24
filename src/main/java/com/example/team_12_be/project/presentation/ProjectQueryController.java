@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Tag(name = "프로젝트 GET(조회) 컨트롤러")
 @SecurityRequirement(name = "Bearer Authentication")
