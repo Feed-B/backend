@@ -73,4 +73,9 @@ public class DefaultProjectAdapter implements ProjectPort {
     public ProjectImage findByIdx(int idx) {
         return projectImageJpaRepository.findByIndex(idx);
     }
+
+    @Override
+    public void addViewCount(Long projectId){
+        proejctJpaRepository.addViewCount(projectId);
+    }
 }

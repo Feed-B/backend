@@ -16,14 +16,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
-
-import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 @EnableWebSecurity
 @Configuration
@@ -45,9 +42,9 @@ public class SpringSecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((request -> request
-                        .requestMatchers("/h2-console/*","/swagger-ui/**","/actuator/health","/nginx/profile","/swagger-resources/**" , "/v3/api-docs/**").permitAll() //기본 설정 관련
+                        .requestMatchers("/h2-console/**","/swagger-ui/**","/actuator/health","/nginx/profile","/swagger-resources/**" , "/v3/api-docs/**").permitAll() //기본 설정 관련
                         .requestMatchers("/token", "/test/**","/login/{service}" ,"/signUp" , "/login/*").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/projects" ,"/projects/{projectId}" , "/projects/{projectId}/**" , "/{projectId}/comments").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/projects" ,"/projects/{projectId}" , "/projects/{projectId}/**" , "/{projectId}/comments", "/{projectId}/views").permitAll()
                         //TODO : permitAll 제거할 것
 //                        .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated()

@@ -1,10 +1,9 @@
 package com.example.team_12_be.project.service;
 
-import com.example.team_12_be.project.comment.service.ProjectCommentService;
-import com.example.team_12_be.project.image.service.ProjectImageService;
-import com.example.team_12_be.member.service.dto.MemberService;
 import com.example.team_12_be.member.domain.Member;
+import com.example.team_12_be.member.service.dto.MemberService;
 import com.example.team_12_be.project.domain.*;
+import com.example.team_12_be.project.image.service.ProjectImageService;
 import com.example.team_12_be.project.image.service.ProjectThumbnailService;
 import com.example.team_12_be.project.service.dto.request.*;
 import lombok.RequiredArgsConstructor;
@@ -75,5 +74,9 @@ public class ProjectService {
         }
 
         projectPort.deleteLikeByMemberIdAndProjectId(memberId, projectId);
+    }
+
+    public void addViewCount(Long projectId) {
+        projectPort.addViewCount(projectId);
     }
 }

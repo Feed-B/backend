@@ -34,15 +34,25 @@ public class ProjectCommentService {
         Member commentAuthor = memberService.findById(memberId);
         projectRatingService.addRating(commnetedProject, commentAuthor, projectRatingRequestDto);
 
-        return addComment(commnetedProject, commentAuthor, projectRatingRequestDto.commentRequest());
+        ProjectComment newComment = addComment(commnetedProject, commentAuthor, projectRatingRequestDto.comment());
+        return newComment.getId();
     }
 
-    private Long addComment(Project commentedProject, Member commentAuthor, ProjectCommentRequestDto projectCommentRequestDto) {
-        ProjectComment newComment = projectCommentRequestDto.toEntity(commentedProject, commentAuthor);
+    private ProjectComment addComment(Project commentedProject, Member commentAuthor, String comment) {
+        ProjectComment newComment = new ProjectComment(null, comment, commentedProject, commentAuthor);
         projectCommentRepository.save(newComment);
 
-        this.assignParentId(projectCommentRequestDto, newComment);
+//        this.assignParentId(projectCommentRequestDto, newComment);
 
+        return newComment;
+    }
+
+    public Long addReply(Long projectId, Long memberId, ProjectCommentRequestDto projectCommentRequestDto){
+        Project commnetedProject = projectQueryService.findById(projectId);
+        Member commentAuthor = memberService.findById(memberId);
+
+        ProjectComment newComment = this.addComment(commnetedProject, commentAuthor, projectCommentRequestDto.comment());
+        this.assignParentId(projectCommentRequestDto, newComment);
         return newComment.getId();
     }
 
@@ -51,8 +61,16 @@ public class ProjectCommentService {
                 () -> new IllegalArgumentException("없는 코멘트")
         );
 
-        projectRatingService.modifyRating(memberId, commentUpdateRequestDto.projectRatingUpdateRequest());
         projectComment.updateContent(commentUpdateRequestDto.comment());
+        projectRatingService.modifyRating(memberId, commentUpdateRequestDto.projectRatingUpdateRequest());
+    }
+
+    public void updateReply(Long commentId, Long memberId, ProjectCommentRequestDto projectCommentRequestDto){
+        ProjectComment projectComment = projectCommentRepository.findByIdAndMemberId(commentId, memberId).orElseThrow(
+                () -> new IllegalArgumentException("없는 코멘트")
+        );
+
+        projectComment.updateContent(projectCommentRequestDto.comment());
     }
 
     public void deleteComment(Long commentId, Long memberId) {
@@ -64,6 +82,14 @@ public class ProjectCommentService {
 
         deleteChildIfPresent(projectComment);
         projectRatingService.deleteRating(memberId, commnetedProject);
+        projectCommentRepository.delete(projectComment);
+    }
+
+    public void deleteReply(Long commentId, Long memberId){
+        ProjectComment projectComment = projectCommentRepository.findByIdAndMemberId(commentId, memberId).orElseThrow(
+                () -> new IllegalArgumentException("없는 코멘트")
+        );
+
         projectCommentRepository.delete(projectComment);
     }
 

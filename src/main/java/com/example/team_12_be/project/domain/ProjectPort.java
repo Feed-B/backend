@@ -26,4 +26,6 @@ public interface ProjectPort {
     ProjectImage saveImage(ProjectImage projectImage);
 
     ProjectImage findByIdx(int idx);
+
+    void addViewCount(Long projectId);
 }

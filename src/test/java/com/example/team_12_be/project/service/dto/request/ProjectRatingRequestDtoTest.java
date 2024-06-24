@@ -29,7 +29,7 @@ class ProjectRatingRequestDtoTest {
     void starRankValidationTest() {
         // arrange
         ProjectRatingRequestDto dto = new ProjectRatingRequestDto(1L, 5f,
-                1f, 4.5f, new ProjectCommentRequestDto(null, "Test"));
+                1f, 4.5f, "Test");
 
         // act
         Set<ConstraintViolation<ProjectRatingRequestDto>> violations = validator.validate(dto);

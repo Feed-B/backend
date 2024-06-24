@@ -53,7 +53,7 @@ public class DefaultProjectCommentRepository implements ProjectCommentRepository
 
     @Override
     public List<ProjectComment> findAllByParentId(Long parentId) {
-        return findAllByParentId(parentId);
+        return projectCommentJpaRepository.findAllByParentId(parentId);
     }
 
     @Override

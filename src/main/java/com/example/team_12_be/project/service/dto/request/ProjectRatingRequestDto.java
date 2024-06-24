@@ -20,7 +20,7 @@ public record ProjectRatingRequestDto(
         @NotNull @Min(1) @Max(5) @HalfOrWholeNumber
         float completionRank,
 
-        ProjectCommentRequestDto commentRequest
+        String comment
 ) {
     public StarRank toStarRank() {
         return StarRank.of(ideaRank, designRank, functionRank, completionRank);

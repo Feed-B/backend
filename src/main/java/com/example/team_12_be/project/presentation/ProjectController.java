@@ -38,6 +38,12 @@ public class ProjectController {
 
     private final DefaultProjectUpdateService projectUpdateService;
 
+    @PostMapping("/{projectId}/views")
+    @Operation(description="프로젝트 조회수 증가")
+    public void addViewCount(@PathVariable Long projectId){
+        projectService.addViewCount(projectId);
+    }
+
     @PostMapping(value ="/projects" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(description="프로젝트를 생성")
     public ResponseEntity<Void> saveProject(@RequestPart ProjectRequestDto projectRequestDto,

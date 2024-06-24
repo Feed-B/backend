@@ -9,6 +9,7 @@ public record ProjectCommentResponseDto(
         Long authorId,
         String authorName,
         Job job,
+        String authorProfileImageUrl,
         String comment,
         float averageStarRank,
         Long childCommentCount
@@ -19,6 +20,7 @@ public record ProjectCommentResponseDto(
                 commentAuthor.getId(),
                 commentAuthor.getNickName(),
                 commentAuthor.getMemberJob(),
+                commentAuthor.getImageUrl(),
                 projectComment.getComment(),
                 averageStarRank,
                 childCommentCount

@@ -3,6 +3,7 @@ package com.example.team_12_be.project.comment.presentation;
 import com.example.team_12_be.member.domain.Member;
 import com.example.team_12_be.project.comment.service.ProjectCommentService;
 import com.example.team_12_be.project.comment.service.dto.CommentUpdateRequestDto;
+import com.example.team_12_be.project.comment.service.dto.ProjectCommentRequestDto;
 import com.example.team_12_be.project.service.dto.request.ProjectRatingRequestDto;
 import com.example.team_12_be.security.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
@@ -45,6 +46,23 @@ public class ProjectCommentController {
         return ResponseEntity.created(location).build();
     }
 
+    @PostMapping("/projects/{projectId}/comments/replies")
+    @Operation(description="댓글에 대한 대댓글 생성")
+    public Long addReply(@PathVariable Long projectId,
+                         @AuthenticationPrincipal CustomUserDetails customUserDetails,
+                         @RequestBody ProjectCommentRequestDto projectCommentRequestDto){
+        return projectCommentService.addReply(projectId, customUserDetails.getMember().getId(), projectCommentRequestDto);
+    }
+
+    @PutMapping("/projects/comments/replies/{replyId}")
+    @Operation(description="대댓글 수정")
+    public void updateReply(
+                         @PathVariable Long replyId,
+                         @AuthenticationPrincipal CustomUserDetails customUserDetails,
+                         @RequestBody ProjectCommentRequestDto projectCommentRequestDto){
+        projectCommentService.updateReply(replyId, customUserDetails.getMember().getId(), projectCommentRequestDto);
+    }
+
     @PutMapping("/projects/{commentId}")
     @Operation(description="프로젝트 댓글, 별점 수정")
     public ResponseEntity<Long> updateComment(@PathVariable Long commentId,
@@ -64,5 +82,13 @@ public class ProjectCommentController {
 
         Member member = userDetails.getMember();
         projectCommentService.deleteComment(commentId, member.getId());
+    }
+
+    @DeleteMapping("/projects/comments/replies/{replyId}")
+    @Operation(description="대댓글 삭제")
+    public void deleteReply(
+            @PathVariable Long replyId,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails){
+        projectCommentService.deleteReply(replyId, customUserDetails.getMember().getId());
     }
 }
