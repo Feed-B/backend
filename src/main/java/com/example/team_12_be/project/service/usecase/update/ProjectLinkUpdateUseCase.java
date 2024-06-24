@@ -30,7 +30,7 @@ public class ProjectLinkUpdateUseCase {
     private void saveLinksIfNew(List<ProjectLinkUpdateRequestDto> projectLinkUpdateRequestDtoList, Project project) {
         // 3. 프로젝트 아이디가 없는 녀석은 생성한다.
         projectLinkUpdateRequestDtoList.stream()
-                .filter(dto -> dto.id() == null)
+                .filter(dto -> dto.id() == null || dto.id() == 0)
                 .map(dto -> new ProjectLink(dto.siteType(), dto.url()))
                 .forEach(project::addLink);
     }
