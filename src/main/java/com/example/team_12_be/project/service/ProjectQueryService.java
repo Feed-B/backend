@@ -45,8 +45,9 @@ public class ProjectQueryService {
         Project project = this.findById(projectId);
         long likeCount = projectQueryRepository.countLikeByProjectId(projectId);
         boolean isMine = isMine(memberId, project);
+        boolean isLiked = isLiked(memberId, project);
 
-        return ProjectDetailResponseDto.of(project, likeCount, isMine);
+        return ProjectDetailResponseDto.of(project, likeCount, isMine, isLiked);
     }
 
     private static boolean isMine(Long memberId, Project project) {

@@ -24,9 +24,10 @@ public record ProjectDetailResponseDto(
         List<ProjectTechStackResponseDto> projectTechStacks,
         String thumbnailUrl,
         List<ProjectImageResponseDto> imageUrlList,
-        boolean isMine
+        boolean isMine,
+        boolean isLiked
 ) {
-    public static ProjectDetailResponseDto of(Project project, Long likeCount, boolean isMine) {
+    public static ProjectDetailResponseDto of(Project project, Long likeCount, boolean isMine, boolean isLiked) {
         return new ProjectDetailResponseDto(
                 project.getId(),
                 project.getAuthor().getId(),
@@ -43,7 +44,8 @@ public record ProjectDetailResponseDto(
                 project.getProjectTechStacks().stream().map(ProjectTechStackResponseDto::of).toList(),
                 project.getThumbnailUrl(),
                 project.getProjectImages().stream().map(ProjectImageResponseDto::of).toList(),
-                isMine
+                isMine,
+                isLiked
         );
     }
 }
