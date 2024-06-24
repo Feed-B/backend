@@ -50,7 +50,7 @@ public class DefaultProjectQueryRepository implements ProjectQueryRepository {
 
     @Override
     public long countRankByProjectId(Long projectId) {
-        return projectLikeJpaRepository.countByProjectId(projectId);
+        return projectRatingJpaRepository.countByProjectId(projectId);
     }
 
     @Override

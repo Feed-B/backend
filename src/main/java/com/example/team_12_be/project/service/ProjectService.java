@@ -26,8 +26,6 @@ public class ProjectService {
 
     private final ProjectThumbnailService projectThumbnailService;
 
-    private final ProjectCommentService projectCommentService;
-
     public Long saveProject(ProjectRequestDto projectRequestDto, Member author , List<ProjectImageDto> projectImageDtoList , ProjectThumbnailDto projectThumbnailDto) {
         Project project = projectRequestDto.toEntity(author);
         projectPort.saveProject(project);
