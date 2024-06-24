@@ -50,10 +50,12 @@ public class ProjectComment extends TimeStamp {
     }
 
     public void assignParentIdFrom(ProjectComment parentComment) {
-        if (parentComment.getParentId() == null){
+        if (parentComment.getParentId() != null){
+            this.parentId = parentComment.getParentId();
             return;
         }
-        this.parentId = parentComment.getParentId();
+
+        this.parentId = parentComment.getId();
     }
 
     public void updateContent(String content) {
