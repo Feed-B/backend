@@ -39,11 +39,10 @@ public class ProjectQueryController {
 
     @GetMapping("/projects/{projectId}")
     @Operation(description = "프로젝트 상세 조회")
-    public ProjectDetailResponseDto getProjectDetail(@PathVariable Long projectId, @AuthenticationPrincipal Optional<CustomUserDetails> customUserDetailsOpt) {
+    public ProjectDetailResponseDto getProjectDetail(@PathVariable Long projectId, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         Long memberId = null;
 
-        if (!Objects.isNull(customUserDetailsOpt) && customUserDetailsOpt.isPresent()) {
-            CustomUserDetails customUserDetails = customUserDetailsOpt.get();
+        if (!Objects.isNull(customUserDetails)) {
             memberId = customUserDetails.getMember().getId();
         }
 
@@ -86,14 +85,13 @@ public class ProjectQueryController {
     public CustomPageResponse<ProjectListResponseDto> getProjectList(
             @RequestParam(name = "sortCondition") SortCondition sortCondition,
             @RequestParam(required = false) List<String> projectTechStacks,
-            @AuthenticationPrincipal Optional<CustomUserDetails> customUserDetailsOpt,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @RequestParam(required = false) String searchString,
             @ModelAttribute CustomPageRequest customPageRequest
     ) {
         Long memberId = null;
 
-        if (!Objects.isNull(customUserDetailsOpt) && customUserDetailsOpt.isPresent()) {
-            CustomUserDetails customUserDetails = customUserDetailsOpt.get();
+        if (!Objects.isNull(customUserDetails)) {
             memberId = customUserDetails.getMember().getId();
         }
 
