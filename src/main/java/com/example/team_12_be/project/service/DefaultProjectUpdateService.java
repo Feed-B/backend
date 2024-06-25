@@ -43,7 +43,8 @@ public class DefaultProjectUpdateService {
                 projectUpdateRequestDto.title(),
                 projectUpdateRequestDto.introduction(),
                 projectUpdateRequestDto.content(),
-                projectUpdateRequestDto.serviceUrl()
+                projectUpdateRequestDto.serviceUrl(),
+                projectUpdateRequestDto.imageType()
         );
 
         projectLinkUpdateUseCase.updateProjectLinks(projectUpdateRequestDto.projectLinks(), project);

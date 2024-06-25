@@ -82,13 +82,13 @@ public class Project extends TimeStamp {
         this.imageType = imageType;
     }
 
-    public void updateProject(String title, String introductions, String content,  String serviceUrl) {
+    public void updateProject(String title, String introductions, String content,  String serviceUrl , ImageType imageType) {
         this.title = title;
         this.introductions = introductions;
         this.content = content;
         this.viewCount = 0L;
         this.serviceUrl = serviceUrl;
-
+        this.imageType = imageType;
     }
 
     public void addTechStack(ProjectTechStack projectTechStack){
