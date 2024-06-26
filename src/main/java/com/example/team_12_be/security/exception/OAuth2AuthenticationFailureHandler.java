@@ -27,7 +27,15 @@ public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         String email = null;
-        String redirectUrl = environment.getProperty("redirect.base-url") + "/auth/success"; // 프론트엔드에서 처리할 URL
+        //String redirectUrl = environment.getProperty("redirect.base-url") + "/auth/success"; // 프론트엔드에서 처리할 URL
+        String origin = request.getHeader("Origin");
+        String redirectUrl;
+
+        if(origin != null && origin.contains("feedb.vercel")) {
+            redirectUrl = environment.getProperty("redirect.base-url-prod");
+        }else {
+            redirectUrl = environment.getProperty("redirect.base-url-local");
+        }
 
         if (exception instanceof OAuth2UserNotFoundException) {
             email = ((OAuth2UserNotFoundException) exception).getEmail();
