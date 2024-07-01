@@ -26,7 +26,7 @@ public class OAuth2MemberService implements OAuth2UserService<OAuth2UserRequest 
     private final MemberRepository memberRepository;
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-
+        log.info("================OAuth2MemberService==================");
         DefaultOAuth2UserService delegeate = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = delegeate.loadUser(userRequest);
         OAuth2MemberInfo memberInfo = null;

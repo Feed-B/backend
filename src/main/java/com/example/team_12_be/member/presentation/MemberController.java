@@ -38,8 +38,8 @@ public class MemberController {
         public RedirectView login(@PathVariable("service") String service) {
                 String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
                 String redirectUrl = switch (service.toLowerCase()) {
-                    case "kakao" -> baseUrl + "/oauth2/authorization/kakao";
-                    case "naver" -> baseUrl + "/oauth2/authorization/naver";
+                    case "kakao" -> baseUrl + "https://feedb.shop/oauth2/authorization/kakao";
+                    case "naver" -> baseUrl + "https://feedb.shop/oauth2/authorization/naver";
                     default -> throw new IllegalArgumentException("Unsupported service : " + service);
                 };
 
