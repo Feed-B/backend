@@ -1,4 +1,4 @@
-#nginx 포트 설정
+exi#nginx 포트 설정
 --- #서로 다른 프로파일에 대한 설정을 정의할 수 있게 해준다.
 spring:
   config:
@@ -17,9 +17,9 @@ spring:
       client:
         registration:
           naver:
-            redirect-uri: http://3.37.64.186:8080/login/oauth2/code/naver
+            redirect-uri: https://feedb.shop/login/oauth2/code/naver
           kakao:
-            redirect-uri: http://3.37.64.186:8080/login/oauth2/code/kakao
+            redirect-uri: https://feedb.shop/login/oauth2/code/kakao
 server:
   port: 8081
 
@@ -41,8 +41,8 @@ spring:
       client:
         registration:
           naver:
-            redirect-uri: http://3.37.64.186:8080/login/oauth2/code/naver
+            redirect-uri: https://feedb.shop/login/oauth2/code/naver
           kakao:
-            redirect-uri: http://3.37.64.186:8080/login/oauth2/code/kakao
+            redirect-uri: https://feedb.shop/login/oauth2/code/kakao
 server:
   port: 8082

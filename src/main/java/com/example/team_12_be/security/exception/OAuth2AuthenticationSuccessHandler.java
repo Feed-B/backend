@@ -41,7 +41,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             redirectUrl = environment.getProperty("redirect.base-url-local");
         }
         redirectUrl += "?token=" + token + "&type=login";
-
+        log.info("success redirectUrl = " + redirectUrl);
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
     }
 }

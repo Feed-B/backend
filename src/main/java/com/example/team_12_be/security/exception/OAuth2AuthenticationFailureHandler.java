@@ -47,6 +47,8 @@ public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
             redirectUrl += "?error=Unauthorized";
         }
 
+        log.info("failure redirectUrl = " + redirectUrl);
+
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
     }
 }
