@@ -16,6 +16,7 @@ import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Enumeration;
 
 @Component
 @Slf4j
@@ -30,6 +31,12 @@ public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
         //String redirectUrl = environment.getProperty("redirect.base-url") + "/auth/success"; // 프론트엔드에서 처리할 URL
         String origin = request.getHeader("Origin");
         String redirectUrl;
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            log.info(headerName + ": " + request.getHeader(headerName));
+        }
+
         log.info("failure origin = " + origin);
 
         if(origin != null && origin.contains("feedb.vercel")) {
