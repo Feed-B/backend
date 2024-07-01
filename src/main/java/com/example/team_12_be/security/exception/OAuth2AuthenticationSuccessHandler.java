@@ -32,15 +32,17 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String token = jwtProvider.createToken(userDetails.getUserEmail());
         log.info("===================== onAuthenticationSuccess =================");
 
-        String origin = request.getHeader("Origin");
+        String host = request.getHeader("host");
         String redirectUrl;
-        log.info("success origin = " + origin);
 
-        if(origin != null && origin.contains("feedb.vercel")) {
-            redirectUrl = environment.getProperty("redirect.base-url-prod");
-        }else {
+        log.info("failure host = " + host);
+
+        if(host != null && host.contains("localhost")) {
             redirectUrl = environment.getProperty("redirect.base-url-local");
+        }else {
+            redirectUrl = environment.getProperty("redirect.base-url-prod");
         }
+
         redirectUrl += "?token=" + token + "&type=login";
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
     }

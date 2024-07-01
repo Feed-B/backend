@@ -12,6 +12,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: false
   security:
     oauth2:
       client:
@@ -36,6 +40,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: false
   security:
     oauth2:
       client:
