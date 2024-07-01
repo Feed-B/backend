@@ -7,6 +7,7 @@ import com.example.team_12_be.security.oauth_info.KakaoMemberInfo;
 import com.example.team_12_be.security.oauth_info.NaverMemberInfo;
 import com.example.team_12_be.security.oauth_info.OAuth2MemberInfo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OAuth2MemberService implements OAuth2UserService<OAuth2UserRequest , OAuth2User> {
 
     private final MemberRepository memberRepository;
@@ -47,11 +49,16 @@ public class OAuth2MemberService implements OAuth2UserService<OAuth2UserRequest 
         String role = "ROLE_USER"; //TODO 권한 결정 후 변경
         Optional<Member> findMember = memberRepository.findByEmail(email);
         Member member = null;
+        log.info("email = " + email);
+        log.info("provider = " + provider);
+        log.info("role = " + role);
         if(findMember.isEmpty()) { //계정 없을 때
             throw new OAuth2UserNotFoundException(email);
         }
         else {//계정 있을 때
             member = findMember.get();
+            log.info("findMember.get = " + member);
+
         }
         return new CustomUserDetails(member , oAuth2User.getAttributes() , jwtName);
     }

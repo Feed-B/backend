@@ -32,7 +32,6 @@ public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
         String host = request.getHeader("host");
         String redirectUrl;
 
-        log.info("failure host = " + host);
 
         if(host != null && host.contains("localhost")) {
             redirectUrl = environment.getProperty("redirect.base-url-local");
@@ -43,6 +42,8 @@ public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
         if (exception instanceof OAuth2UserNotFoundException) {
             email = ((OAuth2UserNotFoundException) exception).getEmail();
         }
+
+        log.info("failure email = " + email);
 
         if (email != null) {
             redirectUrl += "?type=signUp&email=" + email;
