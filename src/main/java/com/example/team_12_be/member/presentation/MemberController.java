@@ -43,6 +43,8 @@ public class MemberController {
                     default -> throw new IllegalArgumentException("Unsupported service : " + service);
                 };
 
+                log.info("baseUrl = " + baseUrl);
+
             return new RedirectView(redirectUrl);
         }
         @GetMapping("/token")

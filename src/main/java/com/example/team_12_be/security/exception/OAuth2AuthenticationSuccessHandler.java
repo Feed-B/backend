@@ -34,6 +34,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         String origin = request.getHeader("Origin");
         String redirectUrl;
+        log.info("success origin = " + origin);
 
         if(origin != null && origin.contains("feedb.vercel")) {
             redirectUrl = environment.getProperty("redirect.base-url-prod");
@@ -41,7 +42,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             redirectUrl = environment.getProperty("redirect.base-url-local");
         }
         redirectUrl += "?token=" + token + "&type=login";
-        log.info("success redirectUrl = " + redirectUrl);
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
     }
 }
