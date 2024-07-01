@@ -1,8 +1,8 @@
-package com.example.team_12_be.project.comment.service.dto;
+package com.example.team_12_be.project.rating.comment.service.dto;
 
 import com.example.team_12_be.member.domain.Member;
 import com.example.team_12_be.member.domain.vo.Job;
-import com.example.team_12_be.project.comment.domain.ProjectComment;
+import com.example.team_12_be.project.rating.comment.domain.RatingReply;
 
 public record ProjectCommentResponseDto(
         Long commentId,
@@ -14,14 +14,14 @@ public record ProjectCommentResponseDto(
         float averageStarRank,
         Long childCommentCount
 ) {
-    public static ProjectCommentResponseDto of(ProjectComment projectComment, Member commentAuthor, Long childCommentCount, float averageStarRank) {
+    public static ProjectCommentResponseDto of(RatingReply ratingReply, Member commentAuthor, Long childCommentCount, float averageStarRank) {
         return new ProjectCommentResponseDto(
-                projectComment.getId(),
+                ratingReply.getId(),
                 commentAuthor.getId(),
                 commentAuthor.getNickName(),
                 commentAuthor.getMemberJob(),
                 commentAuthor.getImageUrl(),
-                projectComment.getComment(),
+                ratingReply.getComment(),
                 averageStarRank,
                 childCommentCount
         );

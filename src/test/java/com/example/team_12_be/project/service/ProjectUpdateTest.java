@@ -1,8 +1,8 @@
 package com.example.team_12_be.project.service;
 
 import com.example.team_12_be.member.domain.Member;
-import com.example.team_12_be.member.repository.MemberRepository;
 import com.example.team_12_be.member.domain.vo.Job;
+import com.example.team_12_be.member.repository.MemberRepository;
 import com.example.team_12_be.project.domain.Project;
 import com.example.team_12_be.project.domain.ProjectTechStack;
 import com.example.team_12_be.project.domain.vo.ImageType;
@@ -25,7 +25,7 @@ class ProjectUpdateTest {
     Member memberFixture;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         memberFixture = createMemberFixture();
         Member member = memberRepository.save(memberFixture);
         Project project = createProjectEntityFixture(member);
@@ -34,7 +34,7 @@ class ProjectUpdateTest {
         project.addTechStack(new ProjectTechStack("test2"));
     }
 
-    Member createMemberFixture(){
+    Member createMemberFixture() {
         return new Member(
                 "test",
                 "test",

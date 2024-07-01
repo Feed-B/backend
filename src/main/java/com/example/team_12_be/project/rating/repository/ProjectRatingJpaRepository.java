@@ -1,4 +1,4 @@
-package com.example.team_12_be.project.repository;
+package com.example.team_12_be.project.rating.repository;
 
 import com.example.team_12_be.project.domain.ProjectRating;
 import org.springframework.data.jpa.repository.JpaRepository;

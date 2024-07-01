@@ -3,7 +3,10 @@ package com.example.team_12_be.member.domain;
 import com.example.team_12_be.base.TimeStamp;
 import com.example.team_12_be.member.domain.vo.Job;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -43,7 +46,7 @@ public class Member extends TimeStamp {
         this.memberJob = memberJob;
     }
 
-    public Member(Long id , String nickName , String aboutMe , Job memberJob) {
+    public Member(Long id, String nickName, String aboutMe, Job memberJob) {
         this.id = id;
         this.nickName = nickName;
         this.aboutMe = aboutMe;

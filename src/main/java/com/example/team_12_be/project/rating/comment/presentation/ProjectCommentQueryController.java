@@ -1,11 +1,11 @@
-package com.example.team_12_be.project.comment.presentation;
+package com.example.team_12_be.project.rating.comment.presentation;
 
 import com.example.team_12_be.global.page.CustomPageResponse;
 import com.example.team_12_be.global.presentation.CustomPageRequest;
-import com.example.team_12_be.project.comment.service.ProjectCommentQueryService;
-import com.example.team_12_be.project.comment.service.dto.MyProjectCommentResponse;
-import com.example.team_12_be.project.comment.service.dto.ProjectCommentResponseDto;
-import com.example.team_12_be.project.comment.service.dto.ReplyCommentResponseDto;
+import com.example.team_12_be.project.rating.comment.service.ProjectCommentQueryService;
+import com.example.team_12_be.project.rating.comment.service.dto.MyProjectCommentResponse;
+import com.example.team_12_be.project.rating.comment.service.dto.ProjectCommentResponseDto;
+import com.example.team_12_be.project.rating.comment.service.dto.ReplyCommentResponseDto;
 import com.example.team_12_be.security.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -30,7 +30,7 @@ public class ProjectCommentQueryController {
     @GetMapping("/projects/{projectId}/comments")
     @Operation(description = "프로젝트에 달린 댓글 조회")
     public CustomPageResponse<ProjectCommentResponseDto> getProjectComments(@PathVariable Long projectId,
-                                                                           @ModelAttribute CustomPageRequest customPageRequest) {
+                                                                            @ModelAttribute CustomPageRequest customPageRequest) {
         Pageable pageable = PageRequest.of(customPageRequest.page(), customPageRequest.size());
 
         return projectCommentQueryService.findProjectCommentsByProjectId(projectId, pageable);
@@ -38,7 +38,7 @@ public class ProjectCommentQueryController {
 
     @GetMapping("/projects/{projectId}/comments/{commentId}")
     @Operation(description = "프로젝트에 달린 댓글 상세 조회")
-    public ProjectCommentResponseDto getProjectCommentDetail(@PathVariable Long projectId, @PathVariable Long commentId){
+    public ProjectCommentResponseDto getProjectCommentDetail(@PathVariable Long projectId, @PathVariable Long commentId) {
         return projectCommentQueryService.getProjectCommentResponseDto(projectId, commentId);
     }
 
@@ -46,7 +46,7 @@ public class ProjectCommentQueryController {
     @Operation(description = "프로젝트에 달린 댓글에 달린 대댓글 조회")
     public CustomPageResponse<ReplyCommentResponseDto> findAllReplyByParentCommentId(@PathVariable Long projectId,
                                                                                      @PathVariable Long commentId,
-                                                                                     @ModelAttribute CustomPageRequest customPageRequest){
+                                                                                     @ModelAttribute CustomPageRequest customPageRequest) {
 
         Pageable pageable = PageRequest.of(customPageRequest.page(), customPageRequest.size());
 
@@ -54,9 +54,9 @@ public class ProjectCommentQueryController {
     }
 
     @GetMapping("/projects/{projectId}/comments/mine")
-    @Operation(description = "프로젝트에 달린 나의 댓글 조회 - (exists 로 존재여부 판별)")
+    @Operation(description = "프로젝트에 달린 나의 별점 조회 - (exists 로 존재여부 판별)")
     public MyProjectCommentResponse getMyComment(@PathVariable Long projectId,
-                                                 @AuthenticationPrincipal CustomUserDetails customUserDetails){
+                                                 @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         ProjectCommentResponseDto myProjectComment = projectCommentQueryService.getMyProjectComment(projectId, customUserDetails.getMember().getId());
 
         if (myProjectComment == null) {

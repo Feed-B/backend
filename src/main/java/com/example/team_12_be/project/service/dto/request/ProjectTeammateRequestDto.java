@@ -8,7 +8,7 @@ public record ProjectTeammateRequestDto(
         Job job,
         String url
 ) {
-    public ProjectTeammate toEntity(){
+    public ProjectTeammate toEntity() {
         return new ProjectTeammate(name, job, url);
     }
 }

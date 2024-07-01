@@ -5,18 +5,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Enumeration;
 
 @Component
 @Slf4j
@@ -33,9 +27,9 @@ public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
         String redirectUrl;
 
 
-        if(host != null && host.contains("localhost")) {
+        if (host != null && host.contains("localhost")) {
             redirectUrl = environment.getProperty("redirect.base-url-local");
-        }else {
+        } else {
             redirectUrl = environment.getProperty("redirect.base-url-prod");
         }
 

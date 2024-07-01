@@ -1,6 +1,7 @@
 package com.example.team_12_be.project.repository;
 
 import com.example.team_12_be.project.domain.*;
+import com.example.team_12_be.project.rating.repository.ProjectRatingJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -21,6 +22,7 @@ public class DefaultProjectAdapter implements ProjectPort {
 
     /**
      * 자주 사용될 것이므로 QueryRepository 에 넘기지 않는다.
+     *
      * @param projectId Id
      * @return Optional<Project>
      */
@@ -50,12 +52,12 @@ public class DefaultProjectAdapter implements ProjectPort {
     }
 
     @Override
-    public boolean likeExistsByMemberIdAndProjectId(Long memberId, Long projectId){
+    public boolean likeExistsByMemberIdAndProjectId(Long memberId, Long projectId) {
         return projectLikeJpaRepository.existsByMemberIdAndProjectId(memberId, projectId);
     }
 
     @Override
-    public ProjectLike saveLike(ProjectLike projectLike){
+    public ProjectLike saveLike(ProjectLike projectLike) {
         return projectLikeJpaRepository.save(projectLike);
     }
 
@@ -75,7 +77,7 @@ public class DefaultProjectAdapter implements ProjectPort {
     }
 
     @Override
-    public void addViewCount(Long projectId){
+    public void addViewCount(Long projectId) {
         proejctJpaRepository.addViewCount(projectId);
     }
 }

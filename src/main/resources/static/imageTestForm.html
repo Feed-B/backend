@@ -50,14 +50,14 @@
 
         const projectTeammates = form.get('projectTeammates').split(';').map(item => {
             const [name, job] = item.split(',');
-            return { name, job };
+            return {name, job};
         });
         form.delete('projectTeammates');
         projectTeammates.forEach(teammate => form.append('projectTeammates', JSON.stringify(teammate)));
 
         const projectLinks = form.get('projectLinks').split(';').map(item => {
             const [siteType, url] = item.split(',');
-            return { siteType, url };
+            return {siteType, url};
         });
         form.delete('projectLinks');
         projectLinks.forEach(link => form.append('projectLinks', JSON.stringify(link)));
@@ -68,7 +68,7 @@
 
         // Log raw form data
         for (let pair of form.entries()) {
-            console.log(pair[0]+ ', ' + pair[1]);
+            console.log(pair[0] + ', ' + pair[1]);
         }
 
         fetch('/s3/upload', {

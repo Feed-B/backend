@@ -8,7 +8,6 @@ import com.amazonaws.util.IOUtils;
 import com.example.team_12_be.project.domain.ProjectImage;
 import com.example.team_12_be.project.domain.ProjectPort;
 import com.example.team_12_be.project.service.dto.request.ProjectImageDto;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,7 +34,7 @@ public class ProjectImageService { //TODO 단일책임의 원칙을 최대한 �
 
     @Transactional
     public List<ProjectImage> upload(List<ProjectImageDto> projectImageDtoList) {
-        if(Objects.isNull(projectImageDtoList) || projectImageDtoList.isEmpty() || Objects.isNull(projectImageDtoList.getFirst().image().getOriginalFilename())) {
+        if (Objects.isNull(projectImageDtoList) || projectImageDtoList.isEmpty() || Objects.isNull(projectImageDtoList.getFirst().image().getOriginalFilename())) {
             throw new IllegalArgumentException("File must not be empty or null");
         }
         return this.uploadImage(projectImageDtoList);
@@ -43,10 +42,10 @@ public class ProjectImageService { //TODO 단일책임의 원칙을 최대한 �
 
     private List<ProjectImage> uploadImage(List<ProjectImageDto> projectImageDtoList) {
         this.validateImageFileExtention(projectImageDtoList);
-        try{
+        try {
             return this.uploadImageToS3(projectImageDtoList);
-        }catch (IOException e) {
-            throw new RuntimeException("IOException occurred during image upload" , e);
+        } catch (IOException e) {
+            throw new RuntimeException("IOException occurred during image upload", e);
         }
     }
 
@@ -60,7 +59,7 @@ public class ProjectImageService { //TODO 단일책임의 원칙을 최대한 �
             String originalFilename = image.getOriginalFilename(); // 원본 파일
             String extention = originalFilename.substring(originalFilename.lastIndexOf(".")); //파일 확장자
 
-            String s3FileName = bucketFolder + dateFolder + UUID.randomUUID().toString().substring(0, 10)+ "_" + originalFilename;
+            String s3FileName = bucketFolder + dateFolder + UUID.randomUUID().toString().substring(0, 10) + "_" + originalFilename;
 
             InputStream is = image.getInputStream();
             byte[] bytes = IOUtils.toByteArray(is);
@@ -72,18 +71,18 @@ public class ProjectImageService { //TODO 단일책임의 원칙을 최대한 �
 
             try {
                 PutObjectRequest putObjectRequest =
-                        new PutObjectRequest(bucketName , s3FileName , byteArrayInputStream , metadata)
+                        new PutObjectRequest(bucketName, s3FileName, byteArrayInputStream, metadata)
                                 .withCannedAcl(CannedAccessControlList.PublicRead);
                 amazonS3.putObject(putObjectRequest); // put image to S3
             } catch (Exception e) {
-                throw new IOException("S3 upload failed" , e);
-            }finally {
+                throw new IOException("S3 upload failed", e);
+            } finally {
                 byteArrayInputStream.close();
                 is.close();
             }
-            String url = amazonS3.getUrl(bucketName , s3FileName).toString();
+            String url = amazonS3.getUrl(bucketName, s3FileName).toString();
 
-            ProjectImage projectImage = new ProjectImage(url , projectImageDto.index());
+            ProjectImage projectImage = new ProjectImage(url, projectImageDto.index());
             projectImageList.add(projectImage);
         }
 
@@ -94,19 +93,19 @@ public class ProjectImageService { //TODO 단일책임의 원칙을 최대한 �
     //파일 형태 검증 메소드
     private void validateImageFileExtention(List<ProjectImageDto> projectImageDtoList) {
 
-       for(ProjectImageDto projectImageRequestDto : projectImageDtoList) {
+        for (ProjectImageDto projectImageRequestDto : projectImageDtoList) {
             String filename = projectImageRequestDto.image().getOriginalFilename();
             int lastDotIndex = filename.lastIndexOf(".");
-            if(lastDotIndex == -1) {
+            if (lastDotIndex == -1) {
                 throw new IllegalArgumentException("File extension is missing"); //TODO 에러 응답 형태 테스트!
             }
 
             String extention = filename.substring(lastDotIndex + 1).toLowerCase();
-            List<String> allowedExtentionList = Arrays.asList("jpg" , "jpeg" , "png" , "gif");
+            List<String> allowedExtentionList = Arrays.asList("jpg", "jpeg", "png", "gif");
 
-            if(!allowedExtentionList.contains(extention)) {
+            if (!allowedExtentionList.contains(extention)) {
                 throw new IllegalArgumentException("Invalid file extention: " + extention);
             }
-       }
+        }
     }
 }

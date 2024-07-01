@@ -55,11 +55,11 @@ public class StarRank {
         return new StarRank(avgIdeaRank, avgDesignRank, avgFunctionRank, avgCompletionRank);
     }
 
-    public static StarRank ofNone(){
+    public static StarRank ofNone() {
         return new StarRank(0, 0, 0, 0);
     }
 
-    private StarRank(float ideaRank, float designRank, float functionRank, float completionRank){
+    private StarRank(float ideaRank, float designRank, float functionRank, float completionRank) {
         this.ideaRank = ideaRank;
         this.designRank = designRank;
         this.functionRank = functionRank;
@@ -68,13 +68,13 @@ public class StarRank {
     }
 
 
-    private float calculateAverage(){
+    private float calculateAverage() {
         float rawAverage = (ideaRank + designRank + functionRank + completionRank) / 4f;
         return round(rawAverage);
     }
 
     // 소수 첫째자리까지 반올림한다.
-    private static float round(float value){
+    private static float round(float value) {
         float roundPolicy = 10f;
         return Math.round(value * roundPolicy) / roundPolicy;
     }

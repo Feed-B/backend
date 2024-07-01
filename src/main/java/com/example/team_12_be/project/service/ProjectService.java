@@ -25,7 +25,7 @@ public class ProjectService {
 
     private final ProjectThumbnailService projectThumbnailService;
 
-    public Long saveProject(ProjectRequestDto projectRequestDto, Member author , List<ProjectImageDto> projectImageDtoList , ProjectThumbnailDto projectThumbnailDto) {
+    public Long saveProject(ProjectRequestDto projectRequestDto, Member author, List<ProjectImageDto> projectImageDtoList, ProjectThumbnailDto projectThumbnailDto) {
         Project project = projectRequestDto.toEntity(author);
         projectPort.saveProject(project);
 
@@ -52,10 +52,10 @@ public class ProjectService {
     }
 
 
-    public void likeProject(Long memberId, Long projectId){
+    public void likeProject(Long memberId, Long projectId) {
         boolean isLikeExists = projectPort.likeExistsByMemberIdAndProjectId(memberId, projectId);
 
-        if (isLikeExists){
+        if (isLikeExists) {
             throw new IllegalArgumentException("좋아요가 이미 존재한다");
         }
 
@@ -66,10 +66,10 @@ public class ProjectService {
         project.addProjectLike(projectLike);
     }
 
-    public void unlikeProject(Long memberId, Long projectId){
+    public void unlikeProject(Long memberId, Long projectId) {
         boolean isLikeExists = projectPort.likeExistsByMemberIdAndProjectId(memberId, projectId);
 
-        if (!isLikeExists){
+        if (!isLikeExists) {
             throw new IllegalArgumentException("좋아요가 존재하지 않는다");
         }
 

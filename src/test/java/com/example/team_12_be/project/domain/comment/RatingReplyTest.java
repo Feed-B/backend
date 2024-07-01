@@ -1,20 +1,19 @@
 package com.example.team_12_be.project.domain.comment;
 
 import com.example.team_12_be.member.domain.Member;
-import com.example.team_12_be.project.comment.domain.ProjectComment;
-import com.example.team_12_be.project.comment.repository.comment.ProjectCommentJpaRepository;
 import com.example.team_12_be.project.domain.Project;
+import com.example.team_12_be.project.rating.comment.domain.RatingReply;
+import com.example.team_12_be.project.rating.comment.repository.comment.ProjectCommentJpaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 @DataJpaTest
-class ProjectCommentTest {
+class RatingReplyTest {
 
     @Autowired
     ProjectCommentJpaRepository projectCommentRepository;
@@ -26,11 +25,11 @@ class ProjectCommentTest {
         Project project = mock(Project.class);
 
         // 부모 코멘트
-        ProjectComment parentComment = new ProjectComment(null, "comment1",  project, member);
+        RatingReply parentComment = new RatingReply(null, "comment1", project, member);
         projectCommentRepository.save(parentComment);
 
         // 부모 코멘트에 대한 대댓글
-        ProjectComment childComment = new ProjectComment(parentComment.getId(), "comment2",  project, member);
+        RatingReply childComment = new RatingReply(parentComment.getId(), "comment2", project, member);
         projectCommentRepository.save(childComment);
         childComment.assignParentIdFrom(parentComment);
 
@@ -44,16 +43,16 @@ class ProjectCommentTest {
         Project project = mock(Project.class);
 
         // 최상위 코멘트
-        ProjectComment topComment = new ProjectComment(null, "comment3", project, member);
+        RatingReply topComment = new RatingReply(null, "comment3", project, member);
         projectCommentRepository.save(topComment);
 
         // 부모 코멘트
-        ProjectComment parentComment = new ProjectComment(topComment.getId(), "comment1", project, member);
+        RatingReply parentComment = new RatingReply(topComment.getId(), "comment1", project, member);
         projectCommentRepository.save(parentComment);
         parentComment.assignParentIdFrom(topComment);
 
         // 부모 코멘트에 대한 대댓글
-        ProjectComment childComment = new ProjectComment(parentComment.getId(), "comment2",  project, member);
+        RatingReply childComment = new RatingReply(parentComment.getId(), "comment2", project, member);
         projectCommentRepository.save(childComment);
         childComment.assignParentIdFrom(parentComment);
 

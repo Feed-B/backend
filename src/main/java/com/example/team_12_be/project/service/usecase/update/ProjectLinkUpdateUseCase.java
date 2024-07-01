@@ -14,7 +14,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProjectLinkUpdateUseCase {
 
-    public void updateProjectLinks(List<ProjectLinkUpdateRequestDto> projectLinkUpdateRequestDtoList, Project project){
+    public void updateProjectLinks(List<ProjectLinkUpdateRequestDto> projectLinkUpdateRequestDtoList, Project project) {
         List<Long> requestIdList = projectLinkUpdateRequestDtoList.stream()
                 .map(ProjectLinkUpdateRequestDto::id)
                 .filter(Objects::nonNull)

@@ -4,7 +4,6 @@ package com.example.team_12_be.global.page;
 import lombok.Getter;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.SliceImpl;
 
 import java.util.List;
 

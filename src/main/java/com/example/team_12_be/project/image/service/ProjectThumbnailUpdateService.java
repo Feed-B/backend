@@ -29,14 +29,14 @@ public class ProjectThumbnailUpdateService {
     private String bucketFolder = "image/";
 
     @Transactional
-    public void updateProjectThumbnail(ProjectThumbnailDto projectThumbnailDto , Project project) {
+    public void updateProjectThumbnail(ProjectThumbnailDto projectThumbnailDto, Project project) {
         String currentUrl = project.getThumbnailUrl();
 
-        if(Objects.isNull(projectThumbnailDto)) {
+        if (Objects.isNull(projectThumbnailDto)) {
             throw new IllegalArgumentException("File must not be empty or null");
         }
         //idx - 변경 - 0  / 기본이미지 - 1
-        if(projectThumbnailDto.index() == 0 ) {
+        if (projectThumbnailDto.index() == 0) {
             currentUrl = updateImage(projectThumbnailDto);
         }
 
@@ -45,10 +45,10 @@ public class ProjectThumbnailUpdateService {
 
     private String updateImage(ProjectThumbnailDto projectThumbnailDto) {
         this.validateImageFileExtention(projectThumbnailDto);
-        try{
+        try {
             return this.uploadImageToS3(projectThumbnailDto);
-        }catch (IOException e) {
-            throw new RuntimeException("IOException occurred during image upload" , e);
+        } catch (IOException e) {
+            throw new RuntimeException("IOException occurred during image upload", e);
         }
     }
 
@@ -60,7 +60,7 @@ public class ProjectThumbnailUpdateService {
         String extention = originalFilename.substring(originalFilename.lastIndexOf(".")); //파일 확장자
         String dateFolder = new SimpleDateFormat("yyyy.MM").format(new Date()) + "/";
 
-        String s3FileName = bucketFolder + dateFolder + UUID.randomUUID().toString().substring(0, 10)+ "_" + originalFilename; // s3 저장 파일명 ex) 랜덤값_원본파일명
+        String s3FileName = bucketFolder + dateFolder + UUID.randomUUID().toString().substring(0, 10) + "_" + originalFilename; // s3 저장 파일명 ex) 랜덤값_원본파일명
 
         InputStream is = image.getInputStream();
         byte[] bytes = IOUtils.toByteArray(is);
@@ -72,17 +72,17 @@ public class ProjectThumbnailUpdateService {
 
         try {
             PutObjectRequest putObjectRequest =
-                    new PutObjectRequest(bucketName , s3FileName , byteArrayInputStream , metadata)
+                    new PutObjectRequest(bucketName, s3FileName, byteArrayInputStream, metadata)
                             .withCannedAcl(CannedAccessControlList.PublicRead);
             amazonS3.putObject(putObjectRequest); // put image to S3
         } catch (Exception e) {
-            throw new IOException("S3 upload failed" , e);
-        }finally {
+            throw new IOException("S3 upload failed", e);
+        } finally {
             byteArrayInputStream.close();
             is.close();
         }
 
-        return amazonS3.getUrl(bucketName , s3FileName).toString();
+        return amazonS3.getUrl(bucketName, s3FileName).toString();
     }
 
     //파일 형태 검증 메소드
@@ -90,14 +90,14 @@ public class ProjectThumbnailUpdateService {
 
         String filename = projectThumbnailDto.image().getOriginalFilename();
         int lastDotIndex = filename.lastIndexOf(".");
-        if(lastDotIndex == -1) {
+        if (lastDotIndex == -1) {
             throw new IllegalArgumentException("File extension is missing"); //TODO 에러 응답 형태 테스트!
         }
 
         String extention = filename.substring(lastDotIndex + 1).toLowerCase();
-        List<String> allowedExtentionList = Arrays.asList("jpg" , "jpeg" , "png" , "gif");
+        List<String> allowedExtentionList = Arrays.asList("jpg", "jpeg", "png", "gif");
 
-        if(!allowedExtentionList.contains(extention)) {
+        if (!allowedExtentionList.contains(extention)) {
             throw new IllegalArgumentException("Invalid file extention: " + extention);
         }
 

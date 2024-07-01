@@ -21,9 +21,10 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class OAuth2MemberService implements OAuth2UserService<OAuth2UserRequest , OAuth2User> {
+public class OAuth2MemberService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final MemberRepository memberRepository;
+
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         log.info("================OAuth2MemberService==================");
@@ -34,10 +35,9 @@ public class OAuth2MemberService implements OAuth2UserService<OAuth2UserRequest 
 
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         //System.out.println("registrationId : " + registrationId);
-        if(registrationId.equals("kakao")) {
+        if (registrationId.equals("kakao")) {
             memberInfo = new KakaoMemberInfo(oAuth2User.getAttributes());
-        }
-        else if(registrationId.equals("naver")) {
+        } else if (registrationId.equals("naver")) {
             memberInfo = new NaverMemberInfo((Map) oAuth2User.getAttributes().get("response"));
         }
 
@@ -52,14 +52,13 @@ public class OAuth2MemberService implements OAuth2UserService<OAuth2UserRequest 
         log.info("email = " + email);
         log.info("provider = " + provider);
         log.info("role = " + role);
-        if(findMember.isEmpty()) { //계정 없을 때
+        if (findMember.isEmpty()) { //계정 없을 때
             throw new OAuth2UserNotFoundException(email);
-        }
-        else {//계정 있을 때
+        } else {//계정 있을 때
             member = findMember.get();
             log.info("findMember.get = " + member);
 
         }
-        return new CustomUserDetails(member , oAuth2User.getAttributes() , jwtName);
+        return new CustomUserDetails(member, oAuth2User.getAttributes(), jwtName);
     }
 }

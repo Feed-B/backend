@@ -31,6 +31,7 @@ public class SpringSecurityConfig {
     private final OAuth2MemberService oAuth2MemberService;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
@@ -42,23 +43,23 @@ public class SpringSecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((request -> request
-                        .requestMatchers("/h2-console/**","/swagger-ui/**","/actuator/health","/nginx/profile","/swagger-resources/**" , "/v3/api-docs/**").permitAll() //기본 설정 관련
-                        .requestMatchers("/token", "/test/**","/login/{service}" ,"/signUp" , "/login/*").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/projects" ,"/projects/{projectId}" , "/projects/{projectId}/**" , "/{projectId}/comments", "/{projectId}/views").permitAll()
+                        .requestMatchers("/h2-console/**", "/swagger-ui/**", "/actuator/health", "/nginx/profile", "/swagger-resources/**", "/v3/api-docs/**").permitAll() //기본 설정 관련
+                        .requestMatchers("/token", "/test/**", "/login/{service}", "/signUp", "/login/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/projects", "/projects/{projectId}", "/projects/{projectId}/**", "/{projectId}/comments", "/{projectId}/views").permitAll()
                         //TODO : permitAll 제거할 것
 //                        .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated()
                 ))
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfo -> userInfo
-                               .userService(oAuth2MemberService) // 로그인 후 받아온 유저 정보 처리
+                                .userService(oAuth2MemberService) // 로그인 후 받아온 유저 정보 처리
                         )
                         .successHandler(oAuth2AuthenticationSuccessHandler)
                         .failureHandler(oAuth2AuthenticationFailureHandler)
                 )
                 //TODO 추후 API 인증 필요 응답 시 401 응답 할지 결정
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider) , UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
 

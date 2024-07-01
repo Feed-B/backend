@@ -1,8 +1,8 @@
 package com.example.team_12_be.project.service;
 
 import com.example.team_12_be.member.domain.Member;
-import com.example.team_12_be.member.repository.MemberRepository;
 import com.example.team_12_be.member.domain.vo.Job;
+import com.example.team_12_be.member.repository.MemberRepository;
 import com.example.team_12_be.project.domain.Project;
 import com.example.team_12_be.project.domain.ProjectImage;
 import com.example.team_12_be.project.domain.vo.ImageType;
@@ -49,13 +49,13 @@ class ProjectServiceTest {
     ProjectThumbnailService projectThumbnailService;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         memberFixture = createMemberFixture();
         requestDtoFixture = createTestFixture();
         memberRepository.save(memberFixture);
     }
 
-    Member createMemberFixture(){
+    Member createMemberFixture() {
         return new Member(
                 "tes123t",
                 "te123st",
@@ -91,7 +91,7 @@ class ProjectServiceTest {
         // given
         List<ProjectImageDto> projectImageDtoList = List.of(mock(ProjectImageDto.class));
         ProjectThumbnailDto projectThumbnailDto = mock(ProjectThumbnailDto.class);
-        projectService.saveProject(requestDtoFixture, memberFixture, projectImageDtoList , projectThumbnailDto);
+        projectService.saveProject(requestDtoFixture, memberFixture, projectImageDtoList, projectThumbnailDto);
 
         List<ProjectImage> projectImages = new ArrayList<>();
         when(projectImageService.upload(projectImageDtoList))

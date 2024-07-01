@@ -10,13 +10,9 @@ import java.util.Optional;
 public interface ProjectQueryRepository {
     Optional<Project> findById(Long projectId);
 
-    Optional<ProjectRating> findProjectRatingByMemberIdAndProjectId(Long memberId, Long projectId);
-
     List<ProjectLike> findLikesByProjectIdWithMember(Long projectId);
 
     long countLikeByProjectId(Long projectId);
-
-    long countRankByProjectId(Long projectId);
 
     Page<Project> findProjectsProjectTechStacksOrderBySortCondition(SortCondition sortCondition, List<String> projectTechStacks, String searchString, Pageable pageable);
 

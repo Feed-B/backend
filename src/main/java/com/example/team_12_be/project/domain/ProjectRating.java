@@ -3,16 +3,7 @@ package com.example.team_12_be.project.domain;
 import com.example.team_12_be.base.TimeStamp;
 import com.example.team_12_be.member.domain.Member;
 import com.example.team_12_be.project.domain.vo.StarRank;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -39,14 +30,21 @@ public class ProjectRating extends TimeStamp {
     @Embedded
     private StarRank starRank;
 
-    public ProjectRating(Member member, Project project, StarRank starRank) {
+    private String comment;
+
+    public ProjectRating(Member member, Project project, StarRank starRank, String comment) {
         this.member = member;
         this.project = project;
         this.starRank = starRank;
+        this.comment = comment;
     }
 
     public void updateRank(StarRank starRank) {
         this.starRank = starRank;
+    }
+
+    public void updateComment(String comment) {
+        this.comment = comment;
     }
 
     public void assignToProject(Project project) {

@@ -14,14 +14,14 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Getter
-public class CustomUserDetails implements OAuth2User , UserDetails {
+public class CustomUserDetails implements OAuth2User, UserDetails {
 
     private final Member member;
-    private Map<String , Object> attributes;
+    private Map<String, Object> attributes;
     private String jwtName;
 
     //oauth2용
-    public CustomUserDetails(Member member , Map<String , Object> attributes ,String jwtName) {
+    public CustomUserDetails(Member member, Map<String, Object> attributes, String jwtName) {
         this.member = member;
         this.attributes = attributes;
         this.jwtName = jwtName;
@@ -33,7 +33,7 @@ public class CustomUserDetails implements OAuth2User , UserDetails {
         return Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
-    public String getUserEmail(){
+    public String getUserEmail() {
         return member.getEmail();
     }
 
@@ -71,6 +71,7 @@ public class CustomUserDetails implements OAuth2User , UserDetails {
     public Map<String, Object> getAttributes() {
         return attributes;
     }
+
     @Override
     public String getName() {
         return "name";

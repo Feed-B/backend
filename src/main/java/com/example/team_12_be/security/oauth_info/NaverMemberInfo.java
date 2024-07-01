@@ -2,11 +2,13 @@ package com.example.team_12_be.security.oauth_info;
 
 import java.util.Map;
 
-public class NaverMemberInfo implements OAuth2MemberInfo{
-    private Map<String , Object> attributes;
+public class NaverMemberInfo implements OAuth2MemberInfo {
+    private Map<String, Object> attributes;
+
     public NaverMemberInfo(Map<String, Object> attributes) {
         this.attributes = attributes;
     }
+
     @Override
     public String getProviderId() {
         return (String) attributes.get("sub");
