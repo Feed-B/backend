@@ -46,7 +46,7 @@ public class SpringSecurityConfig {
                         .requestMatchers("/token", "/test/**","/login/{service}" ,"/signUp" , "/login/*").permitAll()
                         .requestMatchers(HttpMethod.GET,"/projects" ,"/projects/{projectId}" , "/projects/{projectId}/**" , "/{projectId}/comments", "/{projectId}/views").permitAll()
                         //TODO : permitAll 제거할 것
-//                        .requestMatchers("/**").permitAll()
+                        .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated()
                 ))
                 .oauth2Login(oauth2 -> oauth2
