@@ -16,7 +16,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
-@Tag(name = "프로젝트 댓글 C,U,D 컨트롤러")
+@Tag(name = "프로젝트 별점 C,U,D 컨트롤러")
 @RestController
 @RequiredArgsConstructor
 @SecurityRequirement(name = "Bearer Authentication")
