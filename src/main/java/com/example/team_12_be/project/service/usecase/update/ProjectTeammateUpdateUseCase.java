@@ -12,7 +12,7 @@ import java.util.Optional;
 @Component
 public class ProjectTeammateUpdateUseCase {
 
-    public void updateProjectTeammates(List<ProjectTeammateUpdateRequestDto> projectLinkUpdateRequestDtoList, Project project){
+    public void updateProjectTeammates(List<ProjectTeammateUpdateRequestDto> projectLinkUpdateRequestDtoList, Project project) {
         List<Long> requestIdList = projectLinkUpdateRequestDtoList.stream()
                 .map(ProjectTeammateUpdateRequestDto::id)
                 .filter(Objects::nonNull)

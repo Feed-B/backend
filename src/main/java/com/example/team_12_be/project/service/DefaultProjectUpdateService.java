@@ -20,7 +20,7 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class DefaultProjectUpdateService {
-    
+
     private final ProjectPort projectPort;
 
     private final ProjectLinkUpdateUseCase projectLinkUpdateUseCase;
@@ -33,7 +33,7 @@ public class DefaultProjectUpdateService {
 
     private final ProjectThumbnailUpdateService projectThumbnailUpdateService;
 
-    public void updateProject(Long projectId, Long memberId, ProjectUpdateRequestDto projectUpdateRequestDto , List<ProjectImageDto> imageList , ProjectThumbnailDto projectThumbnailDto) {
+    public void updateProject(Long projectId, Long memberId, ProjectUpdateRequestDto projectUpdateRequestDto, List<ProjectImageDto> imageList, ProjectThumbnailDto projectThumbnailDto) {
         Project project = projectPort.findById(projectId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 프로젝트이다."));
         if (!project.getAuthor().getId().equals(memberId)) {
             throw new IllegalArgumentException("자신의 게시글만 삭제 할 수 있다.");
@@ -51,6 +51,6 @@ public class DefaultProjectUpdateService {
         projectTeammateUpdateUseCase.updateProjectTeammates(projectUpdateRequestDto.projectTeammates(), project);
         projectTechStackUpdateUseCase.updateProjectTechStack(projectUpdateRequestDto.projectTechStacks(), project);
         projectImageUpdateService.updateProjectImages(imageList, project);
-        projectThumbnailUpdateService.updateProjectThumbnail(projectThumbnailDto , project);
+        projectThumbnailUpdateService.updateProjectThumbnail(projectThumbnailDto, project);
     }
 }

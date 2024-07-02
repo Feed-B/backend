@@ -30,21 +30,21 @@ public class ProjectQuerydslRepository {
 
         BooleanExpression result = Expressions.asBoolean(true).isTrue();
 
-        for(String techStack : projectTechStacks){
+        for (String techStack : projectTechStacks) {
             result = result.and(project.projectTechStacks.any().techStack.eq(techStack));
         }
         return result;
     }
 
-    private BooleanExpression filterByTitleOrContent(String serachString){
-        if (Objects.isNull(serachString) || serachString.isEmpty()){
+    private BooleanExpression filterByTitleOrContent(String serachString) {
+        if (Objects.isNull(serachString) || serachString.isEmpty()) {
             return null;
         }
 
-        return project.title.like("%"+serachString+"%").or(project.content.like("%"+serachString+"%"));
+        return project.title.like("%" + serachString + "%").or(project.content.like("%" + serachString + "%"));
     }
 
-    public Page<Project> findProjectsProjectTechStacksOrderBySortCondition(SortCondition sortCondition, List<String> projectTechStacks, String searchString, Pageable pageable){
+    public Page<Project> findProjectsProjectTechStacksOrderBySortCondition(SortCondition sortCondition, List<String> projectTechStacks, String searchString, Pageable pageable) {
         List<Project> projectList = jpaQueryFactory.select(project)
                 .from(project)
                 .where(filterByProjectTechStacks(projectTechStacks), filterByTitleOrContent(searchString))

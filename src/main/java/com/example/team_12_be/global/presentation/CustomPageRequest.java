@@ -9,7 +9,7 @@ public record CustomPageRequest(
     private static final int DEFAULT_PAGE_SIZE = 8;
 
     @Override
-    public int page(){
+    public int page() {
         if (page < 1) {
             return 0;
         }
@@ -18,8 +18,8 @@ public record CustomPageRequest(
     }
 
     @Override
-    public int size(){
-        if (size > MAXIMUM_SIZE){
+    public int size() {
+        if (size > MAXIMUM_SIZE) {
             return DEFAULT_PAGE_SIZE;
         }
 

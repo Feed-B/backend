@@ -5,18 +5,11 @@ import com.example.team_12_be.member.domain.vo.Job;
 import com.example.team_12_be.project.domain.Project;
 import com.example.team_12_be.project.domain.ProjectLike;
 import com.example.team_12_be.project.domain.ProjectQueryRepository;
-import com.example.team_12_be.project.domain.ProjectRating;
 import com.example.team_12_be.project.domain.ProjectTeammate;
 import com.example.team_12_be.project.domain.vo.StarRank;
 import com.example.team_12_be.project.presentation.request.SortCondition;
-import com.example.team_12_be.project.service.dto.response.JobWithTeammateResponseDto;
-import com.example.team_12_be.project.service.dto.response.LikedMembersTechStackResponseDto;
-import com.example.team_12_be.project.service.dto.response.ProjectDetailForEditResponseDto;
-import com.example.team_12_be.project.service.dto.response.ProjectDetailResponseDto;
-import com.example.team_12_be.project.service.dto.response.ProjectListResponseDto;
-import com.example.team_12_be.project.service.dto.response.ProjectRatingResponseDto;
-import com.example.team_12_be.project.service.dto.response.ProjectTeammateResponseDto;
-import com.example.team_12_be.project.service.dto.response.StarRankResponseDto;
+import com.example.team_12_be.project.rating.service.ProjectRatingQueryService;
+import com.example.team_12_be.project.service.dto.response.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,10 +28,19 @@ public class ProjectQueryService {
 
     private final ProjectQueryRepository projectQueryRepository;
 
+    private final ProjectRatingQueryService projectRatingQueryService;
+
     public Project findById(Long id) {
         return projectQueryRepository.findById(id).orElseThrow(
                 () -> new NoSuchElementException("Project with projectId " + id + " not found")
         );
+    }
+
+    public StarRankResponseDto getProjectAverageStarRank(Long projectId) {
+        Project project = this.findById(projectId);
+        Long count = projectRatingQueryService.countByProjectId(projectId);
+        StarRank starRank = project.calculateAverageStarRank();
+        return StarRankResponseDto.of(starRank, count);
     }
 
     public ProjectDetailResponseDto getDetailById(Long projectId, Long memberId) {
@@ -51,15 +53,15 @@ public class ProjectQueryService {
     }
 
     private static boolean isMine(Long memberId, Project project) {
-        if (Objects.isNull(memberId)){
+        if (Objects.isNull(memberId)) {
             return false;
         }
         return project.getAuthor().getId().equals(memberId);
     }
 
-    public ProjectDetailForEditResponseDto getDetailForEditByProjectId(Long memberId, Long projectId){
+    public ProjectDetailForEditResponseDto getDetailForEditByProjectId(Long memberId, Long projectId) {
         Project project = this.findById(projectId);
-        if (!Objects.equals(project.getAuthor().getId(), memberId)){
+        if (!Objects.equals(project.getAuthor().getId(), memberId)) {
             throw new IllegalArgumentException("회원만 수정 뷰를 가져올 수 있다.");
         }
 
@@ -81,27 +83,8 @@ public class ProjectQueryService {
                 .toList();
     }
 
-    public ProjectRatingResponseDto getMemberProjectRating(Long memberId, Long projectId) {
-        ProjectRating projectRating = projectQueryRepository.findProjectRatingByMemberIdAndProjectId(memberId, projectId).orElseThrow(
-                () -> new NoSuchElementException("Project with projectId " + projectId + " not found")
-        );
 
-        return ProjectRatingResponseDto.of(projectRating.getStarRank());
-    }
-
-    public StarRankResponseDto getProjectAverageStarRankWithLikedInfo(Long projectId) {
-        StarRank projectAverageStarRank = this.getProjectAverageStarRank(projectId);
-        long rankCount = projectQueryRepository.countRankByProjectId(projectId);
-
-        return StarRankResponseDto.of(projectAverageStarRank, rankCount);
-    }
-
-    public StarRank getProjectAverageStarRank(Long projectId){
-        Project project = this.findById(projectId);
-        return project.calculateAverageStarRank();
-    }
-
-    public List<LikedMembersTechStackResponseDto> getLikedMembersTechStack(Long projectId){
+    public List<LikedMembersTechStackResponseDto> getLikedMembersTechStack(Long projectId) {
         List<ProjectLike> projectLikesWithMembers = projectQueryRepository.findLikesByProjectIdWithMember(projectId);
         List<Job> memberTechStacks = projectLikesWithMembers.stream()
                 .map(each -> each.getMember().getMemberJob())
@@ -116,7 +99,7 @@ public class ProjectQueryService {
                 .toList();
     }
 
-    public CustomPageResponse<ProjectListResponseDto> getProjectList(SortCondition sortCondition, List<String> projectTechStacks, Long memberId, String searchString, Pageable pageable){
+    public CustomPageResponse<ProjectListResponseDto> getProjectList(SortCondition sortCondition, List<String> projectTechStacks, Long memberId, String searchString, Pageable pageable) {
         Page<Project> projects = projectQueryRepository.findProjectsProjectTechStacksOrderBySortCondition(sortCondition, projectTechStacks, searchString, pageable);
 
         List<ProjectListResponseDto> projectListResponseDtoList = projects.stream()
@@ -126,7 +109,7 @@ public class ProjectQueryService {
         return new CustomPageResponse<>(projectListResponseDtoList, pageable, projects.getTotalElements());
     }
 
-    public CustomPageResponse<ProjectListResponseDto> getMyProjectList(Long memberId, Pageable pageable){
+    public CustomPageResponse<ProjectListResponseDto> getMyProjectList(Long memberId, Pageable pageable) {
         Page<Project> projects = projectQueryRepository.findAllByAuthorIdOrderByCreatedAtDesc(memberId, pageable);
 
         List<ProjectListResponseDto> projectListResponseDtoList = projects.stream()
@@ -136,7 +119,7 @@ public class ProjectQueryService {
         return new CustomPageResponse<>(projectListResponseDtoList, pageable, projects.getTotalElements());
     }
 
-    public CustomPageResponse<ProjectListResponseDto> getLikedProjectList(Long memberId, Pageable pageable){
+    public CustomPageResponse<ProjectListResponseDto> getLikedProjectList(Long memberId, Pageable pageable) {
         Page<Project> myLikedProjects = projectQueryRepository.findAllMyLikedProjects(memberId, pageable);
 
         List<ProjectListResponseDto> projectListResponseDtoList = myLikedProjects.stream()
@@ -154,7 +137,7 @@ public class ProjectQueryService {
     }
 
     private boolean isLiked(Long memberId, Project project) {
-        if (Objects.isNull(memberId)){
+        if (Objects.isNull(memberId)) {
             return false;
         }
 

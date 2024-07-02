@@ -1,7 +1,7 @@
 package com.example.team_12_be.project.service.dto.response;
 
-import com.example.team_12_be.project.domain.ProjectImage;
 import com.example.team_12_be.project.domain.Project;
+import com.example.team_12_be.project.domain.ProjectImage;
 import com.example.team_12_be.project.domain.vo.ImageType;
 
 import java.util.List;
@@ -17,8 +17,8 @@ public record ProjectDetailForEditResponseDto(
         List<ProjectTechStackResponseDto> techStacks,
         String thumbnailUrl,
         List<String> imageUrlList
-        ) {
-    public static ProjectDetailForEditResponseDto of(Project project){
+) {
+    public static ProjectDetailForEditResponseDto of(Project project) {
         return new ProjectDetailForEditResponseDto(
                 project.getTitle(),
                 project.getIntroductions(),

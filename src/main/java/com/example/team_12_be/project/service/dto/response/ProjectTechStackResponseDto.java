@@ -2,7 +2,7 @@ package com.example.team_12_be.project.service.dto.response;
 
 import com.example.team_12_be.project.domain.ProjectTechStack;
 
-public record ProjectTechStackResponseDto (
+public record ProjectTechStackResponseDto(
         Long id,
         String techStack) {
 

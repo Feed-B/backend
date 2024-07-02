@@ -37,9 +37,9 @@ class ProjectTest {
 
     @Test
     void testCalculateAverageStarRank_WithRatings() {
-        ProjectRating rating1 = new ProjectRating(author, project, StarRank.of(3, 4, 5, 2));
-        ProjectRating rating2 = new ProjectRating(author, project, StarRank.of(5, 3, 4, 3));
-        ProjectRating rating3 = new ProjectRating(author, project, StarRank.of(4, 4, 3, 5));
+        ProjectRating rating1 = new ProjectRating(author, project, StarRank.of(3, 4, 5, 2), "TEST");
+        ProjectRating rating2 = new ProjectRating(author, project, StarRank.of(5, 3, 4, 3), "TEST");
+        ProjectRating rating3 = new ProjectRating(author, project, StarRank.of(4, 4, 3, 5), "TEST");
 
         project.addProjectRating(rating1);
         project.addProjectRating(rating2);
@@ -56,7 +56,7 @@ class ProjectTest {
 
     @Test
     void testAddAndRemoveProjectRatings() {
-        ProjectRating rating1 = new ProjectRating(author, project, StarRank.of(3, 4, 5, 2));
+        ProjectRating rating1 = new ProjectRating(author, project, StarRank.of(3, 4, 5, 2), "TEST");
 
         project.addProjectRating(rating1);
         assertEquals(1, project.getProjectRatings().size());

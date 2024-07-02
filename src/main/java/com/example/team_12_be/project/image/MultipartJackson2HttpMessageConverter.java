@@ -6,10 +6,11 @@ import org.springframework.http.converter.json.AbstractJackson2HttpMessageConver
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Type;
+
 @Component
 public class MultipartJackson2HttpMessageConverter extends AbstractJackson2HttpMessageConverter {
     protected MultipartJackson2HttpMessageConverter(ObjectMapper objectMapper) {
-        super(objectMapper,MediaType.APPLICATION_OCTET_STREAM);
+        super(objectMapper, MediaType.APPLICATION_OCTET_STREAM);
     }
 
     @Override

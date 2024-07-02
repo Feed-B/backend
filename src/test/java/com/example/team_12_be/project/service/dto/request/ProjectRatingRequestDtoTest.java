@@ -1,6 +1,6 @@
 package com.example.team_12_be.project.service.dto.request;
 
-import com.example.team_12_be.project.comment.service.dto.ProjectCommentRequestDto;
+import com.example.team_12_be.project.rating.service.dto.request.ProjectRatingRequestDto;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ProjectRatingRequestDtoTest {
 

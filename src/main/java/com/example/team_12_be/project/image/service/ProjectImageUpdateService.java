@@ -9,16 +9,12 @@ import com.example.team_12_be.project.domain.ProjectPort;
 import com.example.team_12_be.project.service.dto.request.ProjectImageDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -35,41 +31,40 @@ public class ProjectImageUpdateService {
     private String bucketFolder = "image/";
 
 
-    public void updateProjectImages(List<ProjectImageDto> projectImageDtoList , Project currentProject) {
-        if(Objects.isNull(projectImageDtoList) || projectImageDtoList.isEmpty()) {
+    public void updateProjectImages(List<ProjectImageDto> projectImageDtoList, Project currentProject) {
+        if (Objects.isNull(projectImageDtoList) || projectImageDtoList.isEmpty()) {
             throw new IllegalArgumentException("File must not be empty or null");
         }
 
-        currentProject.replaceProjectImages(updateImage(projectImageDtoList , currentProject));
+        currentProject.replaceProjectImages(updateImage(projectImageDtoList, currentProject));
     }
 
-    private List<ProjectImage> updateImage(List<ProjectImageDto> projectImageDtoList ,Project currentProject) {
+    private List<ProjectImage> updateImage(List<ProjectImageDto> projectImageDtoList, Project currentProject) {
         this.validateImageFileExtention(projectImageDtoList);
-        try{
-            return this.orderImagesByIndex(projectImageDtoList ,currentProject);
-        }catch (IOException e) {
-            throw new RuntimeException("IOException occurred during image upload" , e);
+        try {
+            return this.orderImagesByIndex(projectImageDtoList, currentProject);
+        } catch (IOException e) {
+            throw new RuntimeException("IOException occurred during image upload", e);
         }
     }
 
-    private List<ProjectImage> orderImagesByIndex(List<ProjectImageDto> projectImageDtoList ,Project currentProject) throws IOException {
+    private List<ProjectImage> orderImagesByIndex(List<ProjectImageDto> projectImageDtoList, Project currentProject) throws IOException {
         //index - 기본 - db 인덱스 , 변경 - 0
         List<ProjectImage> projectImageList = new ArrayList<>();
         List<ProjectImage> removeProjectImgList = currentProject.getProjectImages();
         List<Integer> toRemove = new ArrayList<>();
         int newImageIdx = 0;
 
-        for(ProjectImageDto projectImageDto : projectImageDtoList) { //변경 후 넘어온 이미지 순서대로 loop
+        for (ProjectImageDto projectImageDto : projectImageDtoList) { //변경 후 넘어온 이미지 순서대로 loop
             int originImageIdx = projectImageDto.index();
             newImageIdx++; // loop 마다 +1
             ProjectImage projectImage = new ProjectImage();
-            if(originImageIdx == 0) { //새로운 이미지 업로드
+            if (originImageIdx == 0) { //새로운 이미지 업로드
                 String url = this.uploadImageToS3(projectImageDto);
-                projectImage = new ProjectImage(url , newImageIdx);
-            }
-            else { //순서만 변경 or 변경 x
+                projectImage = new ProjectImage(url, newImageIdx);
+            } else { //순서만 변경 or 변경 x
                 String url = projectPort.findByIdx(originImageIdx).getUrl();
-                projectImage = new ProjectImage(url , newImageIdx);
+                projectImage = new ProjectImage(url, newImageIdx);
                 removeProjectImgList.removeIf(image -> image.getIndex() == originImageIdx); // 재사용 이미지 인덱스 제거 배열에서 제외
             }
             projectImageList.add(projectImage);
@@ -79,6 +74,7 @@ public class ProjectImageUpdateService {
 
         return projectImageList;
     }
+
     private String uploadImageToS3(ProjectImageDto projectImageDto) throws IOException {
 
         MultipartFile image = projectImageDto.image();
@@ -86,7 +82,7 @@ public class ProjectImageUpdateService {
         String extention = originalFilename.substring(originalFilename.lastIndexOf(".")); //파일 확장자
         String dateFolder = new SimpleDateFormat("yyyy.MM").format(new Date()) + "/";
 
-        String s3FileName = bucketFolder + dateFolder + UUID.randomUUID().toString().substring(0, 10)+ "_" + originalFilename;
+        String s3FileName = bucketFolder + dateFolder + UUID.randomUUID().toString().substring(0, 10) + "_" + originalFilename;
 
         InputStream is = image.getInputStream();
         byte[] bytes = IOUtils.toByteArray(is);
@@ -94,27 +90,27 @@ public class ProjectImageUpdateService {
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType("image/" + extention);
         metadata.setContentLength(bytes.length);
-        ByteArrayInputStream  byteArrayInputStream = new ByteArrayInputStream(bytes);
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
 
         try {
             PutObjectRequest putObjectRequest =
-                    new PutObjectRequest(bucketName , s3FileName , byteArrayInputStream , metadata)
+                    new PutObjectRequest(bucketName, s3FileName, byteArrayInputStream, metadata)
                             .withCannedAcl(CannedAccessControlList.PublicRead);
             amazonS3.putObject(putObjectRequest); // put image to S3
-        }catch (Exception e) {
-            throw new IOException("S3 upload failed" , e);
-        }finally {
+        } catch (Exception e) {
+            throw new IOException("S3 upload failed", e);
+        } finally {
             byteArrayInputStream.close();
             is.close();
         }
 
-        String url = amazonS3.getUrl(bucketName,s3FileName).toString();
+        String url = amazonS3.getUrl(bucketName, s3FileName).toString();
 
         return url;
     }
 
-    private void deleteImageToS3(List<ProjectImage> removeProjectImgList) throws IOException{
-        try{
+    private void deleteImageToS3(List<ProjectImage> removeProjectImgList) throws IOException {
+        try {
 
             List<String> keys = removeProjectImgList.stream()
                     .map(ProjectImage::getUrl)
@@ -127,8 +123,8 @@ public class ProjectImageUpdateService {
             DeleteObjectsResult delObjRes = amazonS3.deleteObjects(delObjReq);
 //            delObjRes.getDeletedObjects().forEach(deletedObject ->
 //                    log.info("Deleted: " + deletedObject.getKey()));
-        }catch (Exception e) {
-            throw new IOException("S3 deleted failed" , e);
+        } catch (Exception e) {
+            throw new IOException("S3 deleted failed", e);
         }
     }
 
@@ -141,18 +137,18 @@ public class ProjectImageUpdateService {
     //파일 형태 검증 메소드
     private void validateImageFileExtention(List<ProjectImageDto> projectImageDtoList) {
 
-        for(ProjectImageDto projectImageRequestDto : projectImageDtoList) {
-            if(projectImageRequestDto.image() == null) continue;
+        for (ProjectImageDto projectImageRequestDto : projectImageDtoList) {
+            if (projectImageRequestDto.image() == null) continue;
             String filename = projectImageRequestDto.image().getOriginalFilename();
             int lastDotIndex = filename.lastIndexOf(".");
-            if(lastDotIndex == -1) {
+            if (lastDotIndex == -1) {
                 throw new IllegalArgumentException("File extension is missing"); //TODO 에러 응답 형태 테스트!
             }
 
             String extention = filename.substring(lastDotIndex + 1).toLowerCase();
-            List<String> allowedExtentionList = Arrays.asList("jpg" , "jpeg" , "png" , "gif");
+            List<String> allowedExtentionList = Arrays.asList("jpg", "jpeg", "png", "gif");
 
-            if(!allowedExtentionList.contains(extention)) {
+            if (!allowedExtentionList.contains(extention)) {
                 throw new IllegalArgumentException("Invalid file extention: " + extention);
             }
         }

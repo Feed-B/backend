@@ -10,19 +10,19 @@ public enum SortCondition {
     LIKES() {
         @Override
         public OrderSpecifier<?>[] getSpecifier(QProject project) {
-            return new OrderSpecifier<?>[] { project.projectLikes.size().desc() , project.createdAt.desc()};
+            return new OrderSpecifier<?>[]{project.projectLikes.size().desc(), project.createdAt.desc()};
         }
     },
     VIEWS() {
         @Override
         public OrderSpecifier<?>[] getSpecifier(QProject project) {
-            return new OrderSpecifier<?>[] { project.viewCount.desc(), project.createdAt.desc() };
+            return new OrderSpecifier<?>[]{project.viewCount.desc(), project.createdAt.desc()};
         }
     },
     RECENT() {
         @Override
         public OrderSpecifier<?>[] getSpecifier(QProject project) {
-            return new OrderSpecifier<?>[] { project.createdAt.desc() };
+            return new OrderSpecifier<?>[]{project.createdAt.desc()};
         }
     };
 

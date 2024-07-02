@@ -1,7 +1,7 @@
 package com.example.team_12_be.member.presentation;
 
-import com.example.team_12_be.member.service.dto.MemberService;
 import com.example.team_12_be.member.domain.Member;
+import com.example.team_12_be.member.service.dto.MemberService;
 import com.example.team_12_be.member.service.dto.request.MemberEditRequestDto;
 import com.example.team_12_be.member.service.dto.request.MemberSignUpRequest;
 import com.example.team_12_be.member.service.dto.response.MemberIdResponseDto;
@@ -30,64 +30,65 @@ import java.util.UUID;
 @Slf4j
 public class MemberController {
 
-        private final MemberService memberService;
-        private final JwtProvider jwtProvider;
+    private final MemberService memberService;
+    private final JwtProvider jwtProvider;
 
-        @GetMapping("/login/{service}")
-        @Operation(description = "{service} = kakao 또는 naver ")
-        public RedirectView login(@PathVariable("service") String service) {
-                String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
-                String redirectUrl = switch (service.toLowerCase()) {
-                    case "kakao" -> baseUrl + "/oauth2/authorization/kakao";
-                    case "naver" -> baseUrl + "/oauth2/authorization/naver";
-                    default -> throw new IllegalArgumentException("Unsupported service : " + service);
-                };
+    @GetMapping("/login/{service}")
+    @Operation(description = "{service} = kakao 또는 naver ")
+    public RedirectView login(@PathVariable("service") String service) {
+        String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+        String redirectUrl = switch (service.toLowerCase()) {
+            case "kakao" -> baseUrl + "/oauth2/authorization/kakao";
+            case "naver" -> baseUrl + "/oauth2/authorization/naver";
+            default -> throw new IllegalArgumentException("Unsupported service : " + service);
+        };
 
-                log.info("baseUrl = " + baseUrl);
+        log.info("baseUrl = " + baseUrl);
 
-            return new RedirectView(redirectUrl);
-        }
-        @GetMapping("/token")
-        public String getTokenTest(){
-                String uuid = UUID.randomUUID().toString().substring(0, 8);
-                memberService.saveRandomTestUser(uuid);
-                return jwtProvider.createToken(uuid);
-        }
+        return new RedirectView(redirectUrl);
+    }
 
-        //회원가입
-        @PostMapping("/signUp")
-        public TokenResponseDto signUp(@RequestBody MemberSignUpRequest memberSignUpRequest) {
+    @GetMapping("/token")
+    public String getTokenTest() {
+        String uuid = UUID.randomUUID().toString().substring(0, 8);
+        memberService.saveRandomTestUser(uuid);
+        return jwtProvider.createToken(uuid);
+    }
 
-                Member member = memberService.signUp(memberSignUpRequest);
-                String token = jwtProvider.createToken(member.getEmail());
+    //회원가입
+    @PostMapping("/signUp")
+    public TokenResponseDto signUp(@RequestBody MemberSignUpRequest memberSignUpRequest) {
 
-                return new TokenResponseDto(token);
-        }
-        @GetMapping("/profile")
-        @Operation(description = "현재 로그인된 유저 id 조회")
-        public MemberIdResponseDto getMemberId(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
-                return new MemberIdResponseDto(customUserDetails.getMember().getId());
-        }
+        Member member = memberService.signUp(memberSignUpRequest);
+        String token = jwtProvider.createToken(member.getEmail());
 
-        @GetMapping("/profile/{userId}")
-        @Operation(description = "유저 정보 조회")
-        public MemberResponseDto getMemberInfo(@PathVariable Long userId , @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-                Member member = memberService.findById(userId);
+        return new TokenResponseDto(token);
+    }
 
-                return MemberResponseDto.of(member);
-        }
+    @GetMapping("/profile")
+    @Operation(description = "현재 로그인된 유저 id 조회")
+    public MemberIdResponseDto getMemberId(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        return new MemberIdResponseDto(customUserDetails.getMember().getId());
+    }
 
-        @PutMapping(value = "/profile/{userId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-        @Operation(description = "유저 정보 수정")
-        public MemberResponseDto updateMemberInfo(@RequestPart(required = false) MultipartFile image,
-                                                  @RequestPart Integer imageIdx,
-                                                  @RequestPart MemberEditRequestDto memberEditRequestDto,
-                                                  @AuthenticationPrincipal CustomUserDetails customUserDetails)
-        {
+    @GetMapping("/profile/{userId}")
+    @Operation(description = "유저 정보 조회")
+    public MemberResponseDto getMemberInfo(@PathVariable Long userId, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        Member member = memberService.findById(userId);
 
-                Member updateMember = memberService.updateMemberInfo(memberEditRequestDto , image , imageIdx);
-                return MemberResponseDto.of(updateMember);
-        }
+        return MemberResponseDto.of(member);
+    }
+
+    @PutMapping(value = "/profile/{userId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(description = "유저 정보 수정")
+    public MemberResponseDto updateMemberInfo(@RequestPart(required = false) MultipartFile image,
+                                              @RequestPart Integer imageIdx,
+                                              @RequestPart MemberEditRequestDto memberEditRequestDto,
+                                              @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+
+        Member updateMember = memberService.updateMemberInfo(memberEditRequestDto, image, imageIdx);
+        return MemberResponseDto.of(updateMember);
+    }
 
 }
 

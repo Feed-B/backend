@@ -11,8 +11,8 @@ import java.util.Optional;
 
 @Component
 public class ProjectTechStackUpdateUseCase {
-    
-    public void updateProjectTechStack(List<ProjectTechStackUpdateDto> projectLinkUpdateRequestDtoList, Project project){
+
+    public void updateProjectTechStack(List<ProjectTechStackUpdateDto> projectLinkUpdateRequestDtoList, Project project) {
         List<Long> requestIdList = projectLinkUpdateRequestDtoList.stream()
                 .map(ProjectTechStackUpdateDto::id)
                 .filter(Objects::nonNull)

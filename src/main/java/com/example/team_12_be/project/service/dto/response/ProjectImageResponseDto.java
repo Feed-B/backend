@@ -9,7 +9,7 @@ public record ProjectImageResponseDto(
         ImageType imageType,
         int idx
 ) {
-    public static ProjectImageResponseDto of(ProjectImage projectImage){
+    public static ProjectImageResponseDto of(ProjectImage projectImage) {
         return new ProjectImageResponseDto(
                 projectImage.getId(),
                 projectImage.getUrl(),

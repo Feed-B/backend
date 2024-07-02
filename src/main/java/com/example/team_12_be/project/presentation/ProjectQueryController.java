@@ -4,13 +4,7 @@ import com.example.team_12_be.global.page.CustomPageResponse;
 import com.example.team_12_be.global.presentation.CustomPageRequest;
 import com.example.team_12_be.project.presentation.request.SortCondition;
 import com.example.team_12_be.project.service.ProjectQueryService;
-import com.example.team_12_be.project.service.dto.response.JobWithTeammateResponseDto;
-import com.example.team_12_be.project.service.dto.response.LikedMembersTechStackResponseDto;
-import com.example.team_12_be.project.service.dto.response.ProjectDetailForEditResponseDto;
-import com.example.team_12_be.project.service.dto.response.ProjectDetailResponseDto;
-import com.example.team_12_be.project.service.dto.response.ProjectListResponseDto;
-import com.example.team_12_be.project.service.dto.response.ProjectRatingResponseDto;
-import com.example.team_12_be.project.service.dto.response.StarRankResponseDto;
+import com.example.team_12_be.project.service.dto.response.*;
 import com.example.team_12_be.security.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -19,11 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -64,13 +54,7 @@ public class ProjectQueryController {
     @GetMapping("/projects/{projectId}/average-rating")
     @Operation(description = "프로젝트 별점 항목들 각각의 평균 조회")
     public StarRankResponseDto getProjectAverageStarRank(@PathVariable Long projectId) {
-        return projectQueryService.getProjectAverageStarRankWithLikedInfo(projectId);
-    }
-
-    @GetMapping("/projects/{projectId}/ratings/{memberId}")
-    @Operation(description = "프로젝트에 남긴 사용자의 별점 항목들 조회")
-    public ProjectRatingResponseDto getMembersRating(@PathVariable Long projectId, @PathVariable Long memberId) {
-        return projectQueryService.getMemberProjectRating(memberId, projectId);
+        return projectQueryService.getProjectAverageStarRank(projectId);
     }
 
     @GetMapping("/projects/{projectId}/likes")

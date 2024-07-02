@@ -1,10 +1,10 @@
 #TODO 보안강화를 위해 .env 파일에 옮기고 github action secret 설정해서 사용(Spring Boot Application에도 코드 추가)
 spring:
   datasource:
-      driver-class-name: org.h2.Driver
-      url: jdbc:h2:mem:db;MODE=MYSQL
-      username: sa
-      password:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:db;MODE=MYSQL
+    username: sa
+    password:
   h2:
     console:
       enabled: true  # H2 Console? ???? ?? (H2 Console? H2 Database? UI? ????? ??)

@@ -14,13 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -39,27 +33,27 @@ public class ProjectController {
     private final DefaultProjectUpdateService projectUpdateService;
 
     @PostMapping("/{projectId}/views")
-    @Operation(description="프로젝트 조회수 증가")
-    public void addViewCount(@PathVariable Long projectId){
+    @Operation(description = "프로젝트 조회수 증가")
+    public void addViewCount(@PathVariable Long projectId) {
         projectService.addViewCount(projectId);
     }
 
-    @PostMapping(value ="/projects" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(description="프로젝트를 생성")
+    @PostMapping(value = "/projects", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(description = "프로젝트를 생성")
     public ResponseEntity<Void> saveProject(@RequestPart ProjectRequestDto projectRequestDto,
-                                      @RequestPart List<MultipartFile> images,
-                                      @RequestPart List<Integer> imageIndexes,
-                                      @RequestPart MultipartFile thumbnail,
-                                      @RequestPart Integer thumbnailIndex,
-                                      @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+                                            @RequestPart List<MultipartFile> images,
+                                            @RequestPart List<Integer> imageIndexes,
+                                            @RequestPart MultipartFile thumbnail,
+                                            @RequestPart Integer thumbnailIndex,
+                                            @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         //file 형태를 데이터와 포함해서 요청하기엔 객체 바인딩 이슈로 개별로 받아서 record 생성
         List<ProjectImageDto> projectImageDtoList = IntStream.range(0, images.size())
-                .mapToObj(i -> new ProjectImageDto(images.get(i),imageIndexes.get(i)))
+                .mapToObj(i -> new ProjectImageDto(images.get(i), imageIndexes.get(i)))
                 .toList();
 
-        ProjectThumbnailDto projectThumbnailDto = new ProjectThumbnailDto(thumbnail , thumbnailIndex);
+        ProjectThumbnailDto projectThumbnailDto = new ProjectThumbnailDto(thumbnail, thumbnailIndex);
 
-        Long projectId = projectService.saveProject(projectRequestDto, customUserDetails.getMember(),projectImageDtoList , projectThumbnailDto);
+        Long projectId = projectService.saveProject(projectRequestDto, customUserDetails.getMember(), projectImageDtoList, projectThumbnailDto);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -71,38 +65,38 @@ public class ProjectController {
     }
 
     @DeleteMapping("/projects/{projectId}")
-    @Operation(description="프로젝트를 삭제")
+    @Operation(description = "프로젝트를 삭제")
     public void deleteProject(@PathVariable Long projectId) {
         projectService.deleteProject(projectId);
     }
 
     @PostMapping("/projects/{projectId}/like")
-    @Operation(description="프로젝트에 대한 사용자의 좋아요 생성")
+    @Operation(description = "프로젝트에 대한 사용자의 좋아요 생성")
     public void likeProject(@PathVariable Long projectId,
-                            @AuthenticationPrincipal CustomUserDetails customUserDetails){
+                            @AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
         Long memberId = customUserDetails.getMember().getId();
         projectService.likeProject(memberId, projectId);
     }
 
     @DeleteMapping("/projects/{projectId}/unlike")
-    @Operation(description="프로젝트에 대한 사용자의 좋아요 삭제")
+    @Operation(description = "프로젝트에 대한 사용자의 좋아요 삭제")
     public void unlikeProject(@PathVariable Long projectId,
-                            @AuthenticationPrincipal CustomUserDetails customUserDetails){
+                              @AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
         Long memberId = customUserDetails.getMember().getId();
         projectService.unlikeProject(memberId, projectId);
     }
 
-    @PutMapping(value = "/projects/{projectId}" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "/projects/{projectId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> updateProject(
             @PathVariable Long projectId,
             @RequestPart ProjectUpdateRequestDto projectRequestDto,
-                       @RequestPart(required = false) List<MultipartFile> images,
-                       @RequestPart List<Integer> imageIndexes,
-                       @RequestPart(required = false) MultipartFile thumbnail,
-                       @RequestPart Integer thumbnailIndex,
-                       @AuthenticationPrincipal CustomUserDetails customUserDetails){
+            @RequestPart(required = false) List<MultipartFile> images,
+            @RequestPart List<Integer> imageIndexes,
+            @RequestPart(required = false) MultipartFile thumbnail,
+            @RequestPart Integer thumbnailIndex,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
         List<ProjectImageDto> projectImageList = IntStream.range(0, imageIndexes.size())
                 .mapToObj(idx -> new ProjectImageDto(images != null && idx < images.size() ? images.get(idx) : null, imageIndexes.get(idx)))
@@ -111,7 +105,7 @@ public class ProjectController {
         ProjectThumbnailDto projectThumbnailDto = new ProjectThumbnailDto(thumbnail, thumbnailIndex);
 
         Long memberId = customUserDetails.getMember().getId();
-        projectUpdateService.updateProject(projectId, memberId, projectRequestDto , projectImageList , projectThumbnailDto);
+        projectUpdateService.updateProject(projectId, memberId, projectRequestDto, projectImageList, projectThumbnailDto);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")

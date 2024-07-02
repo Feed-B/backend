@@ -2,20 +2,9 @@ package com.example.team_12_be.project.domain;
 
 import com.example.team_12_be.base.TimeStamp;
 import com.example.team_12_be.member.domain.Member;
-import com.example.team_12_be.project.comment.domain.ProjectComment;
 import com.example.team_12_be.project.domain.vo.ImageType;
 import com.example.team_12_be.project.domain.vo.StarRank;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -58,9 +47,6 @@ public class Project extends TimeStamp {
     private List<ProjectImage> projectImages = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ProjectComment> projectComments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ProjectLike> projectLikes = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -72,7 +58,7 @@ public class Project extends TimeStamp {
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ProjectRating> projectRatings = new ArrayList<>();
 
-    public Project(String title, String introductions, String content, Member author, String serviceUrl , ImageType imageType) {
+    public Project(String title, String introductions, String content, Member author, String serviceUrl, ImageType imageType) {
         this.title = title;
         this.introductions = introductions;
         this.content = content;
@@ -82,7 +68,7 @@ public class Project extends TimeStamp {
         this.imageType = imageType;
     }
 
-    public void updateProject(String title, String introductions, String content,  String serviceUrl , ImageType imageType) {
+    public void updateProject(String title, String introductions, String content, String serviceUrl, ImageType imageType) {
         this.title = title;
         this.introductions = introductions;
         this.content = content;
@@ -91,54 +77,54 @@ public class Project extends TimeStamp {
         this.imageType = imageType;
     }
 
-    public void addTechStack(ProjectTechStack projectTechStack){
+    public void addTechStack(ProjectTechStack projectTechStack) {
         projectTechStacks.add(projectTechStack);
         projectTechStack.assign(this);
     }
 
-    public void removeTechStack(ProjectTechStack projectTechStack){
+    public void removeTechStack(ProjectTechStack projectTechStack) {
         projectTechStacks.remove(projectTechStack);
         projectTechStack.assign(null);
     }
 
-    public void addTeammate(ProjectTeammate projectTeammate){
+    public void addTeammate(ProjectTeammate projectTeammate) {
         projectTeammates.add(projectTeammate);
         projectTeammate.assign(this);
     }
 
-    public void removeTeammate(ProjectTeammate projectTeammate){
+    public void removeTeammate(ProjectTeammate projectTeammate) {
         projectTeammates.remove(projectTeammate);
         projectTeammate.assign(null);
     }
 
-    public void addLink(ProjectLink projectLink){
+    public void addLink(ProjectLink projectLink) {
         projectLinks.add(projectLink);
         projectLink.assign(this);
     }
 
-    public void removeLink(ProjectLink projectLink){
+    public void removeLink(ProjectLink projectLink) {
         projectLinks.remove(projectLink);
         projectLink.assign(null);
     }
 
 
-    public void addProjectLike(ProjectLike projectLike){
+    public void addProjectLike(ProjectLike projectLike) {
         projectLikes.add(projectLike);
         projectLike.assign(this);
     }
 
-    public void removeProjectLike(ProjectLike projectLike){
+    public void removeProjectLike(ProjectLike projectLike) {
         projectLikes.remove(projectLike);
         projectLike.assign(null);
     }
 
 
-    public void addProjectRating(ProjectRating projectRating){
+    public void addProjectRating(ProjectRating projectRating) {
         projectRatings.add(projectRating);
         projectRating.assignToProject(this);
     }
 
-    public void removeProjectRating(ProjectRating projectRating){
+    public void removeProjectRating(ProjectRating projectRating) {
         projectRatings.remove(projectRating);
         projectRating.assignToProject(null);
     }
@@ -147,10 +133,12 @@ public class Project extends TimeStamp {
         projectImages.add(projectImage);
         projectImage.assign(this);
     }
+
     public void removeProjectImage(ProjectImage projectImage) {
         projectImages.remove(projectImage);
         projectImage.assign(null);
     }
+
     public void replaceProjectImages(List<ProjectImage> projectImageList) {
         this.projectImages.clear(); // 기존 컬렉션을 비웁니다.(대체 하게 되면 연관관계깨지는 이슈 발생)
         for (ProjectImage projectImage : projectImageList) {
