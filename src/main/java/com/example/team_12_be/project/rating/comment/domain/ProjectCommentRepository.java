@@ -16,11 +16,9 @@ public interface ProjectCommentRepository {
     // 혹은 pageAble
     Slice<RatingReply> findAllByProjectIdWithMember(Long projectId, Pageable pageable);
 
-    long countByParentCommentId(Long parentCommentId);
+    long countByProjectRatingId(Long parentCommentId);
 
     Page<RatingReply> findAllByParentCommentId(Long parentCommentId, Pageable pageable);
-
-    Optional<RatingReply> findByProjectIdAndMemberId(Long projectId, Long memberId);
 
     Optional<RatingReply> findByIdAndMemberId(Long id, Long memberId);
 

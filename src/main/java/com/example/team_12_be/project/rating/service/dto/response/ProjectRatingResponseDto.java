@@ -8,15 +8,18 @@ public record ProjectRatingResponseDto(float averageRank,
                                        float designRank,
                                        float functionRank,
                                        float completionRank,
-                                       String comment) {
-    public static ProjectRatingResponseDto of(ProjectRating projectRating) {
+                                       String comment,
+                                       Long childCommentCount) {
+    public static ProjectRatingResponseDto of(ProjectRating projectRating, Long childCommentCount) {
         StarRank starRank = projectRating.getStarRank();
-        return new ProjectRatingResponseDto(starRank.getAverageRank(),
+        return new ProjectRatingResponseDto(
+                starRank.getAverageRank(),
                 starRank.getIdeaRank(),
                 starRank.getDesignRank(),
                 starRank.getFunctionRank(),
                 starRank.getCompletionRank(),
-                projectRating.getComment()
+                projectRating.getComment(),
+                childCommentCount
         );
     }
 }

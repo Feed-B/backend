@@ -12,4 +12,5 @@ public interface ProjectRatingJpaRepository extends JpaRepository<ProjectRating,
     Optional<ProjectRating> findByMemberIdAndProjectId(Long memberId, Long projectId);
 
     long countByProjectId(Long projectId);
+
 }

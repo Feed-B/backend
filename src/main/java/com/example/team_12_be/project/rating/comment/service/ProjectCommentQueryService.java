@@ -15,7 +15,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -23,55 +23,34 @@ public class ProjectCommentQueryService {
 
     private final ProjectCommentRepository projectCommentRepository;
 
-    private final ProjectRatingJpaRepository projectRatingJpaRepository;
-
-    public CustomPageResponse<ProjectCommentResponseDto> findProjectCommentsByProjectId(Long projectId, Pageable pageable) {
-        Slice<RatingReply> projectCommentsPage = projectCommentRepository.findAllByProjectIdWithMember(projectId, pageable);
+    public CustomPageResponse<ProjectCommentResponseDto> findProjectCommentsByProjectId(Long ratingId, Pageable pageable) {
+        Slice<RatingReply> projectCommentsPage = projectCommentRepository.findAllByProjectIdWithMember(ratingId, pageable);
         List<ProjectCommentResponseDto> projectCommentResponses = projectCommentsPage.stream()
-                .map(each -> this.getProjectCommentResponseDto(projectId, each))
+                .map(this::getProjectCommentResponseDto)
                 .toList();
 
         return new CustomPageResponse<>(projectCommentResponses, pageable, projectCommentsPage.getNumberOfElements());
     }
 
-    public CustomPageResponse<ReplyCommentResponseDto> findAllReplyByParentCommentId(Long parentCommentId, Pageable pageable) {
-
-        Page<RatingReply> replyCommentList = projectCommentRepository.findAllByParentCommentId(parentCommentId, pageable);
-        List<ReplyCommentResponseDto> replyCommentResponseDtoList = replyCommentList.stream()
-                .map(ReplyCommentResponseDto::of)
-                .toList();
-
-        return new CustomPageResponse<>(replyCommentResponseDtoList, pageable, replyCommentList.getTotalElements());
-    }
-
-    public ProjectCommentResponseDto getProjectCommentResponseDto(Long projectId, Long commentId) {
+    public ProjectCommentResponseDto getProjectCommentResponseDto(Long ratingId, Long commentId) {
         RatingReply ratingReply = projectCommentRepository.findById(commentId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 댓글")
         );
 
-        return getProjectCommentResponseDto(projectId, ratingReply);
-    }
-
-    public ProjectCommentResponseDto getMyProjectComment(Long ratingId, Long memberId) {
-        Optional<RatingReply> projectCommentOpt = projectCommentRepository.findByProjectIdAndMemberId(ratingId, memberId);
-
-        if (projectCommentOpt.isEmpty()) {
-            return null;
+        if (!Objects.equals(ratingReply.getProjectRating().getId(), ratingId)){
+            throw new IllegalArgumentException("해당 별점에 대한 댓글이 아님");
         }
 
-        RatingReply ratingReply = projectCommentOpt.get();
-        return getProjectCommentResponseDto(ratingId, ratingReply);
+        return getProjectCommentResponseDto(ratingReply);
     }
 
-    private ProjectCommentResponseDto getProjectCommentResponseDto(Long projectId, RatingReply ratingReply) {
-        long childCommentCount = projectCommentRepository.countByParentCommentId(ratingReply.getParentId());
+    private ProjectCommentResponseDto getProjectCommentResponseDto(RatingReply ratingReply) {
         Member commentAuthor = ratingReply.getMember();
 
-        ProjectRating projectRating = projectRatingJpaRepository.findByMemberIdAndProjectId(commentAuthor.getId(), projectId).orElseThrow(
-                () -> new IllegalArgumentException("평가하지 않은 유저")
-        );
-        float averageRank = projectRating.getStarRank().getAverageRank();
+        return ProjectCommentResponseDto.of(ratingReply, commentAuthor);
+    }
 
-        return ProjectCommentResponseDto.of(ratingReply, commentAuthor, childCommentCount, averageRank);
+    public long countCommentByRatingId(Long ratingId){
+        return projectCommentRepository.countByProjectRatingId(ratingId);
     }
 }

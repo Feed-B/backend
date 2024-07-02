@@ -27,42 +27,18 @@ public class ProjectCommentQueryController {
 
     private final ProjectCommentQueryService projectCommentQueryService;
 
-    @GetMapping("/projects/{projectId}/comments")
-    @Operation(description = "프로젝트에 달린 댓글 조회")
-    public CustomPageResponse<ProjectCommentResponseDto> getProjectComments(@PathVariable Long projectId,
+    @GetMapping("/projects/{ratingId}/comments")
+    @Operation(description = "별점에 달린 댓글 리스트 조회")
+    public CustomPageResponse<ProjectCommentResponseDto> getProjectComments(@PathVariable Long ratingId,
                                                                             @ModelAttribute CustomPageRequest customPageRequest) {
         Pageable pageable = PageRequest.of(customPageRequest.page(), customPageRequest.size());
 
-        return projectCommentQueryService.findProjectCommentsByProjectId(projectId, pageable);
+        return projectCommentQueryService.findProjectCommentsByProjectId(ratingId, pageable);
     }
 
-    @GetMapping("/projects/{projectId}/comments/{commentId}")
-    @Operation(description = "프로젝트에 달린 댓글 상세 조회")
-    public ProjectCommentResponseDto getProjectCommentDetail(@PathVariable Long projectId, @PathVariable Long commentId) {
-        return projectCommentQueryService.getProjectCommentResponseDto(projectId, commentId);
-    }
-
-    @GetMapping("/projects/{projectId}/comments/{commentId}/replies")
-    @Operation(description = "프로젝트에 달린 댓글에 달린 대댓글 조회")
-    public CustomPageResponse<ReplyCommentResponseDto> findAllReplyByParentCommentId(@PathVariable Long projectId,
-                                                                                     @PathVariable Long commentId,
-                                                                                     @ModelAttribute CustomPageRequest customPageRequest) {
-
-        Pageable pageable = PageRequest.of(customPageRequest.page(), customPageRequest.size());
-
-        return projectCommentQueryService.findAllReplyByParentCommentId(commentId, pageable);
-    }
-
-    @GetMapping("/projects/{projectId}/comments/mine")
-    @Operation(description = "프로젝트에 달린 나의 별점 조회 - (exists 로 존재여부 판별)")
-    public MyProjectCommentResponse getMyComment(@PathVariable Long projectId,
-                                                 @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        ProjectCommentResponseDto myProjectComment = projectCommentQueryService.getMyProjectComment(projectId, customUserDetails.getMember().getId());
-
-        if (myProjectComment == null) {
-            return new MyProjectCommentResponse(false, null);
-        }
-
-        return new MyProjectCommentResponse(true, myProjectComment);
+    @GetMapping("/projects/{ratingId}/comments/{commentId}")
+    @Operation(description = "별점에 달린 달린 댓글 상세 조회")
+    public ProjectCommentResponseDto getProjectCommentDetail(@PathVariable Long ratingId, @PathVariable Long commentId) {
+        return projectCommentQueryService.getProjectCommentResponseDto(ratingId, commentId);
     }
 }

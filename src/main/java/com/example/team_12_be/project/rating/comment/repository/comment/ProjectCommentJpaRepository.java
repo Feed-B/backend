@@ -13,14 +13,14 @@ import java.util.Optional;
 public interface ProjectCommentJpaRepository extends JpaRepository<RatingReply, Long> {
 
     @Query("SELECT pc FROM RatingReply pc JOIN FETCH pc.member WHERE pc.projectRating.id = :ratingId AND pc.parentId IS NULL ")
-    Page<RatingReply> findAllByProjectIdWithMember(@Param("ratingId") Long ratingId, Pageable pageable);
+    Page<RatingReply> findAllByProjectRatingIdWithMember(@Param("ratingId") Long ratingId, Pageable pageable);
 
     @Query("SELECT pc FROM RatingReply pc JOIN FETCH pc.member WHERE pc.parentId = :parentId")
     Page<RatingReply> findAllByParentIdWithMember(@Param("parentId") Long parentId, Pageable pageable);
 
     Optional<RatingReply> findByProjectRatingIdAndMemberId(Long ratingId, Long authorId);
 
-    long countByParentId(Long parentId);
+    long countByProjectRatingId(Long ratingId);
 
     Optional<RatingReply> findByIdAndMemberId(Long projectId, Long authorId);
 

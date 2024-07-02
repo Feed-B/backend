@@ -10,20 +10,16 @@ public record ProjectCommentResponseDto(
         String authorName,
         Job job,
         String authorProfileImageUrl,
-        String comment,
-        float averageStarRank,
-        Long childCommentCount
+        String comment
 ) {
-    public static ProjectCommentResponseDto of(RatingReply ratingReply, Member commentAuthor, Long childCommentCount, float averageStarRank) {
+    public static ProjectCommentResponseDto of(RatingReply ratingReply, Member commentAuthor) {
         return new ProjectCommentResponseDto(
                 ratingReply.getId(),
                 commentAuthor.getId(),
                 commentAuthor.getNickName(),
                 commentAuthor.getMemberJob(),
                 commentAuthor.getImageUrl(),
-                ratingReply.getComment(),
-                averageStarRank,
-                childCommentCount
+                ratingReply.getComment()
         );
     }
 }
