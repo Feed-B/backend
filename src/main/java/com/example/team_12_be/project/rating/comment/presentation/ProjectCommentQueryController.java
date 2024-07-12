@@ -3,17 +3,13 @@ package com.example.team_12_be.project.rating.comment.presentation;
 import com.example.team_12_be.global.page.CustomPageResponse;
 import com.example.team_12_be.global.presentation.CustomPageRequest;
 import com.example.team_12_be.project.rating.comment.service.ProjectCommentQueryService;
-import com.example.team_12_be.project.rating.comment.service.dto.MyProjectCommentResponse;
 import com.example.team_12_be.project.rating.comment.service.dto.ProjectCommentResponseDto;
-import com.example.team_12_be.project.rating.comment.service.dto.ReplyCommentResponseDto;
-import com.example.team_12_be.security.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,11 +30,5 @@ public class ProjectCommentQueryController {
         Pageable pageable = PageRequest.of(customPageRequest.page(), customPageRequest.size());
 
         return projectCommentQueryService.findProjectCommentsByProjectId(ratingId, pageable);
-    }
-
-    @GetMapping("/projects/{ratingId}/comments/{commentId}")
-    @Operation(description = "별점에 달린 달린 댓글 상세 조회")
-    public ProjectCommentResponseDto getProjectCommentDetail(@PathVariable Long ratingId, @PathVariable Long commentId) {
-        return projectCommentQueryService.getProjectCommentResponseDto(ratingId, commentId);
     }
 }
