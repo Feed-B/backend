@@ -5,7 +5,6 @@ import com.example.team_12_be.project.rating.comment.domain.RatingReply;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -34,7 +33,7 @@ public class DefaultProjectCommentRepository implements ProjectCommentRepository
     }
 
     @Override
-    public Slice<RatingReply> findAllByProjectIdWithMember(Long ratingId, Pageable pageable) {
+    public Page<RatingReply> findAllByProjectIdWithMember(Long ratingId, Pageable pageable) {
         return projectCommentJpaRepository.findAllByProjectRatingIdWithMember(ratingId, pageable);
     }
 

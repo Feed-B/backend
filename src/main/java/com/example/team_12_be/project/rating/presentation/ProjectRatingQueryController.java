@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Tag(name = "프로젝트 별점 조회 컨트롤러")
 @SecurityRequirement(name = "Bearer Authentication")
 @RestController
@@ -21,11 +23,18 @@ public class ProjectRatingQueryController {
 
     private final ProjectRatingQueryService projectRatingQueryService;
 
-    @GetMapping("/projects/{projectId}/ratings/{memberId}")
-    @Operation(description = "프로젝트에 남긴 사용자의 별점 항목들 조회")
-    public ProjectRatingResponseDto getMembersRating(@PathVariable Long projectId, @PathVariable Long memberId) {
-        return projectRatingQueryService.getMemberProjectRating(memberId, projectId);
+    @GetMapping("/projects/{projectId}/ratings")
+    @Operation(description = "프로젝트에 남긴 별점 목록 조회")
+    public List<ProjectRatingResponseDto> getMembersRatings(@PathVariable Long projectId) {
+        return projectRatingQueryService.getProjectRatingsByProjectId(projectId);
     }
+
+    @GetMapping("/projects/ratings/{ratingId}")
+    @Operation(description = "프로젝트에 남긴 별점 상세 조회")
+    public ProjectRatingResponseDto getRatingDetail(@PathVariable Long ratingId){
+        return projectRatingQueryService.getProjectRatingDetail(ratingId);
+    }
+
     @GetMapping("/projects/{projectId}/ratings/mine")
     @Operation(description = "프로젝트에 달린 나의 별점 조회 - (exists 로 존재여부 판별)")
     public MyProjectRatingResponseDto getMyComment(@PathVariable Long projectId,

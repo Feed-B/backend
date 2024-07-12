@@ -19,7 +19,7 @@ public class ProjectCommentController {
 
     private final ProjectCommentService projectCommentService;
 
-    @PostMapping("/projects/{ratingId}/comments/replies")
+    @PostMapping("/projects/{ratingId}/comments")
     @Operation(description = "별점에 대한 댓글 생성")
     public Long addReply(@PathVariable Long ratingId,
                          @AuthenticationPrincipal CustomUserDetails customUserDetails,
@@ -27,21 +27,20 @@ public class ProjectCommentController {
         return projectCommentService.addReply(ratingId, customUserDetails.getMember().getId(), projectCommentRequestDto);
     }
 
-    @PutMapping("/projects/comments/replies/{replyId}")
+    @PutMapping("/projects/comments/{commentId}")
     @Operation(description = "댓글 수정")
     public void updateReply(
-            @PathVariable Long replyId,
+            @PathVariable Long commentId,
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @RequestBody CommentUpdateRequestDto commentUpdateRequestDto) {
-        projectCommentService.updateReply(replyId, customUserDetails.getMember().getId(), commentUpdateRequestDto);
+        projectCommentService.updateReply(commentId, customUserDetails.getMember().getId(), commentUpdateRequestDto);
     }
 
-
-    @DeleteMapping("/projects/comments/replies/{replyId}")
+    @DeleteMapping("/projects/comments/{commentId}")
     @Operation(description = "댓글 삭제")
     public void deleteReply(
-            @PathVariable Long replyId,
+            @PathVariable Long commentId,
             @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        projectCommentService.deleteComment(replyId, customUserDetails.getMember().getId());
+        projectCommentService.deleteComment(commentId, customUserDetails.getMember().getId());
     }
 }

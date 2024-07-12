@@ -2,7 +2,6 @@ package com.example.team_12_be.project.rating.comment.domain;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +13,7 @@ public interface ProjectCommentRepository {
     Optional<RatingReply> findById(Long id);
 
     // 혹은 pageAble
-    Slice<RatingReply> findAllByProjectIdWithMember(Long projectId, Pageable pageable);
+    Page<RatingReply> findAllByProjectIdWithMember(Long projectId, Pageable pageable);
 
     long countByProjectRatingId(Long parentCommentId);
 

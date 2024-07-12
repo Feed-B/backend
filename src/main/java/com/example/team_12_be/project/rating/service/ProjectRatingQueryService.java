@@ -8,6 +8,7 @@ import com.example.team_12_be.project.rating.service.dto.response.ProjectRatingR
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -25,11 +26,16 @@ public class ProjectRatingQueryService {
         );
     }
 
-    public ProjectRatingResponseDto getMemberProjectRating(Long memberId, Long projectId) {
-        ProjectRating projectRating = projectQueryRepository.findByMemberIdAndProjectId(memberId, projectId).orElseThrow(
-                () -> new NoSuchElementException("Project with projectId " + projectId + " not found")
-        );
+    public List<ProjectRatingResponseDto> getProjectRatingsByProjectId(Long projectId){
+        List<ProjectRating> projectRatings = projectQueryRepository.findAllByProjectId(projectId);
+        return projectRatings
+                .stream()
+                .map(each -> ProjectRatingResponseDto.of(each, projectCommentQueryService.countCommentByRatingId(each.getId())))
+                .toList();
+    }
 
+    public ProjectRatingResponseDto getProjectRatingDetail(Long ratingId){
+        ProjectRating projectRating = findRatingById(ratingId);
         long commentCount = projectCommentQueryService.countCommentByRatingId(projectRating.getId());
 
         return ProjectRatingResponseDto.of(projectRating, commentCount);
@@ -46,7 +52,6 @@ public class ProjectRatingQueryService {
         long commentCount = projectCommentQueryService.countCommentByRatingId(projectRating.getId());
         return MyProjectRatingResponseDto.of(projectRating, commentCount);
     }
-
 
     public Long countByProjectId(Long projectId) {
         return projectQueryRepository.countByProjectId(projectId);
