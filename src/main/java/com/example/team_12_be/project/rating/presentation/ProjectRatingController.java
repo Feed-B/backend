@@ -24,7 +24,7 @@ public class ProjectRatingController {
 
     private final ProjectRatingService projectRatingService;
 
-    @PostMapping("/projects/{projectId}/comments")
+    @PostMapping("/projects/{projectId}/ratings")
     @Operation(description = "프로젝트에 대한 사용자의 별점 생성")
     public ResponseEntity<Void> addRating(@PathVariable Long projectId,
                                           @AuthenticationPrincipal CustomUserDetails customUserDetails,
@@ -52,7 +52,7 @@ public class ProjectRatingController {
         return ResponseEntity.ok(ratingId);
     }
 
-    @DeleteMapping("/projects/comments/{ratingId}")
+    @DeleteMapping("/projects/{ratingId}")
     @Operation(description = "프로젝트 별점 삭제")
     public void deleteComment(@PathVariable Long ratingId,
                               @AuthenticationPrincipal CustomUserDetails userDetails) {

@@ -83,29 +83,25 @@ public class ProjectQueryController {
         return projectQueryService.getProjectList(sortCondition, projectTechStacks, memberId, searchString, pageable);
     }
 
-    @GetMapping("/projects/mine")
+    @GetMapping("/{memberId}/projects")
     @Operation(description = "내 프로젝트 리스트 조회(최신순)")
     public CustomPageResponse<ProjectListResponseDto> getMyProjectList(
-            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @PathVariable Long memberId,
             @ModelAttribute CustomPageRequest customPageRequest
     ) {
-        Long memberId = customUserDetails.getMember().getId();
         Pageable pageable = PageRequest.of(customPageRequest.page(), customPageRequest.size());
 
         return projectQueryService.getMyProjectList(memberId, pageable);
     }
 
-    @GetMapping("/projects/mine/likes")
+    @GetMapping("/{memberId}/projects/likes")
     @Operation(description = "좋아요 한 프로젝트 리스트 조회(최신순)")
     public CustomPageResponse<ProjectListResponseDto> getMyLikedProjectList(
-            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @PathVariable Long memberId,
             @ModelAttribute CustomPageRequest customPageRequest
     ) {
-        Long memberId = customUserDetails.getMember().getId();
         Pageable pageable = PageRequest.of(customPageRequest.page(), customPageRequest.size());
 
         return projectQueryService.getLikedProjectList(memberId, pageable);
     }
-
-
 }
