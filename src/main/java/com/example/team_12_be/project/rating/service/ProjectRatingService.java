@@ -51,11 +51,7 @@ public class ProjectRatingService {
     }
 
     public void deleteRating(Long authorId, Long ratingId) {
-        ProjectRating projectRating = projectRatingJpaRepository.findByMemberIdAndProjectId(authorId, ratingId)
-                .orElseThrow(
-                        () -> new IllegalArgumentException("없는 레이팅")
-                );
-
+        ProjectRating projectRating = getProjectRating(ratingId);
         if (!projectRating.getMember().getId().equals(authorId)) {
             throw new IllegalArgumentException("내 레이팅만 삭제 가능");
         }
