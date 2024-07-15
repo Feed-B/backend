@@ -7,9 +7,6 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 public record ProjectRatingUpdateRequestDto(
-        @NotNull
-        Long projectRatingId,
-
         @NotNull @Min(1) @Max(5) @HalfOrWholeNumber
         float ideaRank,
 

@@ -8,7 +8,6 @@ import com.example.team_12_be.project.domain.vo.StarRank;
 import com.example.team_12_be.project.rating.comment.service.ProjectCommentService;
 import com.example.team_12_be.project.rating.repository.ProjectRatingJpaRepository;
 import com.example.team_12_be.project.rating.service.dto.request.ProjectRatingRequestDto;
-import com.example.team_12_be.project.rating.service.dto.request.ProjectRatingUpdateRequestDto;
 import com.example.team_12_be.project.service.ProjectQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,14 +40,14 @@ public class ProjectRatingService {
         return projectRating.getId();
     }
 
-    public void modifyRating(Long authorId, ProjectRatingUpdateRequestDto projectRatingUpdateRequestDto) {
-        ProjectRating projectRating = getProjectRating(projectRatingUpdateRequestDto.projectRatingId());
+    public void modifyRating(Long authorId, Long ratingId, ProjectRatingRequestDto projectRatingRequestDto) {
+        ProjectRating projectRating = getProjectRating(ratingId);
         if (!projectRating.getMember().getId().equals(authorId)) {
             throw new IllegalArgumentException("내 레이팅만 변경 가능");
         }
-        StarRank starRank = projectRatingUpdateRequestDto.toStarRank();
+        StarRank starRank = projectRatingRequestDto.toStarRank();
         projectRating.updateRank(starRank);
-        projectRating.updateComment(projectRatingUpdateRequestDto.comment());
+        projectRating.updateComment(projectRatingRequestDto.comment());
     }
 
     public void deleteRating(Long authorId, Long ratingId) {
