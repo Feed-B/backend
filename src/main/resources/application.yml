@@ -63,8 +63,8 @@ redirect:
   base-url-local: http://localhost:3000/auth/success
   base-url-prod: https://feedb.vercel.app/auth/success
 
-logging:
-  level:
-    org:
-      springframework:
-        security: TRACE
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        security: TRACE
