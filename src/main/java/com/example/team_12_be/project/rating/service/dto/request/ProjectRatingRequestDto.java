@@ -28,4 +28,8 @@ public record ProjectRatingRequestDto(
         StarRank starRank = StarRank.of(ideaRank, designRank, functionRank, completionRank);
         return new ProjectRating(member, project, starRank, comment);
     }
+
+    public StarRank toStarRank() {
+        return StarRank.of(ideaRank, designRank, functionRank, completionRank);
+    }
 }

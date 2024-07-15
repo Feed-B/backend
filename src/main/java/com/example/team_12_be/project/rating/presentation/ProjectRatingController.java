@@ -3,7 +3,6 @@ package com.example.team_12_be.project.rating.presentation;
 import com.example.team_12_be.member.domain.Member;
 import com.example.team_12_be.project.rating.service.ProjectRatingService;
 import com.example.team_12_be.project.rating.service.dto.request.ProjectRatingRequestDto;
-import com.example.team_12_be.project.rating.service.dto.request.ProjectRatingUpdateRequestDto;
 import com.example.team_12_be.security.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -40,19 +39,19 @@ public class ProjectRatingController {
         return ResponseEntity.created(location).build();
     }
 
-    @PutMapping("/projects/{ratingId}")
+    @PutMapping("/projects/ratings/{ratingId}")
     @Operation(description = "프로젝트 별점 수정")
     public ResponseEntity<Long> updateComment(@PathVariable Long ratingId,
                                               @AuthenticationPrincipal CustomUserDetails userDetails,
-                                              @RequestBody ProjectRatingUpdateRequestDto projectRatingUpdateRequestDto) {
+                                              @RequestBody ProjectRatingRequestDto projectRatingRequestDto) {
 
         Member member = userDetails.getMember();
-        projectRatingService.modifyRating(member.getId(), projectRatingUpdateRequestDto);
+        projectRatingService.modifyRating(member.getId(), ratingId, projectRatingRequestDto);
 
         return ResponseEntity.ok(ratingId);
     }
 
-    @DeleteMapping("/projects/{ratingId}")
+    @DeleteMapping("/projects/ratings/{ratingId}")
     @Operation(description = "프로젝트 별점 삭제")
     public void deleteComment(@PathVariable Long ratingId,
                               @AuthenticationPrincipal CustomUserDetails userDetails) {

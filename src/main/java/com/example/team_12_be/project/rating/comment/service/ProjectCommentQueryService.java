@@ -2,14 +2,10 @@ package com.example.team_12_be.project.rating.comment.service;
 
 import com.example.team_12_be.global.page.CustomPageResponse;
 import com.example.team_12_be.member.domain.Member;
-import com.example.team_12_be.project.domain.ProjectRating;
 import com.example.team_12_be.project.rating.comment.domain.ProjectCommentRepository;
 import com.example.team_12_be.project.rating.comment.domain.RatingReply;
 import com.example.team_12_be.project.rating.comment.service.dto.ProjectCommentResponseDto;
-import com.example.team_12_be.project.rating.comment.service.dto.ReplyCommentResponseDto;
-import com.example.team_12_be.project.rating.repository.ProjectRatingJpaRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
