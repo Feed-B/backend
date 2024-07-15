@@ -72,8 +72,8 @@ public class DefaultProjectAdapter implements ProjectPort {
     }
 
     @Override
-    public ProjectImage findByIdx(int idx) {
-        return projectImageJpaRepository.findByIndex(idx);
+    public ProjectImage findByIdx(int idx , Long projectId) {
+        return projectImageJpaRepository.findByIndex(idx , projectId);
     }
 
     @Override
