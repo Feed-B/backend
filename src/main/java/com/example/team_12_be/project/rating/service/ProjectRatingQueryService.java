@@ -1,11 +1,14 @@
 package com.example.team_12_be.project.rating.service;
 
+import com.example.team_12_be.global.page.CustomPageResponse;
 import com.example.team_12_be.project.domain.ProjectRating;
 import com.example.team_12_be.project.rating.comment.service.ProjectCommentQueryService;
 import com.example.team_12_be.project.rating.repository.ProjectRatingJpaRepository;
 import com.example.team_12_be.project.rating.service.dto.response.MyProjectRatingResponseDto;
 import com.example.team_12_be.project.rating.service.dto.response.ProjectRatingResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,12 +29,13 @@ public class ProjectRatingQueryService {
         );
     }
 
-    public List<ProjectRatingResponseDto> getProjectRatingsByProjectId(Long projectId){
-        List<ProjectRating> projectRatings = projectQueryRepository.findAllByProjectId(projectId);
-        return projectRatings
+    public CustomPageResponse<ProjectRatingResponseDto> getProjectRatingsByProjectId(Long projectId, Pageable pageable){
+        Page<ProjectRating> projectRatings = projectQueryRepository.findAllByProjectId(projectId, pageable);
+        List<ProjectRatingResponseDto> projectRatingResponseDtos = projectRatings
                 .stream()
                 .map(each -> ProjectRatingResponseDto.of(each, projectCommentQueryService.countCommentByRatingId(each.getId())))
                 .toList();
+        return new CustomPageResponse<>(projectRatingResponseDtos, pageable, projectRatings.getTotalElements());
     }
 
     public ProjectRatingResponseDto getProjectRatingDetail(Long ratingId){

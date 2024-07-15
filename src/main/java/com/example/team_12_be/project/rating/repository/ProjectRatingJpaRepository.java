@@ -1,6 +1,8 @@
 package com.example.team_12_be.project.rating.repository;
 
 import com.example.team_12_be.project.domain.ProjectRating;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -14,6 +16,6 @@ public interface ProjectRatingJpaRepository extends JpaRepository<ProjectRating,
 
     long countByProjectId(Long projectId);
 
-    List<ProjectRating> findAllByProjectId(Long projectId);
+    Page<ProjectRating> findAllByProjectId(Long projectId, Pageable pageable);
 
 }
