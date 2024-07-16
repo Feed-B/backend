@@ -63,7 +63,7 @@ public class ProjectImageUpdateService {
                 String url = this.uploadImageToS3(projectImageDto);
                 projectImage = new ProjectImage(url, newImageIdx);
             } else { //순서만 변경 or 변경 x
-                String url = projectPort.findByIdx(originImageIdx).getUrl();
+                String url = projectPort.findByIdx(originImageIdx,currentProject.getId()).getUrl();
                 projectImage = new ProjectImage(url, newImageIdx);
                 removeProjectImgList.removeIf(image -> image.getIndex() == originImageIdx); // 재사용 이미지 인덱스 제거 배열에서 제외
             }

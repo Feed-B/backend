@@ -45,6 +45,9 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+  web:
+    resources:
+      add-mappings: false
 jwt:
   secret: ${JWT_SECRET:default_jwt_secret}
 
@@ -63,8 +66,9 @@ redirect:
   base-url-local: http://localhost:3000/auth/success
   base-url-prod: https://feedb.vercel.app/auth/success
 
-logging:
-  level:
-    org:
-      springframework:
-        security: TRACE
+
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        security: TRACE
