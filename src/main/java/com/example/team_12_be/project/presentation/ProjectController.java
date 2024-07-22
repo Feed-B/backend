@@ -1,5 +1,6 @@
 package com.example.team_12_be.project.presentation;
 
+import com.example.team_12_be.project.domain.ProjectImage;
 import com.example.team_12_be.project.service.DefaultProjectUpdateService;
 import com.example.team_12_be.project.service.ProjectService;
 import com.example.team_12_be.project.service.dto.request.ProjectImageDto;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -103,9 +105,25 @@ public class ProjectController {
         images.stream().forEach(i -> log.info("images = " + i));
         imageIndexes.stream().forEach(i -> log.info("imageIndexes = " + i));
 
-        List<ProjectImageDto> projectImageList = IntStream.range(0, imageIndexes.size())
-                .mapToObj(idx -> new ProjectImageDto(images != null && idx < images.size() && imageIndexes.get(idx) == 0 ? images.get(idx) : null, imageIndexes.get(idx)))
-                .toList();
+//        List<ProjectImageDto> projectImageList = IntStream.range(0, imageIndexes.size())
+//                .mapToObj(idx -> new ProjectImageDto(images != null && idx < images.size() && imageIndexes.get(idx) == 0 ? images.get(idx) : null, imageIndexes.get(idx)))
+//                .toList();
+
+        List<ProjectImageDto> projectImageList = new ArrayList<ProjectImageDto>();
+        for(int i = 0; i < imageIndexes.size(); i++) {
+            MultipartFile file;
+
+            if(imageIndexes.get(i) == 0) {
+                    file = images.getFirst();
+                    images.removeFirst();
+            }else {
+                    file = null;
+            }
+
+            ProjectImageDto projectImageDto = new ProjectImageDto(file , imageIndexes.get(i));
+            projectImageList.add(projectImageDto);
+        }
+
         projectImageList.stream().forEach(i ->log.info("imageList = " + i.image() + ", " + i.index()));
 
         ProjectThumbnailDto projectThumbnailDto = new ProjectThumbnailDto(thumbnail, thumbnailIndex);
