@@ -104,7 +104,7 @@ public class ProjectController {
         imageIndexes.stream().forEach(i -> log.info("imageIndexes = " + i));
 
         List<ProjectImageDto> projectImageList = IntStream.range(0, imageIndexes.size())
-                .mapToObj(idx -> new ProjectImageDto(images != null && idx < images.size() && !images.get(idx).isEmpty() ? images.get(idx) : null, imageIndexes.get(idx)))
+                .mapToObj(idx -> new ProjectImageDto(images != null && idx < images.size() && imageIndexes.get(idx) == 0 ? images.get(idx) : null, imageIndexes.get(idx)))
                 .toList();
         projectImageList.stream().forEach(i ->log.info("imageList = " + i.image() + ", " + i.index()));
 
