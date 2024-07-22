@@ -99,11 +99,13 @@ public class ProjectController {
             @RequestPart(required = false) MultipartFile thumbnail,
             @RequestPart Integer thumbnailIndex,
             @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        log.info("---------------------------------------PUT 로그 확인 ----------------------------------------------");
+        images.stream().forEach(i -> log.info("images = " + i));
+        imageIndexes.stream().forEach(i -> log.info("imageIndexes = " + i));
 
         List<ProjectImageDto> projectImageList = IntStream.range(0, imageIndexes.size())
-                .mapToObj(idx -> new ProjectImageDto(images != null && idx < images.size() ? images.get(idx) : null, imageIndexes.get(idx)))
+                .mapToObj(idx -> new ProjectImageDto(images != null && idx < images.size() && !images.get(idx).isEmpty() ? images.get(idx) : null, imageIndexes.get(idx)))
                 .toList();
-        log.info("---------------------------------------PUT 로그 확인 ----------------------------------------------");
         projectImageList.stream().forEach(i ->log.info("imageList = " + i.image() + ", " + i.index()));
 
         ProjectThumbnailDto projectThumbnailDto = new ProjectThumbnailDto(thumbnail, thumbnailIndex);
