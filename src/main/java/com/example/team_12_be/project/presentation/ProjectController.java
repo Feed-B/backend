@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,6 +27,7 @@ import java.util.stream.IntStream;
 @SecurityRequirement(name = "Bearer Authentication")
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class ProjectController {
 
     private final ProjectService projectService;
@@ -101,6 +103,8 @@ public class ProjectController {
         List<ProjectImageDto> projectImageList = IntStream.range(0, imageIndexes.size())
                 .mapToObj(idx -> new ProjectImageDto(images != null && idx < images.size() ? images.get(idx) : null, imageIndexes.get(idx)))
                 .toList();
+        log.info("---------------------------------------PUT 로그 확인 ----------------------------------------------");
+        projectImageList.stream().forEach(i ->log.info("imageList = " + i.image() + ", " + i.index()));
 
         ProjectThumbnailDto projectThumbnailDto = new ProjectThumbnailDto(thumbnail, thumbnailIndex);
 
