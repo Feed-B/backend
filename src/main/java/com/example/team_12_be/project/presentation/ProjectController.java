@@ -101,9 +101,10 @@ public class ProjectController {
             @RequestPart(required = false) MultipartFile thumbnail,
             @RequestPart Integer thumbnailIndex,
             @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        //Todo log 관련 코드(주석처리)들 추후에 지우기!!
         log.info("---------------------------------------PUT 로그 확인 ----------------------------------------------");
-        images.stream().forEach(i -> log.info("images = " + i));
-        imageIndexes.stream().forEach(i -> log.info("imageIndexes = " + i));
+//        images.stream().forEach(i -> log.info("images = " + i));
+////        imageIndexes.stream().forEach(i -> log.info("imageIndexes = " + i));
 
 //        List<ProjectImageDto> projectImageList = IntStream.range(0, imageIndexes.size())
 //                .mapToObj(idx -> new ProjectImageDto(images != null && idx < images.size() && imageIndexes.get(idx) == 0 ? images.get(idx) : null, imageIndexes.get(idx)))
@@ -124,7 +125,7 @@ public class ProjectController {
             projectImageList.add(projectImageDto);
         }
 
-        projectImageList.stream().forEach(i ->log.info("imageList = " + i.image() + ", " + i.index()));
+        //projectImageList.stream().forEach(i ->log.info("imageList = " + i.image() + ", " + i.index()));
 
         ProjectThumbnailDto projectThumbnailDto = new ProjectThumbnailDto(thumbnail, thumbnailIndex);
 
