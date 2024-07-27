@@ -6,7 +6,7 @@ public record CustomPageRequest(
 ) {
 
     private static final int MAXIMUM_SIZE = 100;
-    private static final int DEFAULT_PAGE_SIZE = 8;
+    private static final int DEFAULT_PAGE_SIZE = 4;
 
     @Override
     public int page() {

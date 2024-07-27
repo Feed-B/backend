@@ -30,7 +30,7 @@ public class ProjectRatingQueryService {
     }
 
     public CustomPageResponse<ProjectRatingResponseDto> getProjectRatingsByProjectId(Long projectId, Pageable pageable){
-        Page<ProjectRating> projectRatings = projectQueryRepository.findAllByProjectId(projectId, pageable);
+        Page<ProjectRating> projectRatings = projectQueryRepository.findAllByProjectIdOrderByCreatedAtDesc(projectId, pageable);
         List<ProjectRatingResponseDto> projectRatingResponseDtos = projectRatings
                 .stream()
                 .map(each -> ProjectRatingResponseDto.of(each, projectCommentQueryService.countCommentByRatingId(each.getId())))
