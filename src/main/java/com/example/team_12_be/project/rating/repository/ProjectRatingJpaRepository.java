@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface ProjectRatingJpaRepository extends JpaRepository<ProjectRating, Long> {
@@ -16,6 +15,6 @@ public interface ProjectRatingJpaRepository extends JpaRepository<ProjectRating,
 
     long countByProjectId(Long projectId);
 
-    Page<ProjectRating> findAllByProjectId(Long projectId, Pageable pageable);
+    Page<ProjectRating> findAllByProjectIdOrderByCreatedAtDesc(Long projectId, Pageable pageable);
 
 }
