@@ -64,7 +64,7 @@ cloud:
 
 redirect:
   base-url-local: http://localhost:3000/auth/success
-  base-url-prod: http://localhost:3000/auth/success #//https://feedb.vercel.app/auth/success
+  base-url-prod: https://feedb.vercel.app/auth/success #//https://feedb.vercel.app/auth/success
 
 
 #logging:
