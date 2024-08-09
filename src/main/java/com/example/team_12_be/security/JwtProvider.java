@@ -48,25 +48,17 @@ public class JwtProvider {
     }
 
     public Authentication getAuthentication(String token) {
-
-        CustomUserDetails customUserDetails = (CustomUserDetails) customUserDetailsService.loadUserByUsername(this.getUsers(token));
-
+        CustomUserDetails customUserDetails = (CustomUserDetails) customUserDetailsService.loadUserByUsername(this.getTokenSubject(token));
         return new UsernamePasswordAuthenticationToken(customUserDetails, "", customUserDetails.getAuthorities());
     }
 
-    public String getUsers(String token) {
-
+    public String getTokenSubject(String token) {
         try {
             return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
-        } catch (ExpiredJwtException e) {
-            e.printStackTrace();
-            return e.getClaims().getSubject();
         } catch (Exception e) {
-            e.printStackTrace();
-            return null; // 오류 발생 시 null 반환
+            throw new JwtException("Invalid JWT token");
         }
     }
-
 
     public String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
