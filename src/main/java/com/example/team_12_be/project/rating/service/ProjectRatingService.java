@@ -56,7 +56,11 @@ public class ProjectRatingService {
             throw new IllegalArgumentException("내 레이팅만 삭제 가능");
         }
 
-        projectRatingJpaRepository.delete(projectRating);
         projectCommentService.deleteByRatingId(projectRating.getId());
+        projectRatingJpaRepository.delete(projectRating);
+    }
+
+    public void deleteRating(ProjectRating projectRating){
+        projectRatingJpaRepository.delete(projectRating);
     }
 }
