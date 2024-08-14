@@ -5,6 +5,7 @@ import com.example.team_12_be.member.service.dto.MemberService;
 import com.example.team_12_be.project.domain.*;
 import com.example.team_12_be.project.image.service.ProjectImageService;
 import com.example.team_12_be.project.image.service.ProjectThumbnailService;
+import com.example.team_12_be.project.rating.service.ProjectRatingService;
 import com.example.team_12_be.project.service.dto.request.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,8 @@ public class ProjectService {
     private final ProjectImageService projectImageService;
 
     private final ProjectThumbnailService projectThumbnailService;
+
+    private final ProjectRatingService projectRatingService;
 
     public Long saveProject(ProjectRequestDto projectRequestDto, Member author, List<ProjectImageDto> projectImageDtoList, ProjectThumbnailDto projectThumbnailDto) {
         Project project = projectRequestDto.toEntity(author);
@@ -48,9 +51,13 @@ public class ProjectService {
     }
 
     public void deleteProject(Long projectId) {
+        Project project = projectPort.findById(projectId).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 프로젝트")
+        );
+
+        project.getProjectRatings().forEach(projectRatingService::deleteRating);
         projectPort.deleteById(projectId);
     }
-
 
     public void likeProject(Long memberId, Long projectId) {
         boolean isLikeExists = projectPort.likeExistsByMemberIdAndProjectId(memberId, projectId);
