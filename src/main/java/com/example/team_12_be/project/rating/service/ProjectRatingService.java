@@ -61,6 +61,7 @@ public class ProjectRatingService {
     }
 
     public void deleteRating(ProjectRating projectRating){
+        projectCommentService.deleteByRatingId(projectRating.getId());
         projectRatingJpaRepository.delete(projectRating);
     }
 }
